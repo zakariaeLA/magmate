@@ -1,0 +1,16 @@
+# Node
+node_modules/
+dist/
+build/
+npm-debug.log
+
+# Angular
+frontend/.angular/cache/
+frontend/.angular/
+
+# IDE
+.vscode/
+.idea/
+
+# Environnement
+.env
