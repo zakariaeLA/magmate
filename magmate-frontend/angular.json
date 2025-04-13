@@ -5,7 +5,17 @@
   "projects": {
     "magmate-frontend": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -94,6 +104,6 @@
     }
   },
   "cli": {
-    "analytics": "7bf4a244-4009-4b3b-9222-17e9ba4368b6"
+    "analytics": "be4d3f31-bbc9-422e-93c7-a0373a7c4042"
   }
 }
