@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { FirebaseAuthGuard } from 'src/auth/firebase-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -9,11 +10,13 @@ export class UserController {
 
   // Route pour obtenir le profil
   @Get('profile/:id')
+  // @UseGuards(FirebaseAuthGuard)
   async getProfile(@Param('id') id: string) {
     return this.userService.getProfile(id);
   }
-  //   avec firbase
+  //   avec firebase
   //   @Get('profile')
+  //   @UseGuards(FirebaseAuthGuard)
   //   getProfile(@Request() req) {
   //      return this.userService.getProfile(req.user.id);  // une fois l'auth Firebase branchée
   //   }
