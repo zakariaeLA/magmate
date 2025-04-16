@@ -35,7 +35,7 @@ export class UserService {
     if (updateUserDto.fname) user.fname = updateUserDto.fname;
     if (updateUserDto.lname) user.lname = updateUserDto.lname;
     if (updateUserDto.photo) user.photo = updateUserDto.photo;
-
+    
     if (updateUserDto.email && user.email !== updateUserDto.email) {
       const userExists = await this.userRepository.findOne({
         where: { email: updateUserDto.email },

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -11,7 +11,7 @@ export class UserController {
   // Route pour obtenir le profil
   @Get('profile/:id')
   // @UseGuards(FirebaseAuthGuard)
-  async getProfile(@Param('id') id: string) {
+  async getProfile(@Param('id' , ParseUUIDPipe) id: string) {
     return this.userService.getProfile(id);
   }
   //   avec firebase
@@ -24,15 +24,15 @@ export class UserController {
   // Route pour mettre à jour le profil
   @Put('profile/:id')
   async updateProfile(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ValidationPipe({ whitelist: true })) updateUserDto: UpdateUserDto,
   ) {
     return this.userService.updateProfile(id, updateUserDto);
   }
 
   //Route pour creer un utilisateur
   @Post()  
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body(new ValidationPipe({ whitelist: true })  ) createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
 }
