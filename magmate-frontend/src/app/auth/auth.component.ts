@@ -11,12 +11,15 @@ import firebase from 'firebase/compat/app';
 export class AuthComponent {
   user: firebase.User | null = null;
 
-  constructor(private afAuth: AngularFireAuth) {
-    // 🔄 Vérifie si un utilisateur est déjà connecté
-    this.afAuth.authState.subscribe(user => {
-      this.user = user;
-    });
-  }
+constructor(private afAuth: AngularFireAuth) {
+  this.afAuth.authState.subscribe(user => {
+    this.user = user;
+    if (user) {
+      console.log('👤 Utilisateur connecté :', user.displayName, user.email);
+    }
+  });
+}
+
 
   async loginWithGoogle() {
     try {

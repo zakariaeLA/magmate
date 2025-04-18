@@ -1,0 +1,62 @@
+<!-- signup.component.html - UNIQUEMENT le formulaire d'inscription -->
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Créer un compte</h2>
+      <p class="subtitle">Rejoignez-nous pour accéder à tous nos services</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-container">
+          <i class="material-icons icon">email</i>
+          <input id="email" formControlName="email" type="email" placeholder="exemple@domaine.com" />
+        </div>
+        <div class="error-message" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+          <small>Veuillez entrer une adresse email valide</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-container">
+          <i class="material-icons icon">lock</i>
+          <input id="password" formControlName="password" type="password" placeholder="6 caractères minimum" />
+          <i class="material-icons toggle-password" (click)="togglePasswordVisibility()">visibility</i>
+        </div>
+        <div class="error-message" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+          <small>Le mot de passe doit contenir au moins 6 caractères</small>
+        </div>
+      </div>
+
+      <button type="submit" class="btn primary-btn" [disabled]="signupForm.invalid">
+        S'inscrire
+      </button>
+
+      <div class="separator">
+        <span>ou</span>
+      </div>
+
+      <button type="button" class="btn google-btn" (click)="signInWithGoogle()">
+        <img src="assets/google-icon.svg" alt="Google" class="google-icon" />
+        Continuer avec Google
+
+      </button>
+
+      <div class="auth-footer">
+        <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+      </div>
+    </form>
+
+    <div *ngIf="errorMessage" class="alert error-alert">
+      <i class="material-icons">error</i>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <div *ngIf="successMessage" class="alert success-alert">
+      <i class="material-icons">check_circle</i>
+      <span>{{ successMessage }}</span>
+    </div>
+  </div>
+</div>

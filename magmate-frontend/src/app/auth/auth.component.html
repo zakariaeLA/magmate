@@ -1,10 +1,9 @@
+<div *ngIf="user">
+  <p>👋 Bienvenue, {{ user.displayName }}</p>
+  <p>📧 Email : {{ user.email }}</p>
+  <button (click)="logout()">Se déconnecter</button>
+</div>
+
 <div *ngIf="!user">
-    <button (click)="loginWithGoogle()">Se connecter avec Google</button>
-  </div>
-  
-  <div *ngIf="user">
-    <p>Bienvenue, {{ user?.displayName }}</p>
-    <p>Email: {{ user?.email }}</p>
-    <button (click)="logout()">Se déconnecter</button>
-  </div>
-  
+  <button (click)="loginWithGoogle()">Se connecter avec Google</button>
+</div>

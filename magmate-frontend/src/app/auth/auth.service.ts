@@ -1,18 +1,35 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
-import { Auth, getIdToken, User } from '@angular/fire/auth';
-import { user, authState } from 'rxfire/auth';
+import { HttpClient } from '@angular/common/http';
+import { getAuth } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  private API = 'http://localhost:3000/auth';
 
-  async getToken(): Promise<string | null> {
-    const currentUser = this.auth.currentUser;
-    if (currentUser) {
-      return await getIdToken(currentUser);
-    }
-    return null;
+  constructor(private http: HttpClient) {}
+
+  // Récupère le token Firebase actuel
+  async getIdToken(): Promise<string|null> {
+    const user = getAuth().currentUser;
+    return user ? await user.getIdToken() : null;
+  }
+
+  // Appelle ton endpoint backend /auth/login avec le token
+  async loginBackend() {
+    const token = await this.getIdToken();
+    if (!token) throw new Error('Pas de token Firebase');
+    return firstValueFrom(
+      this.http.post(`${this.API}/login`, { token })
+    );
+  }
+
+  // Pareil pour signup si tu en veux un à part
+  async signupBackend() {
+    const token = await this.getIdToken();
+    if (!token) throw new Error('Pas de token Firebase');
+    return firstValueFrom(
+      this.http.post(`${this.API}/signup`, { token })
+    );
   }
 }

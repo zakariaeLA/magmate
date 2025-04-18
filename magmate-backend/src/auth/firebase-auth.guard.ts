@@ -6,19 +6,19 @@ export class FirebaseAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    // 1. Récupère le token d'accès depuis les headers (Authorization)
+    // Récupère le token d'accès depuis les headers (Authorization)
     const token = this.getTokenFromHeader(request);
 
-    // 2. Si aucun token, on refuse l'accès
+    // Si aucun token, on refuse l'accès
     if (!token) {
       throw new UnauthorizedException('Token manquant');
     }
 
     try {
-      // 3. Vérifie le token via Firebase Admin SDK
+      // Vérifie le token via Firebase Admin SDK
       const decodedToken = await admin.auth().verifyIdToken(token);
       
-      // 4. On peut ajouter l'utilisateur à la requête
+      // On peut ajouter l'utilisateur à la requête
       request.user = decodedToken;
       return true;  // Autoriser la requête
     } catch (error) {
