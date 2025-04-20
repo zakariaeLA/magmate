@@ -1,135 +1,194 @@
 <!-- signup.component.html - UNIQUEMENT le formulaire d'inscription -->
-<div class="auth-popup">
+<div *ngIf="showPopup" class="auth-popup">
   <div class="auth-container">
+    <div *ngIf="showPopup">
     <div class="auth-card">
-      <div *ngIf="showPopup" class="popup-container">
+      <div  class="popup-container">
         <button class="close-btn" (click)="closePopup()">
           <i class="material-icons">close</i>
         </button>
-      <div class="auth-header">
-        <h2>Créer un compte</h2>
-        <p class="subtitle">Rejoignez-nous pour accéder à tous nos services</p>
-      </div>
-
-      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
-        <div class="form-group">
-          <!-- <label for="email">Adresse email</label> -->
-          <div class="input-container">
-            <i class="material-icons icon">email</i>
-            <input
-              id="email"
-              formControlName="email"
-              type="email"
-              placeholder="Adresse e-mail"
-            />
-          </div>
-          <div
-            class="error-message"
-            *ngIf="
-              signupForm.get('email')?.invalid &&
-              signupForm.get('email')?.touched
-            "
-          >
-            <small>Veuillez entrer une adresse email valide</small>
-          </div>
+        <div class="auth-header">
+          <h2>Créer un compte</h2>
+          <p class="subtitle">
+            Rejoignez-nous pour accéder à tous nos services
+          </p>
         </div>
 
-        <div class="form-group">
-          <!-- <label for="password">Mot de passe</label> -->
-          <div class="input-container">
-            <i class="material-icons icon">lock</i>
-            <input
-              id="password"
-              formControlName="password"
-              type="password"
-              placeholder="Mot de Passe"
-            />
-            <i
-              class="material-icons toggle-password"
-              (click)="togglePasswordVisibility()"
-              >visibility</i
-            >
-          </div>
-
-          <div
-            class="error-message"
-            *ngIf="
-              signupForm.get('password')?.invalid &&
-              signupForm.get('password')?.touched
-            "
-          >
-            <small>Le mot de passe doit contenir au moins 8 caractères</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-container">
-            <i class="material-icons icon">lock_outline</i>
-            <input
-              id="confirmPassword"
-              formControlName="confirmPassword"
-              [type]="showPassword ? 'text' : 'password'"
-              placeholder="Confirmer le mot de passe"
-            />
-          </div>
-
-          <div
-            class="error-message"
-            *ngIf="
-              signupForm.get('confirmPassword')?.invalid &&
-              signupForm.get('confirmPassword')?.touched
-            "
-          >
-            <small>Veuillez confirmer votre mot de passe</small>
-          </div>
-          <div
-            class="error-message"
-            *ngIf="
-              signupForm.hasError('passwordMismatch') &&
-              signupForm.get('confirmPassword')?.touched
-            "
-          >
-            <small>Les mots de passe ne correspondent pas</small>
-          </div>
-        </div>
-        <button
-          type="submit"
-          class="btn primary-btn"
-          [disabled]="signupForm.invalid"
+        <form
+          [formGroup]="signupForm"
+          (ngSubmit)="onSubmit()"
+          class="auth-form"
         >
-          S'inscrire
-        </button>
+          <div class="form-group full-width">
+            <!-- <label for="email">Adresse email</label> -->
+            <div class="input-container">
+              <i class="material-icons icon">email</i>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                placeholder="Adresse e-mail"
+              />
+            </div>
+            <div
+              class="error-message"
+              *ngIf="
+                signupForm.get('email')?.invalid &&
+                signupForm.get('email')?.touched
+              "
+            >
+              <small>Veuillez entrer une adresse email valide</small>
+            </div>
+          </div>
 
-        <div class="separator">
-          <span>ou</span>
-        </div>
-        <div>
+          <!-- Prenom -->
+          <div class="two-field-row">
+            <div class="form-group">
+              <div class="input-container">
+                <i class="material-icons icon">person</i>
+                <input
+                  id="fname"
+                  formControlName="fname"
+                  type="text"
+                  placeholder="Prénom"
+                />
+              </div>
+              <div
+                class="error-message"
+                *ngIf="
+                  signupForm.get('fname')?.invalid &&
+                  signupForm.get('fname')?.touched
+                "
+              >
+                <small>Le prénom est requis</small>
+              </div>
+            </div>
+
+            <!-- Nom -->
+            <div class="form-group">
+              <div class="input-container">
+                <i class="material-icons icon">badge</i>
+                <input
+                  id="lname"
+                  formControlName="lname"
+                  type="text"
+                  placeholder="Nom"
+                />
+              </div>
+              <div
+                class="error-message"
+                *ngIf="
+                  signupForm.get('lname')?.invalid &&
+                  signupForm.get('lname')?.touched
+                "
+              >
+                <small>Le nom est requis</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="two-field-row">
+            <div class="form-group">
+              <!-- <label for="password">Mot de passe</label> -->
+              <div class="input-container">
+                <i class="material-icons icon">lock</i>
+                <input
+                  id="password"
+                  formControlName="password"
+                  type="password"
+                  placeholder="Mot de Passe"
+                />
+                <i
+                  class="material-icons toggle-password"
+                  (click)="togglePasswordVisibility()"
+                  >visibility</i
+                >
+              </div>
+
+              <div
+                class="error-message"
+                *ngIf="
+                  signupForm.get('password')?.invalid &&
+                  signupForm.get('password')?.touched
+                "
+              >
+                <small
+                  >Le mot de passe doit contenir au moins 8 caractères</small
+                >
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-container">
+                <i class="material-icons icon">lock_outline</i>
+                <input
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  [type]="showPassword ? 'text' : 'password'"
+                  placeholder="Confirmer le mot de passe"
+                />
+              </div>
+
+              <div
+                class="error-message"
+                *ngIf="
+                  signupForm.get('confirmPassword')?.invalid &&
+                  signupForm.get('confirmPassword')?.touched
+                "
+              >
+                <small>Veuillez confirmer votre mot de passe</small>
+              </div>
+              <div
+                class="error-message"
+                *ngIf="
+                  signupForm.hasError('passwordMismatch') &&
+                  signupForm.get('confirmPassword')?.touched
+                "
+              >
+                <small>Les mots de passe ne correspondent pas</small>
+              </div>
+            </div>
+          </div>
+
           <button
-            type="button"
-            class="btn google-btn"
-            (click)="signInWithGoogle()"
+            type="submit"
+            class="btn primary-btn full-width"
+            [disabled]="signupForm.invalid"
           >
-            <img
-              src="assets/google-icon.svg"
-              alt="Google"
-              class="google-icon"
-            />
-            Continuer avec Google
+            S'inscrire
           </button>
 
-          <div class="auth-footer">
-            <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+          <div class="separator full-width">
+            <span>ou</span>
           </div>
+          <div class="full-width">
+            <button
+              type="button"
+              class="btn google-btn"
+              (click)="signInWithGoogle()"
+            >
+              <img
+                src="assets/google-icon.svg"
+                alt="Google"
+                class="google-icon"
+              />
+              Continuer avec Google
+            </button>
+
+            <div class="auth-footer full-width">
+              <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+            </div>
+          </div>
+        </form>
+
+        <div *ngIf="errorMessage" class="alert error-alert">
+          <i class="material-icons">error</i>
+          <span>{{ errorMessage }}</span>
         </div>
-      </form>
 
-      <div *ngIf="errorMessage" class="alert error-alert">
-        <i class="material-icons">error</i>
-        <span>{{ errorMessage }}</span>
-      </div>
-
-      <div *ngIf="successMessage" class="alert success-alert">
-        <i class="material-icons">check_circle</i>
-        <span>{{ successMessage }}</span>
+        <div *ngIf="successMessage" class="alert success-alert">
+          <i class="material-icons">check_circle</i>
+          <span>{{ successMessage }}</span>
+        </div>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // Récupère le token Firebase actuel
-  async getIdToken(): Promise<string|null> {
+  async getIdToken(): Promise<string | null> {
     const user = getAuth().currentUser;
     return user ? await user.getIdToken() : null;
   }
@@ -19,16 +19,20 @@ export class AuthService {
   async loginBackend() {
     const token = await this.getIdToken();
     if (!token) throw new Error('Pas de token Firebase');
-    return firstValueFrom(
-      this.http.post(`${this.API}/login`, { token })
-    );
+    return firstValueFrom(this.http.post(`${this.API}/login`, { token }));
   }
 
-  async signupBackend() {
+  async signupBackend(fname: string, lname: string, password: string) {
     const token = await this.getIdToken();
     if (!token) throw new Error('Pas de token Firebase');
+
     return firstValueFrom(
-      this.http.post(`${this.API}/signup`, { token })
+      this.http.post(`${this.API}/signup`, {
+        token,
+        fname,
+        lname,
+        password,
+      })
     );
   }
 }

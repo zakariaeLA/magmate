@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['../auth.component.css'],
   standalone: false,
 })
 export class LoginComponent {
@@ -23,11 +23,11 @@ export class LoginComponent {
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
     private router: Router,
-    private authService: AuthService // ← Injection
+    private authService: AuthService 
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required,Validators.minLength(8)]],
       remember: [false],
     });
   }

@@ -21,14 +21,14 @@ export class UserController {
   //      return this.userService.getProfile(req.user.id);  // une fois l'auth Firebase branchée
   //   }
 
-  // Route pour mettre à jour le profil
-  @Put('profile/:id')
-  async updateProfile(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body(new ValidationPipe({ whitelist: true })) updateUserDto: UpdateUserDto,
-  ) {
-    return this.userService.updateProfile(id, updateUserDto);
-  }
+  // // Route pour mettre à jour le profil
+  // @Put('profile/:id')
+  // async updateProfile(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body(new ValidationPipe({ whitelist: true })) updateUserDto: UpdateUserDto,
+  // ) {
+  //   return this.userService.updateProfile(id, updateUserDto);
+  // }
 
   //Route pour creer un utilisateur
   @Post()  

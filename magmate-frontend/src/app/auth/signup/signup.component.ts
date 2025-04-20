@@ -27,7 +27,7 @@ function passwordMatchValidator(
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css'],
+  styleUrls: ['../auth.component.css'],
   standalone: false,
 })
 export class SignupComponent {
@@ -60,7 +60,7 @@ export class SignupComponent {
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((result) => {
         console.log('Connecté avec Google :', result.user);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/login']);
       })
       .catch((error) => {
         this.errorMessage = this.getErrorMessage(error.code);
@@ -81,10 +81,13 @@ export class SignupComponent {
       this.successMessage = '📧 Vérifiez votre email pour confirmer le compte';
 
       // Appel au backend pour créer / mettre à jour le profil
-      const backendUser = await this.authService.signupBackend();
+      const token = await result.user?.getIdToken();
+      const { fname, lname } = this.signupForm.value;
+      await this.authService.signupBackend(fname, lname, password);
+      
 
       // redirection vers login
-      setTimeout(() => this.router.navigate(['/login']), 2000);
+      setTimeout(() => this.router.navigate(['/login']), 6000);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
       this.successMessage = '';

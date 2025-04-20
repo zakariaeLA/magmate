@@ -18,9 +18,19 @@ export class AuthController {
   }
 
   @Post('signup')
-  async signup(@Body('token') token: string) {
+  async signup(
+    @Body('token') token: string,
+    @Body('fname') fname: string,
+    @Body('lname') lname: string,
+    @Body('password') password: string,
+  ) {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    const user = await this.authService.loginOrCreateUser(decodedToken); 
+    const user = await this.authService.loginOrCreateUser(
+      decodedToken,
+      fname,
+      lname,
+      password
+    );
     return user;
   }
 }
