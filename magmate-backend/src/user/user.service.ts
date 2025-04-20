@@ -27,11 +27,12 @@ export class UserService {
 
   // Méthode pour mettre à jour le profil
   async updateProfile(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) {
-      throw new Error('Utilisateur non trouvé');
-    }
-
+    // const user = await this.userRepository.findOne({ where: { id } });
+    // if (!user) {
+    //   throw new Error('Utilisateur non trouvé');
+    // }
+    const user = await this.getProfile(id);
+    
     if (updateUserDto.fname) user.fname = updateUserDto.fname;
     if (updateUserDto.lname) user.lname = updateUserDto.lname;
     if (updateUserDto.photo) user.photo = updateUserDto.photo;

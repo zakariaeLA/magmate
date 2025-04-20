@@ -16,6 +16,8 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage = '';
   showPassword = false;
+  showPopup = true; 
+
 
   constructor(
     private fb: FormBuilder,
@@ -124,5 +126,9 @@ export class LoginComponent {
     } catch (error: any) {
       this.errorMessage = this.getErrorMessage(error.code);
     }
+  }
+
+  closePopup() {
+    this.showPopup = false;
   }
 }

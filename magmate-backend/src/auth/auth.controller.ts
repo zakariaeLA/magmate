@@ -20,7 +20,7 @@ export class AuthController {
   @Post('signup')
   async signup(@Body('token') token: string) {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    const user = await this.authService.loginOrCreateUser(decodedToken); // réutilisation possible
+    const user = await this.authService.loginOrCreateUser(decodedToken); 
     return user;
   }
 }

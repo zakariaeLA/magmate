@@ -1,4 +1,4 @@
-// auth/reset-password/reset-password.component.ts
+// reset-password.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -12,8 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ResetPasswordComponent {
   resetForm: FormGroup;
-  message = '';
-  error = '';
+  errorMessage = '';
+  successMessage = '';
+  showPopup = true;
 
   constructor(
     private fb: FormBuilder,
@@ -25,27 +26,36 @@ export class ResetPasswordComponent {
     });
   }
 
-  async onSubmit() {
-    const email = this.resetForm.value.email;
-    this.message = '';
-    this.error = '';
+  async onResetPassword() {
+    if (this.resetForm.invalid) return;
+    const { email } = this.resetForm.value;
 
     try {
       await this.afAuth.sendPasswordResetEmail(email);
-      this.message = "📧 Un email de réinitialisation vous a été envoyé.";
-    } catch (err: any) {
-      this.error = this.getErrorMessage(err.code);
+      this.successMessage = 'Un email de réinitialisation a été envoyé.';
+      this.errorMessage = '';
+    } catch (error: any) {
+      this.errorMessage = this.getErrorMessage(error.code);
+      this.successMessage = '';
     }
   }
 
   getErrorMessage(code: string): string {
     switch (code) {
       case 'auth/user-not-found':
-        return "Aucun utilisateur trouvé avec cette adresse.";
+        return 'Aucun utilisateur trouvé avec cet email.';
       case 'auth/invalid-email':
-        return "Adresse email invalide.";
+        return 'Adresse email invalide.';
+      case 'auth/missing-email':
+        return 'Veuillez entrer votre adresse email.';
+      case 'auth/network-request-failed':
+        return 'Problème de connexion Internet.';
       default:
-        return "Une erreur est survenue. Veuillez réessayer.";
+        return "Une erreur s'est produite.";
     }
+  }
+
+  closePopup() {
+    this.showPopup = false;
   }
 }

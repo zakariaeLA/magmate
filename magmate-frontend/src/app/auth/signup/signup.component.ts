@@ -1,11 +1,29 @@
 // signup.component.ts
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
+function passwordMatchValidator(
+  control: AbstractControl
+): ValidationErrors | null {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  if (password && confirmPassword && password.value !== confirmPassword.value) {
+    return { passwordMismatch: true };
+  }
+
+  return null;
+}
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -17,6 +35,7 @@ export class SignupComponent {
   errorMessage: string = '';
   successMessage: string = '';
   showPassword: boolean = false;
+  showPopup = true;
 
   constructor(
     private fb: FormBuilder,
@@ -24,10 +43,16 @@ export class SignupComponent {
     private router: Router,
     private authService: AuthService
   ) {
-    this.signupForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+    this.signupForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]],
+        fname: ['', Validators.required],
+        lname: ['', Validators.required],
+      },
+      { validators: passwordMatchValidator }
+    );
   }
 
   signInWithGoogle() {
@@ -47,7 +72,7 @@ export class SignupComponent {
     const { email, password } = this.signupForm.value;
 
     try {
-      // 1) Crée l’utilisateur Firebase
+      // Crée l’utilisateur Firebase
       const result = await this.afAuth.createUserWithEmailAndPassword(
         email,
         password
@@ -55,11 +80,10 @@ export class SignupComponent {
       await result.user?.sendEmailVerification();
       this.successMessage = '📧 Vérifiez votre email pour confirmer le compte';
 
-      // 2) Appel au backend pour créer / mettre à jour le profil
+      // Appel au backend pour créer / mettre à jour le profil
       const backendUser = await this.authService.signupBackend();
-      console.log('👌 Backend a enregistré :', backendUser);
 
-      // 3) (Optionnel) redirection vers login
+      // redirection vers login
       setTimeout(() => this.router.navigate(['/login']), 2000);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
@@ -92,5 +116,8 @@ export class SignupComponent {
       default:
         return 'Erreur inconnue : ' + code;
     }
+  }
+  closePopup() {
+    this.showPopup = false;
   }
 }

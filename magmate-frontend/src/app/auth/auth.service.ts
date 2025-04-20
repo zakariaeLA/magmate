@@ -24,7 +24,6 @@ export class AuthService {
     );
   }
 
-  // Pareil pour signup si tu en veux un à part
   async signupBackend() {
     const token = await this.getIdToken();
     if (!token) throw new Error('Pas de token Firebase');
