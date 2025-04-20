@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 
+
 @Module({
   imports: [
     DatabaseModule,
@@ -13,7 +14,7 @@ import { FirebaseAdminModule } from './firebase/firebase-admin.module';
     UserModule,
     FirebaseAdminModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ],
+  providers: [AppService, ],
 })
 export class AppModule {}

@@ -25,7 +25,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     AuthComponent,
     SignupComponent,
     DashboardComponent,
-    ResetPasswordComponent,    
+    ResetPasswordComponent,
+        
     
   ],
   imports: [
