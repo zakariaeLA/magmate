@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './database/database.module';
 
+import { MarketplaceModule } from './marketplace/marketplace.module';
+
 @Module({
-  imports: [
-    DatabaseModule,
-  ],
+  imports: [DatabaseModule, MarketplaceModule],
   controllers: [AppController],
   providers: [AppService],
 })
