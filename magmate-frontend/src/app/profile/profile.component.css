@@ -97,13 +97,11 @@
 
 /* Profile Photo Container */
 .profile-photo-container {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding-top: 2.5rem;
   padding-left: 1.5rem;
   cursor: pointer;
 }
-
-
 
 .profile-photo {
   width: 10rem;
@@ -130,7 +128,7 @@
 }
 
 .profile-photo:hover .photo-image {
-  transform: scale(1.05);
+  transform: scale(1);
 }
 .profile-photo.loaded .photo-image {
   opacity: 1;
@@ -287,10 +285,14 @@
 }
 
 .upload-success {
-  margin-top: 8px;
+  width: 40%;
+  margin: auto;
+  text-align: center;
+  background-color: #fff9f9c1;
+  margin-bottom: 2rem;
   color: #4caf50;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
   animation: fadeIn 0.3s ease-in;
 }

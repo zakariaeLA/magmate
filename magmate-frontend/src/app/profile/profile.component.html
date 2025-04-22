@@ -6,7 +6,6 @@
         <div class="profile-card-content">
           <div class="profile-main-section">
             <div class="profile-photo-container">
-              <!-- Profile Photo Component -->
               <div class="profile-photo" (click)="fileInput.click()">
                 <img
                   [src]="
@@ -42,22 +41,22 @@
                   </svg>
                 </div>
               </div>
-              <div class="upload-success" *ngIf="uploadSuccess">
-                ✅ Photo mise à jour avec succès !
-              </div>
-
+              
               <input
-                #fileInput
-                type="file"
-                (change)="onFileSelected($event)"
-                accept="image/*"
-                class="file-input"
+              #fileInput
+              type="file"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              class="file-input"
               />
-
+              
               <div class="upload-loader" *ngIf="isUploading">
                 <div class="spinner"></div>
               </div>
             </div>
+          </div>
+          <div class="upload-success" *ngIf="uploadSuccess">
+            ✅ Photo mise à jour avec succès !
           </div>
 
           <div class="profile-details-section">
