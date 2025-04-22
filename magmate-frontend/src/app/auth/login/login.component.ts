@@ -63,7 +63,7 @@ export class LoginComponent {
       console.log('👌 Backend a répondu :', backendUser);
 
       // 4) Maintenant on navigue
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/profile']);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
     }
@@ -107,7 +107,7 @@ export class LoginComponent {
       }
 
       await this.authService.loginBackend(); // ou une méthode dédiée
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/profile']);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
     }

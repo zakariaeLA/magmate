@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { getAuth } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
 
@@ -35,4 +35,7 @@ export class AuthService {
       })
     );
   }
+
+  
+  
 }

@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
+import { ProfileModule } from './profile/profile.module';
 
 
 @Module({
@@ -13,6 +14,7 @@ import { FirebaseAdminModule } from './firebase/firebase-admin.module';
     AuthModule,
     UserModule,
     FirebaseAdminModule,
+    ProfileModule,
   ],
   controllers: [AppController, ],
   providers: [AppService, ],

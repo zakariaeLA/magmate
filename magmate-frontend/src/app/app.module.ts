@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     SignupComponent,
     DashboardComponent,
     ResetPasswordComponent,
+    ProfileComponent,
         
     
   ],
