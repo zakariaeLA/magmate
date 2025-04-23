@@ -40,7 +40,6 @@ export class ProfileController {
         },
       }),
       fileFilter: (req, file, callback) => {
-        // Accepter seulement les images JPEG, JPG, PNG
         if (!file.mimetype.match(/^image\/(jpeg|png|jpg)$/)) {
           return callback(
             new Error('Seuls les fichiers JPG, JPEG et PNG sont autorisés'),
