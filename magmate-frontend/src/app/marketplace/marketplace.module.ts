@@ -2,23 +2,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './components/product-card/product-card.component';
-import { HomeComponent } from './pages/home/home.component';
+import { MarketplaceComponent } from './pages/marketplacehome/marketplacehome.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MarketplaceRoutingModule } from './marketplace-routing.module'; // <-- tu l’as oublié dans le code
+import { MarketplaceRoutingModule } from './marketplace-routing.module';
+import { HeaderComponent } from '../components/header/header.component';
+import { MagasinPageComponent } from './pages/magasin-page/magasin-page.component';
 
 @NgModule({
   declarations: [
     ProductCardComponent,
-    HomeComponent,
-   
+    MarketplaceComponent,
+    MagasinPageComponent,
+    
   ],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
-    MarketplaceRoutingModule 
+    MarketplaceRoutingModule,
   ],
-  exports: [HomeComponent],
+  exports: [MarketplaceComponent],
 })
 export class MarketplaceModule {}

@@ -1,7 +1,8 @@
+// src/services/ProduitService.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Produit } from '../entities/Produit.entity';
+import { Produit } from '../entities/produit.entity';
 
 @Injectable()
 export class ProduitsService {
@@ -29,5 +30,12 @@ export class ProduitsService {
     }
 
     return queryBuilder.getMany();
+  }
+
+  // Méthode pour récupérer les produits par magasin
+  async getProduitsByMagasin(magasinIdMagasin: number): Promise<Produit[]> {
+    return this.produitRepository.find({
+      where: { magasin: { idMagasin: magasinIdMagasin } }, // Relation avec magasin
+    });
   }
 }

@@ -1,17 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { Magasin } from './Magasin.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Magasin } from './magasin.entity';
+
 @Entity()
 export class Produit {
   @PrimaryGeneratedColumn()
   idProduit: number;
-  @Column()
-  magasinIdMagasin: number;
 
   @Column()
   titre: string;
@@ -25,10 +18,14 @@ export class Produit {
   @Column()
   imagePrincipale: string;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dateAjout: Date;
 
+  @ManyToOne(() => Magasin, (magasin) => magasin.produits, {
+    onDelete: 'CASCADE',
+  })
+
+  // Relation plusieurs à un entre Produit et Magasin
   @ManyToOne(() => Magasin, (magasin) => magasin.produits)
-  @JoinColumn({ name: 'magasinIdMagasin' })
   magasin: Magasin;
 }

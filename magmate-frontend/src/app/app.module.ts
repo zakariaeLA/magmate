@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+/*import { SwiperModule } from 'swiper/angular';*/
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 
-
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    
-  ],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HomeComponent,
+    AppRoutingModule,
     FormsModule,
-    MarketplaceModule
-    
+    MarketplaceModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

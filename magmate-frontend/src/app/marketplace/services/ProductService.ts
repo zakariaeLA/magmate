@@ -11,7 +11,6 @@ export interface Produit {
   imagePrincipale: string;
   dateAjout: string;
   magasinIdMagasin: number;
-  categorie?: string;
 }
 
 @Injectable({
@@ -29,4 +28,8 @@ export class ProductService {
 
     return this.http.get<Produit[]>(this.baseUrl, { params });
   }
+  getProduitsByMagasin(magasinId: number): Observable<Produit[]> {
+    return this.http.get<Produit[]>(`http://localhost:3000/magasins/${magasinId}/produits`);
+  }
+  
 }
