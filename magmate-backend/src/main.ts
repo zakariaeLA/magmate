@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // Importez Swagger
+import bodyParser, { json } from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,8 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);  // Configurez Swagger pour qu'il soit accessible via "/api"
 
   // Démarrer l'application sur un port spécifié dans les variables d'environnement ou sur 3000
+
+  app.use(json({ limit: '50mb' }));
   await app.listen(process.env.PORT ?? 3000);
 }
 
