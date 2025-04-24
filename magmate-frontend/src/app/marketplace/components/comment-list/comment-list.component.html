@@ -1,0 +1,16 @@
+<!-- src/app/marketplace/components/comment-list/comment-list.component.html -->
+<div *ngIf="comments.length > 0">
+  <h3>Commentaires</h3>
+  <div *ngFor="let comment of comments">
+    <div class="comment">
+      <p><strong>{{ comment.auteur.nom }}</strong></p> <!-- Afficher le nom de l'auteur -->
+      <p>{{ comment.commentaire }}</p> <!-- Afficher le texte du commentaire -->
+      <div class="rating">
+        <span *ngFor="let star of [].constructor(comment.note); let i = index">★</span> <!-- Affichage des étoiles -->
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="comments.length === 0">
+  <p>Aucun commentaire pour ce produit.</p>
+</div>
