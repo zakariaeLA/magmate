@@ -1,0 +1,64 @@
+.product-card {
+  position: relative;
+  /* Styles de base de la carte produit */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour le badge "Nouveau" */
+.badge {
+  background-color: #ffcc00;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+/* Afficher les actions (modifier et supprimer) uniquement au survol */
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 100%;
+  visibility: hidden; /* Par défaut caché */
+}
+
+.product-card:hover .product-actions {
+  visibility: visible; /* Afficher les actions au survol */
+}
+
+/* Boutons Modifier et Supprimer */
+.edit-button, .delete-button {
+  background-color: #721a1a;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover, .delete-button:hover {
+  background-color: #9c3a3a;
+}
+
+/* Bouton Détails */
+.details-button {
+  background-color: #721a1a;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}

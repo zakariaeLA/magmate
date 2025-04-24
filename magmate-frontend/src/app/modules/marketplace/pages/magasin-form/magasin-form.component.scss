@@ -1,0 +1,188 @@
+/* Assure une hauteur complète et un fond cohérent */
+html, body {
+  min-height: 100vh;
+  background-color: #edd1ab;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur du formulaire magasin */
+.magasin-form-container {
+  background-color: #fff7ec;
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 600px;
+  border-radius: 10px;
+  border: 2px solid #721a1a;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Titre du formulaire */
+.magasin-form-container h2 {
+  font-size: 24px;
+  color: #721a1a;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Champs de formulaire */
+.magasin-form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.magasin-form-container label {
+  color: #721a1a;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.magasin-form-container input,
+.magasin-form-container textarea,
+.magasin-form-container select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Styles pour le textarea */
+.magasin-form-container textarea {
+  height: 150px; /* Ajustez la hauteur selon vos besoins */
+}
+
+/* Bouton de soumission */
+.magasin-form-container button {
+  padding: 10px 16px;
+  background-color: #721a1a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.magasin-form-container button:hover {
+  background-color: white;
+  color: #721a1a;
+  border: 1px solid #721a1a;
+}
+
+.magasin-form-container button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Erreurs de validation */
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+/* NavBar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  padding: 15px 30px;
+  color: #721a1a;
+  position: relative;
+  z-index: 10;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #721a1a;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: #721a1a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar-links li a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #721a1a;
+}
+
+/* Style pour l'overlay flou */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fond sombre semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Assurez-vous que la modale soit au-dessus du reste */
+  backdrop-filter: blur(5px); /* Applique l'effet de flou sur l'arrière-plan */
+  visibility: visible; /* Assure que l'overlay est visible */
+}
+
+/* Style pour la modale elle-même */
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+}
+
+/* Bouton de fermeture de la modale (OK) */
+.close-btn {
+  background-color: #721a1a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  display: block;
+  width: 100px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* Style pour l'alerte de succès */
+.success {
+  background-color: #fff7ec;
+  color: #721a1a;
+  border: 1px solid #721a1a;
+}
+
+/* Style pour l'alerte d'erreur */
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

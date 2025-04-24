@@ -1,0 +1,28 @@
+<div class="store-details">
+  <!-- Vérifier si le magasin est défini avant d'afficher ses détails -->
+  <div *ngIf="magasin.nom">
+    <h2>{{ magasin.nom }}</h2>
+    <p>{{ magasin.localisation }}</p>
+
+    <!-- Afficher les produits du magasin -->
+    <div class="product-cards">
+      <app-product-card
+        *ngFor="let product of products"
+        [product]="product"
+        (editProduct)="onEditProduct(product.idProduit)"
+        (deleteProduct)="onDeleteProduct(product.idProduit)">
+      </app-product-card>
+    </div>
+  </div>
+  <!-- Bouton pour ajouter un produit, centré en bas -->
+  <div class="add-product-button">
+    <button (click)="onAddProduct()">Ajouter un produit</button>
+  </div>
+</div>
+
+
+  <!-- Si magasin est undefined ou vide, afficher un message de chargement -->
+  <div *ngIf="!magasin.nom">
+    <p>Chargement des détails du magasin...</p>
+  </div>
+
