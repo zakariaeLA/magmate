@@ -6,7 +6,7 @@ import { AlertService } from '../../services/alerte.service'; // Import du servi
 
 @Component({
   selector: 'app-magasin-form',
-  standalone:false,
+  standalone: false,
   templateUrl: './magasin-form.component.html',
   styleUrls: ['./magasin-form.component.scss']
 })
@@ -25,8 +25,7 @@ export class MagasinFormComponent implements OnInit {
       nom: ['', Validators.required],
       localisation: ['', Validators.required], 
       description: ['', Validators.required],
-      
-      image: ['', Validators.required],
+      image: ['', Validators.required],  // Image is required
       horaire: ['', Validators.required],
       telephone: ['', Validators.required],
       ville: ['', Validators.required]
@@ -34,42 +33,65 @@ export class MagasinFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // S'abonner à l'alerte
+    // Subscribe to alert service
     this.alertService.alert$.subscribe(alert => {
-      this.alertMessage = alert.message;  // message est maintenant une propriété de l'objet
-      this.alertType = alert.type;        // type est une propriété de l'objet
+      this.alertMessage = alert.message;
+      this.alertType = alert.type;
     });
   }
 
+  // Handle main image selection
+  onFileChange(event: any): void {
+    const file = event.target.files[0]; // Get the first file (main image)
+    if (file) {
+      this.magasinForm.patchValue({
+        image: file // Set the selected file to the image control
+      });
+    }
+  }
+
+  // Handle form submission
   onSubmit() {
     if (this.magasinForm.invalid) {
       return;
     }
 
-    const magasinData = new FormData();
+    const magasinData = new FormData(); // Create FormData to append the store data
+
+    // Append non-file form fields
     magasinData.append('nom', this.magasinForm.get('nom')?.value);
     magasinData.append('localisation', this.magasinForm.get('localisation')?.value);
     magasinData.append('description', this.magasinForm.get('description')?.value);
-    magasinData.append('image', this.magasinForm.get('image')?.value);
     magasinData.append('horaire', this.magasinForm.get('horaire')?.value);
     magasinData.append('telephone', this.magasinForm.get('telephone')?.value);
     magasinData.append('ville', this.magasinForm.get('ville')?.value);
-    
 
+    // Append main image
+    const image = this.magasinForm.get('image')?.value;
+    if (image && image instanceof File) {
+      console.log('Main Image:', image);
+      magasinData.append('image', image, image.name); // Append the main image
+    } else {
+      console.error('Main image is invalid or missing');
+    }
+
+    console.log('Data sent to server:', magasinData); // Log the FormData before sending
+
+    // Send the data to the backend via the service
     this.magasinService.createMagasin(magasinData).subscribe({
       next: (response) => {
-        console.log('Magasin créé avec succès', response);
-        this.alertService.success('Le magasin a été créé avec succès!');
-        this.router.navigate(['/']);
+        console.log('Store successfully created', response);
+        this.alertService.success('Store has been successfully created!');
+        this.router.navigate(['/']);  // Navigate after successful creation
       },
       error: (error) => {
-        console.error('Erreur lors de la création du magasin', error);
-        this.alertService.error('Une erreur est survenue lors de la création du magasin.');
+        console.error('Error creating store', error);
+        this.alertService.error('An error occurred while creating the store.');
       }
     });
   }
 
-  // Méthode pour fermer la modale
+  // Method to close the alert
   closeAlert() {
     this.alertMessage = null;
     this.alertType = null;

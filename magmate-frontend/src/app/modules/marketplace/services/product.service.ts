@@ -13,11 +13,11 @@ export class ProductService {
 
   // Méthode pour créer un produit
   createProduct(product: FormData): Observable<any> {
-    return this.http.post(this.apiUrl, product, {
+    return this.http.post(this.apiUrl, product/*, {
       headers: {
-        'Content-Type': 'application/json'  // Important pour l'upload de fichiers
+        'Content-Type': 'multipart/form-data'  // Important pour l'upload de fichiers
       }
-    });
+    }*/);
   }
 
   // Méthode pour récupérer la liste des magasins

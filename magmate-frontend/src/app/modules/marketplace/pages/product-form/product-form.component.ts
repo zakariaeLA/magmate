@@ -39,95 +39,76 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  // This method will handle converting the image principale to Base64
   onFileChange(event: any): void {
-    const file = event.target.files[0];
+    const file = event.target.files[0]; // Get the first file (main image)
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64File = reader.result as string;
-        this.productForm.patchValue({
-          imagePrincipale: base64File  // Store the Base64 string of the image
-        });
-      };
-      reader.readAsDataURL(file);  // Convert file to Base64
+      this.productForm.patchValue({
+        imagePrincipale: file // Set the selected file to the imagePrincipale control
+      });
     }
   }
 
-  // This method will handle converting other images to Base64
   onFilesChange(event: any): void {
-    const files: FileList = event.target.files;  // Explicitly set files to FileList
+    const files = event.target.files;
     if (files.length > 0) {
-      const base64Files: string[] = [];
-      const filePromises = Array.from(files).map((file: File) => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const base64File = reader.result as string;  // Base64 string
-            base64Files.push(base64File);
-            resolve(base64File);
-          };
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);  // Convert the file to Base64
-        });
+      const fileArray = Array.from(files);
+      this.productForm.patchValue({
+        images: fileArray // Set the selected files (additional images) to the images control
       });
-  
-      // Wait for all files to be converted to Base64 before updating the form
-      Promise.all(filePromises)
-        .then(() => {
-          // Set the images in the form after all files are processed
-          this.productForm.patchValue({
-            images: base64Files
-          });
-        })
-        .catch((error) => {
-          console.error("Error converting files to Base64", error);
-        });
     }
   }
+
   onSubmit() {
     if (this.productForm.invalid) {
       return;
     }
 
-    const productData = new FormData();
-    console.log('Formulaire envoyé:', this.productForm.value);  // Affiche toutes les valeurs du formulaire
-  
+    const productData = new FormData();  // Create FormData to append the product data
+
+    // Append non-file form fields
     productData.append('titre', this.productForm.get('titre')?.value);
     productData.append('description', this.productForm.get('description')?.value);
     productData.append('prix', this.productForm.get('prix')?.value);
     productData.append('magasinIdMagasin', this.productForm.get('magasinIdMagasin')?.value);
 
-    // Add the Base64 image principale
+    // Append main image
     const imagePrincipale = this.productForm.get('imagePrincipale')?.value;
-    if (imagePrincipale) {
-      productData.append('imagePrincipale', imagePrincipale);  // This is already Base64
+    if (imagePrincipale && imagePrincipale instanceof File) {
+      console.log('Main Image:', imagePrincipale);
+      productData.append('imagePrincipale', imagePrincipale, imagePrincipale.name);  // Append main image
+    } else {
+      console.error('Main image is invalid or missing');
     }
 
-    // Add additional images if available
+    // Append additional images
     const imagesArray = this.productForm.get('images')?.value;
-    if (imagesArray) {
-      imagesArray.forEach((image: string) => {
-        productData.append('images', image);  // These are already Base64
+    if (imagesArray && imagesArray instanceof Array) {
+      console.log('Additional Images:', imagesArray);
+      imagesArray.forEach((image: File) => {
+        productData.append('images', image, image.name);  // Append each additional image
+        console.log('Added Image:', image);
       });
+    } else {
+      console.error('No additional images or invalid structure');
     }
 
-    // Send the data to the backend
-    const formData = this.productForm.value;
-    this.productService.createProduct(formData).subscribe({
+    console.log('Data sent to server:', productData);  // Log the FormData before sending
+
+    // Send the data to the backend via the service
+    this.productService.createProduct(productData).subscribe({
       next: (response) => {
-        console.log('Produit créé avec succès', response);
-        this.alertService.success('Le produit a été créé avec succès!');
-        this.router.navigate(['/produits']);
+        console.log('Product successfully created', response);
+        this.alertService.success('Product has been successfully created!');
+        this.router.navigate(['/products']);  // Navigate after successful creation
       },
       error: (error) => {
-        console.error('Erreur lors de la création du produit', error);
-        this.alertService.error('Une erreur est survenue lors de la création du produit.');
+        console.error('Error creating product', error);
+        this.alertService.error('An error occurred while creating the product.');
       }
     });
   }
-  
-  // Method to close alert
+
+  // Méthode pour fermer l'alerte
   closeAlert() {
     this.alertMessage = null;
     this.alertType = null;

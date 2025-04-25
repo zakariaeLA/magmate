@@ -22,7 +22,7 @@
 
     <div class="form-group">
       <label for="image">Image</label>
-      <input id="image" formControlName="image" type="file" required />
+      <input type="file" id="image" formControlName="image" (change)="onFileChange($event)" required />
     </div>
 
   
