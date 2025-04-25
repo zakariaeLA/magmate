@@ -1,4 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Avis } from './avis.entity';
+import { Reclamation } from './reclamation.entity';
 import { Magasin } from './magasin.entity';
 
 @Entity()
@@ -23,6 +25,12 @@ export class Utilisateur {
 
   @Column({ select: false })
   motDePasse: string;
+
+  @OneToMany(() => Avis, (avis) => avis.auteur)
+  avis: Avis[];
+
+  @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
+  reclamations: Reclamation[];
 
   @OneToMany(() => Magasin, (magasin) => magasin.proprietaire)
   magasins: Magasin[];

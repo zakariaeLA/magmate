@@ -31,5 +31,8 @@ export class ProductService {
   getProduitsByMagasin(magasinId: number): Observable<Produit[]> {
     return this.http.get<Produit[]>(`http://localhost:3000/magasins/${magasinId}/produits`);
   }
+  getProductById(id: number): Observable<Produit> {
+      return this.http.get<Produit>(`http://localhost:3000/products/${id}`);
   
+}
 }

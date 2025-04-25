@@ -1,0 +1,19 @@
+<!-- src/app/marketplace/components/report-form/report-form.component.html -->
+<div class="report-form">
+    <h3>Signaler un produit</h3>
+  
+    <form [formGroup]="reportForm" (ngSubmit)="submitReport()">
+      <div>
+        <label for="description">Description de la réclamation</label>
+        <textarea id="description" formControlName="description" rows="4" placeholder="Entrez votre description"></textarea>
+      </div>
+  
+      <div>
+        <label for="pieceJointe">Pièce jointe (URL ou fichier)</label>
+        <input type="text" id="pieceJointe" formControlName="pieceJointe" placeholder="Entrez un lien ou nom de fichier" />
+      </div>
+  
+      <button type="submit" [disabled]="reportForm.invalid">Signaler</button>
+    </form>
+  </div>
+  
