@@ -24,6 +24,11 @@ export class ProductService {
   getMagasins(): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:3000/magasins`);
   }
+  //méthode pour modifier un produit:
+  updateProduct(id: number, productData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, productData);
+  }
+  
 
   // Méthode pour supprimer un produit
   deleteProduct(productId: number): Observable<void> {

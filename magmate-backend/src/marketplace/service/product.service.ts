@@ -69,7 +69,7 @@ export class ProduitService {
 
   async update(id: number, dto: UpdateProduitDto) {
     console.log('Données reçues pour mise à jour:', dto);
-  
+    
     // Récupérer le produit à partir de la base de données
     const produit = await this.produitRepository.findOne({
       where: { idProduit: id },
@@ -87,8 +87,8 @@ export class ProduitService {
   
     // Mise à jour de l'image principale si elle est définie
     if (dto.imagePrincipale) produit.imagePrincipale = dto.imagePrincipale;
-  
-    // Mise à jour des images si elles sont définies
+    
+    // Mise à jour des images supplémentaires
     if (dto.images && dto.images.length > 0) {
       const validImages = dto.images.filter(image => image && image.trim() !== "");
   
