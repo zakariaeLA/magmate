@@ -26,7 +26,14 @@ export class ProductService {
   }
   //méthode pour modifier un produit:
   updateProduct(id: number, productData: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, productData);
+    //return this.http.put(`${this.apiUrl}/${id}`, productData);
+    return this.http.put(`${this.apiUrl}/59`, productData);
+
+  }
+  getProductById(id: number): Observable<any> {
+    //return this.http.get<any>(`http://localhost:3000/produits/${id}`);
+    return this.http.get<any>(`http://localhost:3000/produits/59`);
+
   }
   
 
