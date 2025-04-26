@@ -1,59 +1,38 @@
-import { IsString, IsNotEmpty, IsNumber, IsArray, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';  // Importer ApiProperty pour Swagger
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProduitDto {
-  
   @ApiProperty({
-    description: 'Le titre du produit',
-    type: String,
-    example: 'Téléviseur 4K'
+    description: 'The title of the product',
   })
-  @IsString()
-  @IsNotEmpty()
   titre: string;
 
   @ApiProperty({
-    description: 'La description du produit',
-    type: String,
-    example: 'Téléviseur 4K avec des fonctionnalités avancées.'
+    description: 'A detailed description of the product',
   })
-  @IsString()
-  @IsNotEmpty()
   description: string;
 
   @ApiProperty({
-    description: 'Le prix du produit',
-    type: Number,
-    example: 1500
+    description: 'The price of the product',
   })
-  @IsNumber()
-  @IsNotEmpty()
   prix: number;
 
   @ApiProperty({
-    description: 'L\'image principale du produit',
-    type: String,
-    example: 'imagePrincipale.jpg'
+    description: 'The main image of the product',
+    type: 'string',
+    format: 'binary', // This indicates that this field will be a file upload in Swagger
   })
-  @IsString()
-  @IsNotEmpty()
-  imagePrincipale: string;
+  imagePrincipale: string; // Main image (required)
 
   @ApiProperty({
-    description: 'Tableau des images supplémentaires du produit',
-    type: [String],
-    example: ['image1.jpg', 'image2.jpg']
+    description: 'Additional images of the product',
+    type: 'array',
+    items: { type: 'string', format: 'binary' }, // This is for file uploads as well
+    required: false, // Images are optional
   })
-  @IsArray()
-  @IsOptional()  // L'ajout d'images supplémentaires est optionnel
-  images: string[];
+  images: string[]; // Array of additional images (optional)
 
   @ApiProperty({
-    description: 'L\'ID du magasin auquel ce produit appartient',
-    type: Number,
-    example: 1
+    description: 'The ID of the associated store (magasin)',
   })
-  @IsNumber()
-  @IsNotEmpty()
   magasinIdMagasin: number;
 }

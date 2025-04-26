@@ -13,17 +13,29 @@ export class ProductService {
 
   // Méthode pour créer un produit
   createProduct(product: FormData): Observable<any> {
-    return this.http.post(this.apiUrl, product, {
+    return this.http.post(this.apiUrl, product/*, {
       headers: {
-        'Content-Type': 'application/json'  // Important pour l'upload de fichiers
+        'Content-Type': 'multipart/form-data'  // Important pour l'upload de fichiers
       }
-    });
+    }*/);
   }
 
   // Méthode pour récupérer la liste des magasins
   getMagasins(): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:3000/magasins`);
   }
+  //méthode pour modifier un produit:
+  updateProduct(id: number, productData: FormData): Observable<any> {
+    //return this.http.put(`${this.apiUrl}/${id}`, productData);
+    return this.http.put(`${this.apiUrl}/59`, productData);
+
+  }
+  getProductById(id: number): Observable<any> {
+    //return this.http.get<any>(`http://localhost:3000/produits/${id}`);
+    return this.http.get<any>(`http://localhost:3000/produits/59`);
+
+  }
+  
 
   // Méthode pour supprimer un produit
   deleteProduct(productId: number): Observable<void> {

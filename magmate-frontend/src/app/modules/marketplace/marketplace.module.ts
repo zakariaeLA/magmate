@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';  // Assurez-vous d'importer ReactiveFormsModule
 import { MagasinDetailsComponent } from './pages/magasin-details/magasin-details.component';
 import { ProductFormComponent } from './pages/product-form/product-form.component';
+import { ProductUpdateComponent } from './pages/product-update/product-update.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';  // Exemple d'autres composants
 import { MagasinFormComponent } from './pages/magasin-form/magasin-form.component';
 @NgModule({
   declarations: [
     MagasinDetailsComponent,
+    ProductUpdateComponent,
     ProductCardComponent,
     ProductFormComponent,
     MagasinFormComponent,   // Assurez-vous que tous les composants nécessaires sont déclarés ici

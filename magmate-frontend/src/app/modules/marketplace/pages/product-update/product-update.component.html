@@ -1,0 +1,50 @@
+<div class="form-container">
+    <h2>Modifier un Produit</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+      
+      <!-- Title -->
+      <div class="form-group">
+        <label for="titre">Titre</label>
+        <input id="titre" formControlName="titre" type="text" required />
+      </div>
+  
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" required></textarea>
+      </div>
+  
+      <!-- Price -->
+      <div class="form-group">
+        <label for="prix">Prix</label>
+        <input id="prix" formControlName="prix" type="number" required />
+      </div>
+  
+      <!-- Main Image -->
+      <div class="form-group">
+        <label for="imagePrincipale">Image Principale</label>
+        <input id="imagePrincipale" type="file" (change)="onFileChange($event)" />
+        <div *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Image principale" />
+        </div>
+      </div>
+  
+      <!-- Additional Images -->
+      <div class="form-group">
+        <label for="images">Images supplémentaires</label>
+        <input id="images" type="file" (change)="onFilesChange($event)" multiple />
+        <div *ngFor="let image of selectedImages">
+          <img [src]="image.preview" alt="Image supplémentaire" />
+        </div>
+      </div>
+  
+      <!-- Store ID -->
+      <div class="form-group">
+        <label for="magasinIdMagasin">ID du magasin</label>
+        <input id="magasinIdMagasin" formControlName="magasinIdMagasin" type="number" required />
+      </div>
+  
+      <button type="submit" [disabled]="productForm.invalid">Mettre à jour le produit</button>
+    </form>
+  </div>
+  
