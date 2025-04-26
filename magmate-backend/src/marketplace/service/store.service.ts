@@ -9,26 +9,22 @@ export class StoreService {
   constructor(
     @InjectRepository(Magasin)
     private magasinRepository: Repository<Magasin>, // Injection correcte du repository
-  ) { }
+  ) {}
 
   // Créer un magasin
   async create(dto: CreateMagasinDto) {
+    // Utiliser correctement create() pour initialiser le magasin avec le DTO
     const magasin = this.magasinRepository.create(dto);
-    /*const magasin = new Magasin();
-    magasin.nom = dto.nom;
-    magasin.description = ''
-    magasin.image = dto.image;
-    magasin.dateCreation = dto.dateCréation; // Ensure dateCreation is set correctly
-    magasin.localisation = dto.localisation;
-    magasin.horaire = dto.horaire;
-    magasin.telephone = dto.telephone;
-    magasin.ville = dto.ville;*/
+
+    // Si besoin d'ajuster certains champs comme dateCreation avant l'enregistrement
+    magasin.dateCreation = new Date();  // Ajouter la date de création si elle n'est pas fournie
+
     return this.magasinRepository.save(magasin);
   }
 
   // Récupérer tous les magasins
   async findAll() {
-    return this.magasinRepository.find();
+    return this.magasinRepository.find();  // Retourner tous les magasins
   }
 
   // Trouver un magasin par son ID
@@ -46,7 +42,7 @@ export class StoreService {
     if (!magasin) {
       throw new NotFoundException(`Magasin avec l'ID ${id} non trouvé`);
     }
-    await this.magasinRepository.delete(id);
-    return { message: 'Magasin supprimé avec succès' };
+    await this.magasinRepository.delete(id);  // Supprimer le magasin
+    return { message: 'Magasin supprimé avec succès' };  // Retourner un message de succès
   }
 }
