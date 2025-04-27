@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class MagasinService {
   private apiUrl = 'http://localhost:3000/magasins'; // URL de l'API, assurez-vous qu'elle est correcte
-  private productUrl = 'http://localhost:3000/products'; // URL pour les produits
+  private productUrl = 'http://localhost:3000/produits'; // URL pour les produits
 
   constructor(private http: HttpClient) {}
 
@@ -15,11 +15,17 @@ export class MagasinService {
   createMagasin(magasinData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}`, magasinData);
   }
+// Récupérer un magasin par son ID
+getMagasinById(id: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/42`);
+  //return this.http.put(`${this.apiUrl}/59`, productData);
+}
 
-  // Méthode pour récupérer les détails du magasin
-  getStoreDetails(magasinId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${magasinId}`);
-  }
+// Mettre à jour un magasin
+updateMagasin(id: number, magasinData: FormData): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}`, magasinData);
+}
+  
 
   // Méthode pour supprimer un produit
   deleteProduct(productId: number): Observable<any> {

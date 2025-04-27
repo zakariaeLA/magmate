@@ -17,8 +17,9 @@ export class ProductUpdateComponent implements OnInit {
   selectedImages: { file: File; preview: string }[] = [];
   existingImages: string[] = [];  // Pour stocker les URLs des images existantes
   productId: number = 59;
-  alertMessage: string | null = null; // For displaying alert messages
-  alertType: 'success' | 'error' | null = null; // To define the type of alert
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' | null = null;
+  imageFile: any;
 
 
   constructor(
@@ -44,6 +45,10 @@ export class ProductUpdateComponent implements OnInit {
       this.productId = +params.get('id')!;  // Forcer le casting vers un nombre
       this.loadProductData();  // Charger les données du produit
     });
+    this.alertService.alert$.subscribe(alert => {
+      this.alertMessage = alert.message;
+      this.alertType = alert.type;
+    });
   }
 
   // Récupérer les informations du produit par son ID
@@ -65,14 +70,15 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   onFileChange(event: any): void {
-    const file = event.target.files[0]; // Get the first file (main image)
+    const file = event.target.files[0];  // Get the first file (main image)
     if (file) {
       this.imagePreview = URL.createObjectURL(file);  // Create a URL for the image preview
-      this.productForm.patchValue({
-        imagePrincipale: file // Set the selected file to the imagePrincipale control
-      });
+  
+      // Store the selected file in a local variable (do not use patchValue for file input)
+      this.imageFile = file;  // Store the file here
     }
   }
+  
   
   onFilesChange(event: any): void {
     const files = event.target.files;
@@ -106,8 +112,9 @@ export class ProductUpdateComponent implements OnInit {
     const imagePrincipale = this.productForm.get('imagePrincipale')?.value;
 
   // Ensure that the selected image is a File object
-  if (imagePrincipale && imagePrincipale instanceof File) {
-    productData.append('imagePrincipale', imagePrincipale, imagePrincipale.name); // Append the main image
+  if (this.imageFile) {
+    productData.append('imagePrincipale', this.imageFile, this.imageFile.name);
+  
   } else {
     console.error('Main image is invalid or missing');
   }

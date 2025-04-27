@@ -6,10 +6,12 @@ import { ProductFormComponent } from './pages/product-form/product-form.componen
 import { ProductUpdateComponent } from './pages/product-update/product-update.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';  // Exemple d'autres composants
 import { MagasinFormComponent } from './pages/magasin-form/magasin-form.component';
+import { MagasinUpdateComponent } from './pages/magasin-update/magasin-update.component';
 @NgModule({
   declarations: [
    
     ProductUpdateComponent,
+    MagasinUpdateComponent,
     ProductCardComponent,
     ProductFormComponent,
     MagasinFormComponent,   // Assurez-vous que tous les composants nécessaires sont déclarés ici
@@ -21,7 +23,8 @@ import { MagasinFormComponent } from './pages/magasin-form/magasin-form.componen
   ],
   exports: [
     
-    ProductUpdateComponent, 
+    ProductUpdateComponent,
+    MagasinUpdateComponent, 
     ProductCardComponent,
     MagasinFormComponent,
     ProductFormComponent, // Exportez le composant pour qu'il soit accessible ailleurs
