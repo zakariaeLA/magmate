@@ -12,3 +12,5 @@
     --white: #ffffff;
     --max-width: 1200px;
   }
+  
+body{margin: 0;}
