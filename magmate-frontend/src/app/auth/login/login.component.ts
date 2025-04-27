@@ -1,5 +1,5 @@
 // login.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
@@ -12,24 +12,30 @@ import { AuthService } from '../auth.service';
   styleUrls: ['../auth.component.css'],
   standalone: false,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage = '';
   showPassword = false;
-  showPopup = true; 
-
+  showPopup = true;
 
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
     private router: Router,
-    private authService: AuthService 
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required,Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       remember: [false],
     });
+  }
+  
+  ngOnInit(): void {
+    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+    if (user) {
+      this.router.navigate(['/profile']);
+    }
   }
 
   async onLogin() {
@@ -62,7 +68,14 @@ export class LoginComponent {
       const backendUser = await this.authService.loginBackend();
       console.log('👌 Backend a répondu :', backendUser);
 
-      // 4) Maintenant on navigue
+      // 4) Stocker l'utilisateur dans localStorage/sessionStorage
+      if (remember) {
+        localStorage.setItem('user', JSON.stringify(result.user));
+      } else {
+        sessionStorage.setItem('user', JSON.stringify(result.user));
+      }
+
+      // 5) Maintenant on navigue
       this.router.navigate(['/profile']);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);

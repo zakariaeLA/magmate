@@ -11,7 +11,7 @@
                   [src]="
                     previewUrl ||
                     userProfile.photo ||
-                    'assets/images/default-profile.png'
+                    '/assets/images/default-profile.png'
                   "
                   alt="Profile"
                   class="photo-image"
@@ -98,3 +98,4 @@
     </div>
   </div>
 </div>
+<button (click)="logout()">Se déconnecter</button>

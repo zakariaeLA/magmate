@@ -9,7 +9,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 import { AuthComponent } from './auth/auth.component';
-import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthInterceptor } from './auth/Interceptor/auth.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -28,8 +28,6 @@ import { ProfileComponent } from './profile/profile.component';
     DashboardComponent,
     ResetPasswordComponent,
     ProfileComponent,
-        
-    
   ],
   imports: [
     CommonModule,
