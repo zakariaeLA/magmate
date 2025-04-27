@@ -40,7 +40,7 @@ export class UpdateProduitDto {
   })
   @IsString()
   @IsOptional()
-  imagePrincipale?: string;  // Champ optionnel pour l'image principale
+  imagePrincipale?: string;
 
   @ApiProperty({
     description: 'Liste des autres images du produit',
@@ -50,7 +50,7 @@ export class UpdateProduitDto {
   })
   @IsArray()
   @IsOptional()
-  images?: string[];  // Champ optionnel pour d'autres images
+  images?: string[];
 
   @ApiProperty({
     description: 'L\'ID du magasin associé au produit',

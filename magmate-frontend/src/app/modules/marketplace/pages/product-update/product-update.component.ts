@@ -1,115 +1,98 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../services/product.service';
-import { AlertService } from '../../services/alerte.service'; // Import du service d'alerte
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProductService } from '../../services/product.service'; // Votre service API
+import { AlertService } from '../../services/alerte.service';  // Service pour afficher les alertes
+import { switchMap } from 'rxjs/operators'; // Pour chaîner les appels
 
 @Component({
   selector: 'app-product-update',
-  standalone:false,
+  standalone: false,
   templateUrl: './product-update.component.html',
   styleUrls: ['./product-update.component.scss']
 })
 export class ProductUpdateComponent implements OnInit {
   productForm: FormGroup;
-  alertMessage: string | null = null;
-  alertType: 'success' | 'error' | null = null;
-  isEditing = true;
   imagePreview: string | null = null;
-  selectedImages: any[] = [];
-  productId: number | null = null;
+  selectedImages: { file: File; preview: string }[] = [];
+  existingImages: string[] = [];  // Pour stocker les URLs des images existantes
+  productId: number = 59;
+  alertMessage: string | null = null; // For displaying alert messages
+  alertType: 'success' | 'error' | null = null; // To define the type of alert
+
 
   constructor(
+    private alertService: AlertService,
     private fb: FormBuilder,
     private productService: ProductService,
-    private alertService: AlertService, // Injection du service
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute // Pour récupérer l'ID du produit depuis l'URL
   ) {
     this.productForm = this.fb.group({
-      titre: ['', Validators.required],
-      description: ['', Validators.required],
-      prix: ['', [Validators.required, Validators.min(0)]],
-      imagePrincipale: ['', Validators.required],
-      images: [''],
-      magasinIdMagasin: ['', Validators.required]
+      titre: ['', Validators.nullValidator],  // No validation, optional field
+      description: ['', Validators.nullValidator],  // No validation, optional field
+      prix: ['', [Validators.nullValidator, Validators.min(0)]],  // Optional, with a validation for min value if entered
+      imagePrincipale: [null, Validators.nullValidator],  // No validation, optional field
+      images: [null, Validators.nullValidator],  // No validation, optional field
     });
+    
   }
 
   ngOnInit(): void {
+    // Récupérer l'ID du produit depuis l'URL
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.productId = +id;
-        this.loadProduct(this.productId);
-      }
-    });
-
-    // Subscribe to alerts
-    this.alertService.alert$.subscribe(alert => {
-      this.alertMessage = alert.message;
-      this.alertType = alert.type;
+      this.productId = +params.get('id')!;  // Forcer le casting vers un nombre
+      this.loadProductData();  // Charger les données du produit
     });
   }
 
-  loadProduct(id: number) {
-    this.productService.getProductById(id).subscribe(product  => {
+  // Récupérer les informations du produit par son ID
+  loadProductData(): void {
+    this.productService.getProductById(this.productId).subscribe(product => {
+      // Remplir le formulaire avec les données récupérées
       this.productForm.patchValue({
         titre: product.titre,
         description: product.description,
-        prix: product.prix,
-        magasinIdMagasin: product.magasin.idMagasin
+        prix: product.prix
       });
 
-      // Set the preview for the main image
-      this.imagePreview = `http://localhost:3000/uploads/${product.imagePrincipale}`;
-      
-      // Set images if there are any additional images
-      if (product.images) {
-        this.selectedImages = product.images.map((image: any) => ({
-          preview: `http://localhost:3000/uploads/${image}`
-        }));
-      }
+      // Prévisualiser l'image principale existante
+      this.imagePreview = product.imagePrincipale ? `http://localhost:3000/uploads/${product.imagePrincipale}` : null;
+
+      // Précharger les images supplémentaires
+      this.existingImages = product.images.map((image : any )=> `http://localhost:3000/uploads/${image.imageURL}`);
     });
   }
 
   onFileChange(event: any): void {
-    const file = event.target.files[0];
+    const file = event.target.files[0]; // Get the first file (main image)
     if (file) {
+      this.imagePreview = URL.createObjectURL(file);  // Create a URL for the image preview
       this.productForm.patchValue({
-        imagePrincipale: file
+        imagePrincipale: file // Set the selected file to the imagePrincipale control
       });
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
     }
   }
-
+  
   onFilesChange(event: any): void {
     const files = event.target.files;
-    this.selectedImages = [];
-  
     if (files.length > 0) {
-      // Vérifiez et assurez-vous que chaque fichier est de type Blob/MediaSource
       const fileArray = Array.from(files);
-  
-      this.selectedImages = fileArray.map(file => {
-        if (file instanceof Blob) {
-          return {
-            file,
-            preview: URL.createObjectURL(file) // Créez un objet URL pour le fichier
-          };
-        } else {
-          console.error('Le fichier sélectionné n\'est pas valide');
-          return null;  // Vous pouvez gérer l'erreur ici si nécessaire
-        }
-      }).filter(item => item !== null);  // Retirer les éléments null (les fichiers invalides)
+      this.selectedImages = fileArray.map((file: unknown) => {
+        // Type assertion
+        const typedFile = file as File;
+        return {
+          file: typedFile,
+          preview: URL.createObjectURL(typedFile) // Create a preview URL for the image
+        };
+      });
     }
   }
   
-  onSubmit() {
+  
+
+  // Soumettre le formulaire pour mettre à jour le produit
+  onSubmit(): void {
     if (this.productForm.invalid) {
       return;
     }
@@ -118,31 +101,39 @@ export class ProductUpdateComponent implements OnInit {
     productData.append('titre', this.productForm.get('titre')?.value);
     productData.append('description', this.productForm.get('description')?.value);
     productData.append('prix', this.productForm.get('prix')?.value);
-    productData.append('magasinIdMagasin', this.productForm.get('magasinIdMagasin')?.value);
 
+    // Ajouter l'image principale
     const imagePrincipale = this.productForm.get('imagePrincipale')?.value;
-    if (imagePrincipale && imagePrincipale instanceof File) {
-      productData.append('imagePrincipale', imagePrincipale, imagePrincipale.name);
-    }
 
+  // Ensure that the selected image is a File object
+  if (imagePrincipale && imagePrincipale instanceof File) {
+    productData.append('imagePrincipale', imagePrincipale, imagePrincipale.name); // Append the main image
+  } else {
+    console.error('Main image is invalid or missing');
+  }
+
+    // Ajouter les images supplémentaires
     const imagesArray = this.productForm.get('images')?.value;
     if (imagesArray && imagesArray instanceof Array) {
       imagesArray.forEach((image: File) => {
-        productData.append('images', image, image.name);
+        productData.append('images', image, image.name);  // Ajouter chaque image supplémentaire
       });
     }
+    
 
-    this.productService.updateProduct(this.productId!, productData).subscribe({
+    // Envoyer les données à l'API
+    this.productService.updateProduct(this.productId, productData).subscribe({
       next: (response) => {
-        this.alertService.success('Produit mis à jour avec succès!');
+        console.log('Produit mis à jour avec succès', response);
+        this.alertService.success('Le produit a été mis à jour avec succès!');
         this.router.navigate(['/produits']);
       },
       error: (error) => {
-        this.alertService.error('Erreur lors de la mise à jour du produit.');
+        console.error('Erreur lors de la mise à jour du produit', error);
+        this.alertService.error('Une erreur est survenue lors de la mise à jour du produit.');
       }
     });
   }
-
   closeAlert() {
     this.alertMessage = null;
     this.alertType = null;

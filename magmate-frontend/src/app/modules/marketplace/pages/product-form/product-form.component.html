@@ -1,5 +1,13 @@
 <div class="form-container">
   <h2>Ajouter un Produit</h2>
+
+  <!-- Fenêtre modale avec l'alerte -->
+  <div *ngIf="alertMessage" class="modal-overlay">
+    <div class="modal" [ngClass]="alertType">
+      <p>{{ alertMessage }}</p>
+      <button (click)="closeAlert()" class="close-btn">OK</button>
+    </div>
+  </div>
   <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
     <div class="form-group">
       <label for="titre">Titre</label>

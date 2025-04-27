@@ -98,12 +98,12 @@ export class ProductFormComponent implements OnInit {
     this.productService.createProduct(productData).subscribe({
       next: (response) => {
         console.log('Product successfully created', response);
-        this.alertService.success('Product has been successfully created!');
+        this.alertService.success('votre produit est ajouté avec succée');
         this.router.navigate(['/products']);  // Navigate after successful creation
       },
       error: (error) => {
         console.error('Error creating product', error);
-        this.alertService.error('An error occurred while creating the product.');
+        this.alertService.error('il y avait un erreur lors de la création');
       }
     });
   }

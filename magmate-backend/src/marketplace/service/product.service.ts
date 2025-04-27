@@ -109,18 +109,10 @@ export class ProduitService {
       }
     }
   
-    // Mise à jour du magasin si un nouvel ID de magasin est fourni
-    if (dto.magasinIdMagasin) {
-      const magasin = await this.magasinRepository.findOne({ where: { idMagasin: dto.magasinIdMagasin } });
-      if (!magasin) {
-        throw new NotFoundException('Magasin introuvable');
-      }
-      produit.magasin = magasin;
-    }
-  
-    // Sauvegarder le produit mis à jour
+    // Sauvegarder le produit mis à jour avec les informations actualisées
     return this.produitRepository.save(produit);
   }
+  
   
 
 

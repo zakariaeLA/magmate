@@ -81,12 +81,12 @@ export class MagasinFormComponent implements OnInit {
     this.magasinService.createMagasin(magasinData).subscribe({
       next: (response) => {
         console.log('Store successfully created', response);
-        this.alertService.success('Store has been successfully created!');
+        this.alertService.success('votre magasin est crée avec succées');
         this.router.navigate(['/']);  // Navigate after successful creation
       },
       error: (error) => {
         console.error('Error creating store', error);
-        this.alertService.error('An error occurred while creating the store.');
+        this.alertService.error('il y a une erreur lors de la création, veuillez essayez plus tard');
       }
     });
   }
