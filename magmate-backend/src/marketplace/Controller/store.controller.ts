@@ -1,6 +1,7 @@
-import { Controller, Post, Get, Param, Body, Delete, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Get,Put, Param, Body, Delete, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
 import { StoreService } from '../service/store.service';
 import { CreateMagasinDto } from '../dto/create-magasin.dto/create-magasin.dto';
+import { UpdateMagasinDto  } from '../dto/update-magasin.dto/update-magasin.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
@@ -53,7 +54,23 @@ export class StoreController {
   findOne(@Param('id') id: number) {
     return this.magasinService.findOne(+id);
   }
-
+// Route pour mettre à jour un magasin
+@Put(':id')
+@UseInterceptors(AnyFilesInterceptor(multerOptions))
+@ApiConsumes('multipart/form-data')
+@ApiOperation({ summary: 'Update a store by ID' })
+@ApiResponse({ status: 200, description: 'Store updated successfully.' })
+@ApiResponse({ status: 404, description: 'Store not found.' })
+async update(
+  @Param('id') id: number,
+  @Body() dto: UpdateMagasinDto,
+  @UploadedFiles() files: Express.Multer.File[]
+) {
+  if (files && files.length > 0) {
+    dto.image = files[0].filename;
+  }
+  return this.magasinService.update(id, dto);
+}
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a store by ID' })
   @ApiResponse({ status: 200, description: 'Store deleted successfully.' })

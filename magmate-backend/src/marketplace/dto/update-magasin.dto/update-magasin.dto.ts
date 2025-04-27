@@ -1,76 +1,36 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';  // Importer ApiProperty pour Swagger
+// update-magasin.dto.ts
+import { IsOptional, IsString, IsBoolean, IsPhoneNumber, IsDateString } from 'class-validator';
 
 export class UpdateMagasinDto {
-  
-  @ApiProperty({
-    description: 'Le nom du magasin',
-    type: String,
-    example: 'Mon Magasin',
-    required: false
-  })
+  @IsOptional()  // Optionnel, seulement si vous ne souhaitez pas obliger la mise à jour
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  nom: string;
+  nom?: string;
 
-  @ApiProperty({
-    description: 'La description du magasin',
-    type: String,
-    example: 'Magasin d\'électroménager et accessoires',
-    required: false
-  })
+  @IsOptional()
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  description: string;
+  description?: string;
 
-  @ApiProperty({
-    description: 'Le nom de l\'image du magasin',
-    type: String,
-    example: 'magasin.jpg',
-    required: false
-  })
+  @IsOptional()
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  image: string;
+  localisation?: string;
 
-  @ApiProperty({
-    description: 'La localisation du magasin',
-    type: String,
-    example: 'Rue de Paris, 123',
-    required: false
-  })
+  @IsOptional()
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  localisation: string;
+  horaire?: string;
 
-  @ApiProperty({
-    description: 'Les horaires d\'ouverture du magasin',
-    type: String,
-    example: '9:00 AM - 6:00 PM',
-    required: false
-  })
-  @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  horaire: string;
+  @IsOptional()
+  @IsPhoneNumber('FR')  // Validation de numéro de téléphone (ici pour la France, à ajuster pour d'autres pays)
+  telephone?: string;
 
-  @ApiProperty({
-    description: 'Le numéro de téléphone du magasin',
-    type: String,
-    example: '0123456789',
-    required: false
-  })
+  @IsOptional()
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  telephone: string;
+  ville?: string;
 
-  @ApiProperty({
-    description: 'La ville où est situé le magasin',
-    type: String,
-    example: 'Paris',
-    required: false
-  })
+  @IsOptional()
   @IsString()
-  @IsOptional()  // Ce champ est optionnel lors de la mise à jour
-  ville: string;
+  image?: string;  // Image, si elle est fournie
+
+  @IsOptional()
+  @IsBoolean()
+  estApprove?: boolean;  // S'il y a une approbation ou non
 }
-

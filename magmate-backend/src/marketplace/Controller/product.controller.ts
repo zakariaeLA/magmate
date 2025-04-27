@@ -59,18 +59,32 @@ export class ProductController {
     return this.produitService.remove(id);  // Delete a product by ID
   }
 
-  // Mettre à jour un produit
   @Put(':id')
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiResponse({ status: 200, description: 'Product updated successfully.' })
   @UseInterceptors(AnyFilesInterceptor())  // Utiliser AnyFilesInterceptor pour accepter plusieurs fichiers
   async update(@Param('id') id: number, @Body() dto: Partial<CreateProduitDto>, @UploadedFiles() files: Express.Multer.File[]) {
-    // Vérifier si des fichiers sont envoyés pour l'image principale et les autres images
+    console.log('Number of images:', files.length);
+    
+    // Vérification des fichiers envoyés
     if (files && files.length > 0) {
-      dto.imagePrincipale = files[0].filename;  // L'image principale est le premier fichier de la liste
-      dto.images = files.slice(1).map(file => file.filename);  // Les autres fichiers sont des images supplémentaires
+      console.log('Fichiers reçus:', files);  // Afficher les fichiers envoyés
+  
+      // La première image est l'image principale
+      dto.imagePrincipale = files[0].filename;
+      console.log('Image principale:', dto.imagePrincipale);
+  
+      // Les autres fichiers sont des images supplémentaires
+      dto.images = files.slice(1).map(file => file.filename);
+      console.log('Autres images:', dto.images);
+    } else {
+      console.log('Aucun fichier reçu');
     }
-
-    return this.produitService.update(id, dto);  // Mettre à jour le produit
+  
+    // Envoyer les données à votre service pour la mise à jour
+    return this.produitService.update(id, dto);
   }
+  
+
+   
 }

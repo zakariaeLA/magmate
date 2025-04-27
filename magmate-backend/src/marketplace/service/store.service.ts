@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Magasin } from '../entities/magasin.entity';
 import { CreateMagasinDto } from '../dto/create-magasin.dto/create-magasin.dto';
+import { UpdateMagasinDto } from '../dto/update-magasin.dto/update-magasin.dto';
 
 @Injectable()
 export class StoreService {
@@ -35,6 +36,21 @@ export class StoreService {
     }
     return magasin;
   }
+  // Mettre à jour un magasin
+   // Mettre à jour un magasin
+   async update(id: number, dto: UpdateMagasinDto) {
+    const magasin = await this.magasinRepository.findOne({ where: { idMagasin: id } });
+    if (!magasin) {
+      throw new NotFoundException(`Magasin avec l'ID ${id} non trouvé`);
+    }
+
+    // Mettre à jour les champs avec les valeurs du DTO
+    Object.assign(magasin, dto);
+
+    // Sauvegarder les changements
+    return this.magasinRepository.save(magasin);
+  }
+
 
   // Supprimer un magasin par son ID
   async remove(id: number) {
