@@ -34,6 +34,10 @@ export class ProductService {
   getProductById(id: number): Observable<Produit> {
       return this.http.get<Produit>(`http://localhost:3000/products/${id}`);
   
+} 
+deleteProduct(productId: number): Observable<void> {
+  return this.http.delete<void>(`${this.baseUrl}/${productId}`);
 }
+
 
 }

@@ -74,6 +74,23 @@ export class MagasinPageComponent implements OnInit {
       );
     }
   }
+  deleteProduct(productId: number) {
+    if (confirm('Es-tu sûr de vouloir supprimer ce produit ?')) {
+      this.produitService.deleteProduct(productId).subscribe({
+        next: () => {
+          alert('Produit supprimé avec succès ✅');
+          this.loadProduits(); // Recharge les produits
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression du produit :', error);
+          alert('Erreur lors de la suppression du produit ❌');
+        }
+      });
+    }
+  }
+  
+  
+  
   
   
 }
