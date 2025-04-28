@@ -21,7 +21,7 @@ export class MagasinController {
 
   @Get('user/:userId')
   async getMagasinByUser(
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: string,
   ): Promise<Magasin | null> {
     return this.magasinService.findByUserId(userId);
   }

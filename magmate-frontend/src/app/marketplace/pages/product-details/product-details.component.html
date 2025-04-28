@@ -51,7 +51,7 @@
 <div class="comments-section">
   <h3>Commentaires</h3>
   <div *ngFor="let comment of comments" class="comment">
-    <p class="username">{{ comment.auteur.nom }} {{ comment.auteur.prenom }} :</p>
+    <p class="username">{{ comment.auteur.lname }} {{ comment.auteur.fname }} :</p>
     <p>{{ comment.commentaire }}</p>
     <div class="rating">
       <span *ngFor="let star of [].constructor(comment.note); let i = index">★</span>

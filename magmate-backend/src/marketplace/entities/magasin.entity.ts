@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Produit } from './produit.entity';
-import { Utilisateur } from './utilisateur.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Magasin {
@@ -43,6 +43,6 @@ export class Magasin {
   @OneToMany(() => Produit, (produit) => produit.magasin)
   produits: Produit[];
 
-  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.magasins)
-  proprietaire: Utilisateur;
+  @ManyToOne(() => User, (utilisateur) => utilisateur.magasins)
+  proprietaire: User;
 }

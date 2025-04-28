@@ -1,7 +1,7 @@
 // src/marketplace/entities/reclamation.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Produit } from './produit.entity';  // Importer Produit
-import { Utilisateur } from './utilisateur.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Reclamation {
@@ -23,6 +23,6 @@ export class Reclamation {
   @ManyToOne(() => Produit, (produit) => produit.reclamations)
   produit: Produit;  // Lier la réclamation à un produit
 
-  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.reclamations)
-  utilisateur: Utilisateur;  // Lier la réclamation à un utilisateur
+  @ManyToOne(() => User, (utilisateur) => utilisateur.reclamations)
+  utilisateur: User;  // Lier la réclamation à un utilisateur
 }

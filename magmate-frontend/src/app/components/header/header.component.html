@@ -15,7 +15,7 @@
       <li><a href="#Service de prestataire" (click)="smoothScroll($event)">Service de prestataire</a></li>
       
       <li class="nav__profile">
-        <a href="#profil" (click)="smoothScroll($event)"><img src="images/header-bg1.jpg" alt="header" class="nav__profile-pic" /></a>
+        <a [routerLink]="['/profile']" (click)="smoothScroll($event)"><img src="images/header-bg1.jpg" alt="header" class="nav__profile-pic" /></a>
       </li>
     </ul>
     

@@ -16,5 +16,5 @@ export class CreateReclamationDto {
 
   @IsNumber()
   @IsNotEmpty()
-  idUtilisateur: number;  // ID de l'utilisateur qui fait la réclamation
+  idUtilisateur: string;  // ID de l'utilisateur qui fait la réclamation
 }

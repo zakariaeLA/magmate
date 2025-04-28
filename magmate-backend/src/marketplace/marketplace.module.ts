@@ -9,7 +9,7 @@ import { Magasin } from './entities/magasin.entity';
 import { Reclamation } from './entities/reclamation.entity';
 import { Avis } from './entities/avis.entity';
 import { ImageProd } from './entities/produit-image.entity';
-import { Utilisateur } from './entities/utilisateur.entity';
+import { User } from 'src/user/entities/user.entity';
 import { ProductController } from './controllers/product.controller';
 import { CommentController } from './controllers/comment.controller';
 import { ReclamationController } from './controllers/reclamation.controller';
@@ -25,7 +25,7 @@ import { ReclamationService } from './services/reclamation.service';
       Avis,
       ImageProd,
       Magasin,
-      Utilisateur,
+      User,
     ]),
   ],
   controllers: [

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Utilisateur } from './utilisateur.entity';
+import { User } from 'src/user/entities/user.entity';
 import { Produit } from './produit.entity';
 
 @Entity()
@@ -16,8 +16,8 @@ export class Avis {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Utilisateur, utilisateur => utilisateur.avis)
-  auteur: Utilisateur;
+  @ManyToOne(() => User, utilisateur => utilisateur.avis)
+  auteur: User;
 
   @ManyToOne(() => Produit, produit => produit.avis)
   produit: Produit;

@@ -24,7 +24,7 @@ export class MarketplaceComponent implements OnInit {
     'Agadir',
     'Chefchaouen',
   ];
-  magasin: any; // Ou mieux : magasin: Magasin; si tu as une interface ou classe Magasin
+  magasin: any;
   message: string = ''; // ou récupérées dynamiquement
   showPopup:boolean=false;
 

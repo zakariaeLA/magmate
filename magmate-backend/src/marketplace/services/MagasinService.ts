@@ -17,14 +17,15 @@ export class MagasinService {
     private produitRepository: Repository<Produit>,
   ) {}
 
-  async findByUserId(userId: number): Promise<Magasin | null> {
+  async findByUserId(userId: string): Promise<Magasin | null> {
     return this.magasinRepository.findOne({
       where: {
-        proprietaire: { idUtilisateur: userId }, // Vérifie si "idUtilisateur" existe dans l'entité "Utilisateur"
+        proprietaire: { id: userId },
       },
       relations: ['proprietaire'],
     });
   }
+  
 
   async deleteMagasin(id: number): Promise<void> {
     try {

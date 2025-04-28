@@ -5,13 +5,11 @@ import { Repository } from 'typeorm';
 import { Avis } from '../entities/avis.entity';
 import { CreateAvisDto } from '../dto/create-avis.dto';
 import { Produit } from '../entities/produit.entity';
-import { Utilisateur } from '../entities/utilisateur.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectRepository(Utilisateur) 
-    private readonly utilisateurRepository: Repository<Utilisateur>,
     @InjectRepository(Avis)
     private readonly avisRepository: Repository<Avis>,
   ) {}
@@ -19,40 +17,29 @@ export class CommentService {
   async getCommentsByProductId(productId: number): Promise<Avis[]> {
   return this.avisRepository.find({
     where: { produit: { idProduit: productId } },
-    relations: ['auteur'],  // Charger l'entité 'auteur' (Utilisateur)
+    relations: ['auteur'],  
     select: {
       auteur: {
-        nom: true,   // Charger uniquement 'nom'
-        prenom: true,  // Charger uniquement 'prenom'
+        fname: true,   
+        lname: true, 
       },
     },
-    order: { date: 'DESC' },  // Trier les avis par date décroissante
+    order: { date: 'DESC' },  
   });
 }
 
   
 
-async createComment(productId: number, dto: CreateAvisDto): Promise<Avis> {
-  // Récupérer l'utilisateur par ID en utilisant un objet de recherche
-  const utilisateur = await this.utilisateurRepository.findOne({
-    where: { idUtilisateur: dto.idUtilisateur }, // Utiliser l'ID pour la recherche
-  });
-
-  if (!utilisateur) {
-    throw new Error('Utilisateur non trouvé');
-  }
-
-  // Créer un nouvel avis
+async createComment(productId: number, dto: CreateAvisDto, user: { email: string }): Promise<Avis> {
   const avis = this.avisRepository.create({
     note: dto.note,
     commentaire: dto.commentaire,
     date: new Date(),
-    produit: { idProduit: dto.idProduit },
-    auteur: utilisateur,  // Lier l'utilisateur au commentaire
+    produit: { idProduit: productId }, 
+    auteur: { email: user.email }, 
   });
-
-  // Sauvegarder et retourner l'avis
   return this.avisRepository.save(avis);
 }
+
 
 } 
