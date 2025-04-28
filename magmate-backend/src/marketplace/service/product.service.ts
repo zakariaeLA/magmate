@@ -1,11 +1,12 @@
-import { Injectable ,NotFoundException} from '@nestjs/common';
-import { InjectRepository ,} from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository, } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Produit } from '../entities/produit.entity';
 import { CreateProduitDto } from '../dto/create-produit.dto/create-produit.dto';
 import { UpdateProduitDto } from '../dto/update-produit.dto/update-produit.dto';
 import { Magasin } from '../entities/magasin.entity';
 import { Image } from '../entities/image.entity';
+import { log } from 'console';
 
 @Injectable()
 export class ProduitService {
@@ -69,33 +70,34 @@ export class ProduitService {
 
   async update(id: number, dto: UpdateProduitDto) {
     console.log('Données reçues pour mise à jour:', dto);
-    
+
     // Récupérer le produit à partir de la base de données
     const produit = await this.produitRepository.findOne({
       where: { idProduit: id },
       relations: ['images', 'magasin'],
     });
-  
+
     if (!produit) {
       throw new NotFoundException('Produit introuvable');
     }
-  
+
     // Mise à jour des champs, seulement si les champs sont définis
     if (dto.titre) produit.titre = dto.titre;
     if (dto.description) produit.description = dto.description;
     if (dto.prix) produit.prix = dto.prix;
-  
+
     // Mise à jour de l'image principale si elle est définie
+    console.log('image recieved ', dto.imagePrincipale);
     if (dto.imagePrincipale) produit.imagePrincipale = dto.imagePrincipale;
-    
+
     // Mise à jour des images supplémentaires
     if (dto.images && dto.images.length > 0) {
       const validImages = dto.images.filter(image => image && image.trim() !== "");
-  
+
       // Supprimer les anciennes images associées au produit
       if (validImages.length > 0) {
         await this.imageRepository.delete({ produit: produit });
-  
+
         // Ajouter les nouvelles images
         const images = validImages.map((imageURL) => {
           const image = new Image();
@@ -103,17 +105,17 @@ export class ProduitService {
           image.produit = produit;
           return image;
         });
-  
+
         // Sauvegarder les nouvelles images
         await this.imageRepository.save(images);
       }
     }
-  
+
     // Sauvegarder le produit mis à jour avec les informations actualisées
     return this.produitRepository.save(produit);
   }
-  
-  
+
+
 
 
   // Modification de la méthode remove

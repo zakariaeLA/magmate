@@ -62,29 +62,21 @@ export class ProductController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiResponse({ status: 200, description: 'Product updated successfully.' })
-  @UseInterceptors(AnyFilesInterceptor())  // Utiliser AnyFilesInterceptor pour accepter plusieurs fichiers
+  @UseInterceptors(AnyFilesInterceptor(multerOptions))  // Use Multer to handle file uploads
   async update(@Param('id') id: number, @Body() dto: Partial<CreateProduitDto>, @UploadedFiles() files: Express.Multer.File[]) {
-    console.log('Number of images:', files.length);
-    
-    // Vérification des fichiers envoyés
+    // Ensure files are processed
     if (files && files.length > 0) {
-      console.log('Fichiers reçus:', files);  // Afficher les fichiers envoyés
-  
-      // La première image est l'image principale
-      dto.imagePrincipale = files[0].filename;
-      console.log('Image principale:', dto.imagePrincipale);
-  
-      // Les autres fichiers sont des images supplémentaires
-      dto.images = files.slice(1).map(file => file.filename);
-      console.log('Autres images:', dto.images);
-    } else {
-      console.log('Aucun fichier reçu');
-    }
-  
-    // Envoyer les données à votre service pour la mise à jour
-    return this.produitService.update(id, dto);
-  }
-  
 
-   
+      console.log('files', files);
+      dto.imagePrincipale = files[0].filename;  // Main image is the first file
+      dto.images = files.slice(1).map(file => file.filename);  // Additional images are the rest
+    } else {
+      throw new BadRequestException('At least the main image must be provided');
+    }
+
+    return this.produitService.update(id, dto);  // Update the product in the service
+  }
+
+
+
 }
