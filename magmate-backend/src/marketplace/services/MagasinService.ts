@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Magasin } from '../entities/magasin.entity';
+import { Magasin } from '../entities/Magasin.entity';
 import { Produit } from '../entities/produit.entity'; // Importer Produit
 
 @Injectable()
