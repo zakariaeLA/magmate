@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Magasin } from './magasin.entity';
 import { ImageProd } from './produit-image.entity';
 import { Avis } from './avis.entity';
 import { Reclamation } from './reclamation.entity'; // Importer l'entité Reclamation
+import { Magasin } from './magasin.entity';
 
 @Entity()
 export class Produit {
