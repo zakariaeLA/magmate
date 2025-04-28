@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { Utilisateur } from './utilisateur.entity';
 import { Produit } from './produit.entity';
 
@@ -17,7 +23,7 @@ export class Magasin {
   image: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  dateCreation: Date;
+  dateCreation: Date;
 
   @Column()
   localisation: string;
@@ -31,12 +37,12 @@ export class Magasin {
   @Column()
   ville: string;
 
-  @ManyToOne(() => Utilisateur, utilisateur => utilisateur.magasins)
+  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.magasins)
   proprietaire: Utilisateur;
 
-  @OneToMany(() => Produit, produit => produit.magasin)
+  @OneToMany(() => Produit, (produit) => produit.magasin)
   produits: Produit[];
-  
-  @Column({ default: false }) 
-  estApprouve: boolean;
+
+  @Column({ default: false })
+  estApprouve: boolean;
 }
