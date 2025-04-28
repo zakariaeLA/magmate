@@ -1,8 +1,8 @@
 import { Controller, Post, Get, Param, Body } from '@nestjs/common';
 import { CommentService } from '../services/comment.service';
-import { CreateAvisDto } from '../dto/create-avis.dto';  // DTO pour la création d'avis
+import { CreateAvisDto } from '../dto/create-avis.dto'; // DTO pour la création d'avis
 
-@Controller('comments')  // Route de base : /comments
+@Controller('comments') // Route de base : /comments
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -16,12 +16,10 @@ export class CommentController {
   // Route pour ajouter un commentaire à un produit
   @Post(':productId')
   async addComment(
-    @Param('productId') productId: number,    // Paramètre de l'ID du produit
-    @Body() createAvisDto: CreateAvisDto,     // Récupère le body (les données du commentaire)
+    @Param('productId') productId: number, // Paramètre de l'ID du produit
+    @Body() createAvisDto: CreateAvisDto, // Récupère le body (les données du commentaire)
   ) {
     // Appelle le service pour créer un nouveau commentaire pour ce produit
     return this.commentService.createComment(productId, createAvisDto);
   }
 }
-
-

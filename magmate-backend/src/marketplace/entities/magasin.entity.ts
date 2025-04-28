@@ -2,11 +2,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
-import { Utilisateur } from './utilisateur.entity';
 import { Produit } from './produit.entity';
+import { Utilisateur } from './utilisateur.entity';
 
 @Entity()
 export class Magasin {
@@ -36,13 +36,13 @@ export class Magasin {
 
   @Column()
   ville: string;
+  @Column({ default: false })
+  estApprouve: boolean;
 
-  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.magasins)
-  proprietaire: Utilisateur;
-
+  // Relation un à plusieurs entre Magasin et Produit
   @OneToMany(() => Produit, (produit) => produit.magasin)
   produits: Produit[];
 
-  @Column({ default: false })
-  estApprouve: boolean;
+  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.magasins)
+  proprietaire: Utilisateur;
 }
