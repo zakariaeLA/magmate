@@ -1,6 +1,7 @@
 // src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { AppRoutingModule } from './app-routing.module';  // Importation de AppRoutingModule
 import { AppComponent } from './app.component';  // Composant principal
 import { MarketplaceModule } from './marketplace/marketplace.module';  // Importation du module Marketplace
@@ -9,6 +10,9 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+
+
+import { ReactiveFormsModule } from '@angular/forms';  // Assurez-vous d'importer ReactiveFormsModule
 
 
 @NgModule({
@@ -21,6 +25,9 @@ import { FooterComponent } from './components/footer/footer.component';
     HttpClientModule,
     FormsModule,
     HomeComponent,
+
+    ReactiveFormsModule,
+   
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -8,14 +8,20 @@ import { Produit } from './entities/produit.entity';
 import { Magasin } from './entities/magasin.entity';
 import { Reclamation } from './entities/reclamation.entity';
 import { Avis } from './entities/avis.entity';
-import { ImageProd } from './entities/produit-image.entity';
 import { Utilisateur } from './entities/utilisateur.entity';
-import { ProductController } from './controllers/product.controller';
+import { ProductController1 } from './controllers/product.controller';
 import { CommentController } from './controllers/comment.controller';
 import { ReclamationController } from './controllers/reclamation.controller';
 import { ProductService } from './services/product.service';
 import { CommentService } from './services/comment.service';
 import { ReclamationService } from './services/reclamation.service';
+import { Image } from './entities/image.entity';
+import { StoreService } from './service/store.service';
+import { StoreController } from './Controller/store.controller';
+import { ProductController } from './Controller/product.controller';
+import { ImageService } from './service/image.service';
+import { ProduitService } from './service/product.service';
+import { ImageController } from './Controller/image.controller';
 
 @Module({
   imports: [
@@ -23,9 +29,9 @@ import { ReclamationService } from './services/reclamation.service';
       Produit,
       Reclamation,
       Avis,
-      ImageProd,
       Magasin,
       Utilisateur,
+      Image,
     ]),
   ],
   controllers: [
@@ -33,7 +39,10 @@ import { ReclamationService } from './services/reclamation.service';
     MagasinController,
     CommentController,
     ReclamationController,
+    ProductController1,
+    StoreController,
     ProductController,
+    ImageController,
   ],
   providers: [
     ProduitsService,
@@ -41,6 +50,9 @@ import { ReclamationService } from './services/reclamation.service';
     ProductService,
     CommentService,
     ReclamationService,
+    StoreService,
+    ImageService,
+    ProduitService,
   ],
 })
 export class MarketplaceModule {}

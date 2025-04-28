@@ -35,7 +35,7 @@
 
       <div class="card-buttons">
         <button class="edit-btn" >Modifier</button>
-        <button class="delete-btn">Supprimer</button>
+        <button class="delete-btn" >Supprimer</button>
       </div>
     </div>
   </div>
@@ -46,6 +46,6 @@
 </div>
 
 <!-- Bouton flottant pour ajouter un produit -->
-<button class="add-product-button" >
+<button [routerLink]="['/product-form']" class="add-product-button" >
   + Ajouter un produit
 </button>

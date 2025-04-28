@@ -1,19 +1,44 @@
-// src/app/marketplace/services/product.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';  // URL de base de l'API
-import { Produit } from '../models/produit.model'; 
+
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
-  private apiUrl = environment.apiUrl + '/products';  // URL de base pour les produits
+export class ProductService{
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = `http://localhost:3000/produits`;
 
-  // Méthode pour récupérer un produit par son ID
-  getProductById(id: number): Observable<Produit> {
-    return this.http.get<Produit>(`${this.apiUrl}/${id}`);
-}
+  constructor(private http: HttpClient) { }
+
+  // Méthode pour créer un produit
+  createProduct(product: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, product/*, {
+      headers: {
+        'Content-Type': 'multipart/form-data'  // Important pour l'upload de fichiers
+      }
+    }*/);
+  }
+
+  // Méthode pour récupérer la liste des magasins
+  getMagasins(): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/magasins`);
+  }
+  //méthode pour modifier un produit:
+  updateProduct(id: number, productData: FormData): Observable<any> {
+    //return this.http.put(`${this.apiUrl}/${id}`, productData);
+    return this.http.put(`${this.apiUrl}/59`, productData);
+
+  }
+  getProductById(id: number): Observable<any> {
+    //return this.http.get<any>(`http://localhost:3000/produits/${id}`);
+    return this.http.get<any>(`http://localhost:3000/produits/59`);
+
+  }
+  
+
+  // Méthode pour supprimer un produit
+  deleteProduct(productId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${productId}`);
+  }
 }

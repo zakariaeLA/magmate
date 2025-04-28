@@ -1,7 +1,7 @@
 // src/app/marketplace/pages/product-details/product-details.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from '../../services/product.service';
+import { ProductService1 } from '../../services/product1.service';
 import { CommentService } from '../../services/comment.service';
 import { ReclamationService } from '../../services/reclamation.service';
 import { Produit } from '../../models/produit.model';
@@ -34,7 +34,7 @@ export class ProductDetailsComponent implements OnInit {
 
 
   constructor(
-    private productService: ProductService,
+    private productService: ProductService1,
     private commentService: CommentService,
     private reclamationService: ReclamationService,
     private route: ActivatedRoute,  // Pour récupérer l'ID du produit de l'URL

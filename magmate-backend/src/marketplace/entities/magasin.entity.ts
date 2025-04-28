@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 import { Produit } from './produit.entity';
 import { Utilisateur } from './utilisateur.entity';
-
 @Entity()
 export class Magasin {
   @PrimaryGeneratedColumn()

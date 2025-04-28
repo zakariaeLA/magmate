@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 
 
 export class MagasinPageComponent implements OnInit {
+
   magasin: any = null;
   produits: any[] = [];
   error: string = '';
@@ -73,6 +74,7 @@ export class MagasinPageComponent implements OnInit {
       );
     }
   }
+  
   
 }
 

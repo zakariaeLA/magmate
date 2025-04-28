@@ -1,0 +1,76 @@
+<div class="form-container">
+  <h2>Mettre à jour un produit</h2>
+   <!-- Fenêtre modale avec l'alerte -->
+   <div *ngIf="alertMessage" class="modal-overlay">
+    <div class="modal" [ngClass]="alertType">
+      <p>{{ alertMessage }}</p>
+      <button (click)="closeAlert()" class="close-btn">OK</button>
+    </div>
+  </div>
+  
+  <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+    
+    
+    <!-- Titre du produit -->
+    <div class="form-group">
+      <label for="titre">Titre</label>
+      <input id="titre" formControlName="titre" type="text" />
+    </div>
+
+    <!-- Description du produit -->
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+
+    <!-- Prix du produit -->
+    <div class="form-group">
+      <label for="prix">Prix</label>
+      <input id="prix" formControlName="prix" type="number" />
+    </div>
+
+    <!-- Image Principale -->
+    <div class="form-group">
+      <label for="imagePrincipale">Image Principale</label>
+      <input
+        id="imagePrincipale"
+        formControlName="imagePrincipale"
+        type="file"
+        (change)="onFileChange($event)"
+      />
+      <!-- Aperçu de l'image principale existante -->
+      <div *ngIf="imagePreview">
+        <h4>Aperçu de l'image principale :</h4>
+        <img [src]="imagePreview" alt="Aperçu Image Principale" class="preview-image" />
+      </div>
+    </div>
+
+    <!-- Images supplémentaires -->
+    <div class="form-group">
+      <label for="images">Images supplémentaires</label>
+      <input
+        id="images"
+        formControlName="images"
+        type="file"
+        (change)="onFilesChange($event)"
+        multiple
+      />
+      <!-- Aperçu des images existantes -->
+      <div *ngIf="existingImages.length > 0">
+        <h4>Images supplémentaires existantes :</h4>
+        <div class="image-previews">
+          <img *ngFor="let image of existingImages" [src]="image" alt="Aperçu Image" class="preview-image" />
+        </div>
+      </div>
+      <!-- Aperçu des nouvelles images supplémentaires -->
+      <div *ngIf="selectedImages.length > 0">
+        <h4>Aperçu des images supplémentaires :</h4>
+        <div class="image-previews">
+          <img *ngFor="let image of selectedImages" [src]="image.preview" alt="Aperçu Image" class="preview-image" />
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="productForm.invalid">Mettre à jour le produit</button>
+  </form>
+</div>
