@@ -28,7 +28,6 @@ export class ProductDetailsComponent implements OnInit {
     description: '',
     pieceJointe: '', // Contient le nom du fichier ou l'URL de la pièce jointe
     idUtilisateur: 1, // L'ID de l'utilisateur (à ajuster)
-    
      
   };
 
@@ -44,6 +43,7 @@ export class ProductDetailsComponent implements OnInit {
   loadProductDetails() {
     this.productService.getProductById(this.productId).subscribe(
       (product: Produit) => {
+        
         this.product = product; // Assigner le produit récupéré
         // Si aucune image principale n'est définie, définir la première image comme principale
         if (!this.product.imagePrincipale && this.product.images.length > 0) {
@@ -67,10 +67,10 @@ export class ProductDetailsComponent implements OnInit {
 
 }
 selectImage(thumbnailImage: { imageURL: string }): void {
-    if (this.product) {
-      this.product.imagePrincipale = thumbnailImage.imageURL;  // Met à jour l'image principale
-    }
+  if (this.product) {
+    this.product.imagePrincipale = 'http://localhost:3000/public/images/' + thumbnailImage.imageURL;
   }
+}
 
 
     

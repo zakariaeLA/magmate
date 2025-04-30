@@ -16,7 +16,7 @@ export class ProductUpdateComponent implements OnInit {
   imagePreview: string | null = null;
   selectedImages: { file: File; preview: string }[] = [];
   existingImages: string[] = [];  // Pour stocker les URLs des images existantes
-  productId: number = 59;
+  productId!: number ;
   alertMessage: string | null = null;
   alertType: 'success' | 'error' | null = null;
   imageFile: any;
@@ -53,6 +53,8 @@ export class ProductUpdateComponent implements OnInit {
 
   // Récupérer les informations du produit par son ID
   loadProductData(): void {
+    console.log('Chargement du produit avec ID :', this.productId);
+    
     this.productService.getProductById(this.productId).subscribe(product => {
       // Remplir le formulaire avec les données récupérées
       this.productForm.patchValue({
@@ -62,10 +64,10 @@ export class ProductUpdateComponent implements OnInit {
       });
 
       // Prévisualiser l'image principale existante
-      this.imagePreview = product.imagePrincipale ? `http://localhost:3000/uploads/${product.imagePrincipale}` : null;
+      this.imagePreview = product.imagePrincipale ? `http://localhost:3000/public/images/${product.imagePrincipale}` : null;
 
       // Précharger les images supplémentaires
-      this.existingImages = product.images.map((image : any )=> `http://localhost:3000/uploads/${image.imageURL}`);
+      this.existingImages = product.images.map((image : any )=> `http://localhost:3000/public/images/${image.imageURL}`);
     });
   }
 
@@ -133,7 +135,7 @@ export class ProductUpdateComponent implements OnInit {
       next: (response) => {
         console.log('Produit mis à jour avec succès', response);
         this.alertService.success('Le produit a été mis à jour avec succès!');
-        this.router.navigate(['/produits']);
+        this.router.navigate(['/magasin']);
       },
       error: (error) => {
         console.error('Erreur lors de la mise à jour du produit', error);

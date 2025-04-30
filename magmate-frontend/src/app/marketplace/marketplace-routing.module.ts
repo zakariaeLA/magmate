@@ -9,7 +9,7 @@ import { ProductUpdateComponent } from './pages/product-update/product-update.co
 
 const routes: Routes = [
   { path: 'product-form', component: ProductFormComponent },
-  { path: 'product-update', component: ProductUpdateComponent  },
+  { path: 'product-update/:id', component: ProductUpdateComponent  },
   { path: 'magasin-form', component: MagasinFormComponent },
   { path: 'magasin/:id', component: MagasinPageComponent },
   {path :'creer-magasin',component: MagasinFormComponent},

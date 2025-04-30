@@ -33,7 +33,7 @@ export class UpdateProduitDto {
   prix?: number;
 
   @ApiProperty({
-    description: 'L\'image principale du produit',
+    description: "L'image principale du produit",
     type: String,
     example: 'image_updated.jpg',
     required: false,
@@ -53,7 +53,7 @@ export class UpdateProduitDto {
   images?: string[];
 
   @ApiProperty({
-    description: 'L\'ID du magasin associé au produit',
+    description: "L'ID du magasin associé au produit",
     type: Number,
     example: 1,
     required: false,

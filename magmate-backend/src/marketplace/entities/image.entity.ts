@@ -7,8 +7,8 @@ export class Image {
   idImage: number;
 
   @Column()
-  imageURL: string;  // Le nom du fichier de l'image supplémentaire
+  imageURL: string; // Le nom du fichier de l'image supplémentaire
 
   @ManyToOne(() => Produit, (produit) => produit.images)
-  produit: Produit;  // Lier l'image au produit
+  produit: Produit; // Lier l'image au produit
 }

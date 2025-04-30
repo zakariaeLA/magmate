@@ -1,12 +1,11 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';  // Importer ApiProperty pour Swagger
+import { ApiProperty } from '@nestjs/swagger'; // Importer ApiProperty pour Swagger
 
 export class CreateMagasinDto {
-  
   @ApiProperty({
     description: 'Le nom du magasin',
     type: String,
-    example: 'Mon Magasin'
+    example: 'Mon Magasin',
   })
   @IsString()
   @IsNotEmpty()
@@ -15,16 +14,16 @@ export class CreateMagasinDto {
   @ApiProperty({
     description: 'La description du magasin',
     type: String,
-    example: 'Magasin d\'électroménager et accessoires'
+    example: "Magasin d'électroménager et accessoires",
   })
   @IsString()
   @IsNotEmpty()
   description: string;
 
   @ApiProperty({
-    description: 'Le nom de l\'image du magasin',
+    description: "Le nom de l'image du magasin",
     type: String,
-    example: 'magasin.jpg'
+    example: 'magasin.jpg',
   })
   @IsString()
   @IsNotEmpty()
@@ -33,16 +32,16 @@ export class CreateMagasinDto {
   @ApiProperty({
     description: 'La localisation du magasin',
     type: String,
-    example: 'Rue de Paris, 123'
+    example: 'Rue de Paris, 123',
   })
   @IsString()
   @IsNotEmpty()
   localisation: string;
 
   @ApiProperty({
-    description: 'Les horaires d\'ouverture du magasin',
+    description: "Les horaires d'ouverture du magasin",
     type: String,
-    example: '9:00 AM - 6:00 PM'
+    example: '9:00 AM - 6:00 PM',
   })
   @IsString()
   @IsNotEmpty()
@@ -51,7 +50,7 @@ export class CreateMagasinDto {
   @ApiProperty({
     description: 'Le numéro de téléphone du magasin',
     type: String,
-    example: '0123456789'
+    example: '0123456789',
   })
   @IsString()
   @IsNotEmpty()
@@ -60,7 +59,7 @@ export class CreateMagasinDto {
   @ApiProperty({
     description: 'La ville où est situé le magasin',
     type: String,
-    example: 'Paris'
+    example: 'Paris',
   })
   @IsString()
   @IsNotEmpty()
