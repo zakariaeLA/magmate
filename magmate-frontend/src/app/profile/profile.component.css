@@ -28,7 +28,7 @@
 }
 
 .profile-card {
-  background-image: url("/assets/images/img.jpg");
+  background-image: url("/images/img.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -305,3 +305,58 @@
     opacity: 1;
   }
 }
+
+/* Logout Button Styles */
+.logout-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white; /* Fond blanc par défaut */
+  color: #78350f; /* Texte marron par défaut */
+  border: 2px solid #78350f; /* Bordure marron par défaut */
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:hover {
+  background-color: #78350f; /* Fond marron au survol */
+  color: white; /* Texte blanc au survol */
+  border-color: #78350f; /* Bordure marron maintenue */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button i {
+  font-size: 1.25rem;
+  transition: all 0.3s ease; /* Transition pour la couleur aussi */
+  color: inherit; /* Hérite de la couleur du texte parent */
+}
+
+.logout-button:hover i {
+  transform: translateX(-3px);
+  color: inherit; /* Blanc au survol comme le texte */
+}
+
+/*
+.logout-button:hover {
+  background-color: #991b1b; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+*/

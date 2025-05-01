@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-
 /* You can add global styles to this file, and also import other style files */
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&display=swap');
-
 
 :root {
     --primary-color: #edd1ab;
@@ -15,7 +12,9 @@
     --extra-light: #f3f4f6;
     --white: #ffffff;
     --max-width: 1200px;
-  }
-=======
-body{margin: 0;}
->>>>>>> 7aab6b9842cf285414087960d7c98d77ab7e61f0
+}
+/*
+body {
+    margin: 0;
+}
+    */

@@ -1,4 +1,4 @@
-<div class="profile-container">
+<div class="profile-container" style="margin-top: 100px;">
   <div class="content-wrapper">
     <div class="profile-card-container">
       <!-- Profile Card Component -->
@@ -11,7 +11,7 @@
                   [src]="
                     previewUrl ||
                     userProfile.photo ||
-                    '/assets/images/default-profile.png'
+                    'images/default-profile.png'
                   "
                   alt="Profile"
                   class="photo-image"
@@ -92,10 +92,18 @@
                 </div>
               </div>
             </div>
+            <div class="logout-container">
+              <button class="logout-button" (click)="logout()">
+                <i class="material-icons">logout</i>
+                <span>Se déconnecter</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<button (click)="logout()">Se déconnecter</button>
+
+
+<!--<button (click)="logout()">Se déconnecter</button>-->

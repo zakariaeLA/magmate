@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+
+
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { getAuth } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
@@ -8,6 +10,7 @@ import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private API = 'http://localhost:3000/auth';
+  userLoggedIn = new EventEmitter<void>(); // Nouvel EventEmitter
 
   constructor(
     private http: HttpClient,
@@ -15,14 +18,17 @@ export class AuthService {
     private router: Router
   ) {}
 
-  // Récupère le token Firebase actuel
   async getIdToken(): Promise<string | null> {
     const user = getAuth().currentUser;
     return user ? await user.getIdToken() : null;
   }
 
   async loginBackend() {
-    return firstValueFrom(this.http.post(`${this.API}/login`, { token: await this.getIdToken() }));
+    const response = await firstValueFrom(
+      this.http.post(`${this.API}/login`, { token: await this.getIdToken() })
+    );
+    this.userLoggedIn.emit(); // Émettre après une connexion réussie
+    return response;
   }
 
   async signupBackend(fname: string, lname: string, password: string) {
@@ -44,7 +50,8 @@ export class AuthService {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       sessionStorage.removeItem('user');
-      this.router.navigate(['/login']);
+      //this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Erreur lors de la déconnexion', error);
     }

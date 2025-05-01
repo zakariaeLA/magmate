@@ -14,10 +14,23 @@
     <li><a href="#événement" (click)="smoothScroll($event)">Événement</a></li>
     <li><a routerLink="/translation-currency">Service de traduction et monnaie</a></li>
     <li><a href="#Service de prestataire" (click)="smoothScroll($event)">Service de prestataire</a></li>
-    
+<!--  
     <li class="nav__profile">
-      <a href="#profil" (click)="smoothScroll($event)"><img src="images/header-bg1.jpg" alt="header" class="nav__profile-pic" /></a>
+      <a routerLink="/profile">
+        <img src="images/header-bg1.jpg" alt="header" class="nav__profile-pic" />
+      </a>
     </li>
+-->  
+<li class="nav__profile">
+  <a routerLink="/profile">
+    <img 
+      [src]="profilePhotoUrl" 
+      alt="Photo de profil" 
+      class="nav__profile-pic"
+      (error)="profilePhotoUrl = 'images/default-profile.png'"
+    />
+  </a>
+</li>
   </ul>
 </div>
 
