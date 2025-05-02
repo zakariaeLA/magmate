@@ -9,11 +9,20 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from '../components/header/header.component';
 import { MagasinPageComponent } from './pages/magasin-page/magasin-page.component';
+import { ProductFormComponent } from './pages/product-form/product-form.component';
+import { ProductUpdateComponent } from './pages/product-update/product-update.component'; // Exemple d'autres composants
+import { MagasinFormComponent } from './pages/magasin-form/magasin-form.component';
+import { MagasinUpdateComponent } from './pages/magasin-update/magasin-update.component';
 
 import { ReactiveFormsModule } from '@angular/forms';  
 
 @NgModule({
   declarations: [
+    
+    ProductUpdateComponent,
+    MagasinUpdateComponent,
+    ProductFormComponent,
+    MagasinFormComponent,  
     ProductDetailsComponent,
     ProductCardComponent,
     MarketplaceComponent,
@@ -30,7 +39,19 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     ProductDetailsComponent,
+<<<<<<< HEAD
     MarketplaceComponent
+=======
+    CommentListComponent,
+    /*ProductActionsComponent,
+    RatingStarsComponent,*/
+    ReportFormComponent,
+    MarketplaceComponent,
+    ProductUpdateComponent,
+    MagasinUpdateComponent,
+    MagasinFormComponent,
+    ProductFormComponent, 
+>>>>>>> 8c53c48e96505cca0cb35dd27634e6ac61c8415f
   ]
 })
 export class MarketplaceModule {}

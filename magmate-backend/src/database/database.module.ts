@@ -1,4 +1,3 @@
-// src/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -11,7 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
+        type: 'postgres',  // Assurez-vous que "postgres" est spécifié ici
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
@@ -20,10 +19,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
         ssl: {
-          rejectUnauthorized: false,
+          rejectUnauthorized: false, // En cas de connexion SSL
         },
       }),
       inject: [ConfigService],
+      
     }),
   ],
 })

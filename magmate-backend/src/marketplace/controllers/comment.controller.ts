@@ -6,7 +6,9 @@ import { GetUser } from 'src/common/decorators/get-user.decorator';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 import { User } from 'src/user/entities/user.entity';
 
-@Controller('comments')  
+@Controller('comments') 
+
+
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -21,13 +23,13 @@ export class CommentController {
   
   @Post(':productId')
   async addComment(
+
     @Param('productId') productId: number,   
     @Body() createAvisDto: CreateAvisDto, 
     @GetUser() user: RequestWithUser['user']   
+
   ) {
    
     return this.commentService.createComment(productId, createAvisDto, user);
   }
 }
-
-

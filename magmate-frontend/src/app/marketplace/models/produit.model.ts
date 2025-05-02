@@ -1,7 +1,9 @@
 // src/app/marketplace/models/produit.model.ts
 
+import { Image } from "./image.model";
+
 // Interface pour l'image du produit
-export interface ImageProd {
+export interface image{
   imageURL: string;
 }
 
@@ -44,7 +46,7 @@ export class Produit {
   imagePrincipale: string; // URL de l'image principale du produit
   dateAjout: Date;
   magasin: Magasin;
-  images: ImageProd[]; // Tableau d'images supplémentaires
+  images: Image[]; // Tableau d'images supplémentaires
   avis: Avis[];
   reclamations: Reclamation[];
 
@@ -56,7 +58,7 @@ export class Produit {
     imagePrincipale: string = '',
     dateAjout: Date = new Date(),
     magasin: Magasin = { idMagasin: 0, nom: '', description: '', localisation: '', horaire: '', telephone: '', ville: '' },
-    images: ImageProd[] = [],
+    images: Image[] = [],
     avis: Avis[] = [],
     reclamations: Reclamation[] = []
   ) {

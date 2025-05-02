@@ -44,6 +44,7 @@ import { FooterComponent } from './components/footer/footer.component';
     HttpClientModule,
     FormsModule,
     HomeComponent,
+
     RouterModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -60,6 +61,7 @@ import { FooterComponent } from './components/footer/footer.component';
       useClass: AuthInterceptor,
       multi: true,
     },
+
   ],
   bootstrap: [AppComponent],
 })

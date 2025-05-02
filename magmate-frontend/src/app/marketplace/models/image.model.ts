@@ -1,6 +1,6 @@
 import { Produit } from './produit.model';  // Importer le modèle Produit
 
-export class ImageProd {
+export class Image {
   idImage: number;
   imageURL: string;
   produit: Produit;

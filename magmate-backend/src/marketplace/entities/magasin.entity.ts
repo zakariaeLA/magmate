@@ -8,6 +8,8 @@ import {
 import { Produit } from './produit.entity';
 import { User } from 'src/user/entities/user.entity';
 
+
+
 @Entity()
 export class Magasin {
   @PrimaryGeneratedColumn()
@@ -45,4 +47,5 @@ export class Magasin {
 
   @ManyToOne(() => User, (utilisateur) => utilisateur.magasins)
   proprietaire: User;
+
 }
