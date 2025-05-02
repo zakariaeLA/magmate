@@ -10,7 +10,7 @@
     <!-- Miniatures en dessous de l'image principale -->
     <div class="thumbnail-images">
       <img *ngFor="let image of product.images"
-           [src]="image.imageURL"
+           [src]="'http://localhost:3000/public/images/'+image.imageURL"
            alt="Miniature image produit"
            class="thumbnail"
            (click)="selectImage(image)" />

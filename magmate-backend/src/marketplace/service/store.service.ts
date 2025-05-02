@@ -18,28 +18,32 @@ export class StoreService {
     const magasin = this.magasinRepository.create(dto);
 
     // Si besoin d'ajuster certains champs comme dateCreation avant l'enregistrement
-    magasin.dateCreation = new Date();  // Ajouter la date de création si elle n'est pas fournie
+    magasin.dateCreation = new Date(); // Ajouter la date de création si elle n'est pas fournie
 
     return this.magasinRepository.save(magasin);
   }
 
   // Récupérer tous les magasins
   async findAll() {
-    return this.magasinRepository.find();  // Retourner tous les magasins
+    return this.magasinRepository.find(); // Retourner tous les magasins
   }
 
   // Trouver un magasin par son ID
   async findOne(id: number) {
-    const magasin = await this.magasinRepository.findOne({ where: { idMagasin: id } });
+    const magasin = await this.magasinRepository.findOne({
+      where: { idMagasin: id },
+    });
     if (!magasin) {
       throw new NotFoundException(`Magasin avec l'ID ${id} non trouvé`);
     }
     return magasin;
   }
   // Mettre à jour un magasin
-   // Mettre à jour un magasin
-   async update(id: number, dto: UpdateMagasinDto) {
-    const magasin = await this.magasinRepository.findOne({ where: { idMagasin: id } });
+  // Mettre à jour un magasin
+  async update(id: number, dto: UpdateMagasinDto) {
+    const magasin = await this.magasinRepository.findOne({
+      where: { idMagasin: id },
+    });
     if (!magasin) {
       throw new NotFoundException(`Magasin avec l'ID ${id} non trouvé`);
     }
@@ -51,14 +55,15 @@ export class StoreService {
     return this.magasinRepository.save(magasin);
   }
 
-
   // Supprimer un magasin par son ID
   async remove(id: number) {
-    const magasin = await this.magasinRepository.findOne({ where: { idMagasin: id } });
+    const magasin = await this.magasinRepository.findOne({
+      where: { idMagasin: id },
+    });
     if (!magasin) {
       throw new NotFoundException(`Magasin avec l'ID ${id} non trouvé`);
     }
-    await this.magasinRepository.delete(id);  // Supprimer le magasin
-    return { message: 'Magasin supprimé avec succès' };  // Retourner un message de succès
+    await this.magasinRepository.delete(id); // Supprimer le magasin
+    return { message: 'Magasin supprimé avec succès' }; // Retourner un message de succès
   }
 }

@@ -55,7 +55,7 @@ export class MarketplaceComponent implements OnInit {
   showMagasinPopup = false;
 
   openPopup() {
-    const userId = 3; // Remplace par l'ID utilisateur réel, par exemple récupéré via un service d'authentification.
+    const userId = 1; // Remplace par l'ID utilisateur réel, par exemple récupéré via un service d'authentification.
 
     this.magasinService.getMagasinByUser(userId).subscribe({
       next: (magasin) => {

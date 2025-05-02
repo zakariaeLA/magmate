@@ -99,7 +99,7 @@ export class ProductFormComponent implements OnInit {
       next: (response) => {
         console.log('Product successfully created', response);
         this.alertService.success('votre produit est ajouté avec succée');
-        this.router.navigate(['/products']);  // Navigate after successful creation
+        this.router.navigate(['/magasin']);  // Navigate after successful creation
       },
       error: (error) => {
         console.error('Error creating product', error);

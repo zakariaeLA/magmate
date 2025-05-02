@@ -21,6 +21,7 @@ export class ProductDetailsComponent implements OnInit {
   product!: Produit;
   comments: Avis[] = [];
   showReclamationForm: boolean = false;
+
   newComment: string = '';
   rating: number = 0;
 
@@ -47,7 +48,9 @@ export class ProductDetailsComponent implements OnInit {
   loadProductDetails() {
     this.productService.getProductById(this.productId).subscribe(
       (product: Produit) => {
+
         this.product = product;
+
         if (!this.product.imagePrincipale && this.product.images.length > 0) {
           this.product.imagePrincipale = this.product.images[0].imageURL;
         }
@@ -69,11 +72,14 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
-  selectImage(thumbnailImage: { imageURL: string }): void {
-    if (this.product) {
-      this.product.imagePrincipale = thumbnailImage.imageURL;
-    }
+
+
+selectImage(thumbnailImage: { imageURL: string }): void {
+  if (this.product) {
+    this.product.imagePrincipale = 'http://localhost:3000/public/images/' + thumbnailImage.imageURL;
+
   }
+}
 
   onFileSelected(event: any) {
     const file = event.target.files[0];

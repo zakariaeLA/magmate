@@ -14,6 +14,8 @@ export class MagasinFormComponent implements OnInit {
   magasinForm: FormGroup;
   alertMessage: string | null = null;
   alertType: 'success' | 'error' | null = null;
+  imageFile: File | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -21,15 +23,15 @@ export class MagasinFormComponent implements OnInit {
     private alertService: AlertService, // Injection du service
     private router: Router
   ) {
-    this.magasinForm = this.fb.group({
+  this.magasinForm = this.fb.group({
       nom: ['', Validators.required],
       localisation: ['', Validators.required], 
       description: ['', Validators.required],
-      image: ['', Validators.required],  // Image is required
       horaire: ['', Validators.required],
       telephone: ['', Validators.required],
       ville: ['', Validators.required]
     });
+    
   }
 
   ngOnInit(): void {
@@ -42,13 +44,12 @@ export class MagasinFormComponent implements OnInit {
 
   // Handle main image selection
   onFileChange(event: any): void {
-    const file = event.target.files[0]; // Get the first file (main image)
+    const file = event.target.files[0];
     if (file) {
-      this.magasinForm.patchValue({
-        image: file // Set the selected file to the image control
-      });
+      this.imageFile = file; // ✅ Stocke dans une propriété à part
     }
   }
+  
 
   // Handle form submission
   onSubmit() {
@@ -67,14 +68,14 @@ export class MagasinFormComponent implements OnInit {
     magasinData.append('ville', this.magasinForm.get('ville')?.value);
 
     // Append main image
-    const image = this.magasinForm.get('image')?.value;
-    if (image && image instanceof File) {
-      console.log('Main Image:', image);
-      magasinData.append('image', image, image.name); // Append the main image
+    if (this.imageFile) {
+      magasinData.append('image', this.imageFile, this.imageFile.name);
     } else {
-      console.error('Main image is invalid or missing');
+      console.error('L’image est manquante.');
+      this.alertService.error("Veuillez sélectionner une image.");
+      return;
     }
-
+    
     console.log('Data sent to server:', magasinData); // Log the FormData before sending
 
     // Send the data to the backend via the service
