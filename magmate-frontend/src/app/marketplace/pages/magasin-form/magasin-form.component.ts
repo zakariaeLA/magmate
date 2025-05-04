@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MagasinService } from '../../services/magasin.service';
 import { AlertService } from '../../services/alerte.service'; // Import du service d'alerte
+import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
 
 @Component({
   selector: 'app-magasin-form',
@@ -15,26 +16,40 @@ export class MagasinFormComponent implements OnInit {
   alertMessage: string | null = null;
   alertType: 'success' | 'error' | null = null;
   imageFile: File | null = null;
-
+  userId: string = '';  // Pour stocker l'ID de l'utilisateur connecté
 
   constructor(
     private fb: FormBuilder,
     private magasinService: MagasinService,
     private alertService: AlertService, // Injection du service
-    private router: Router
+    private router: Router,
+    private authService: AuthService  // Injection du service AuthService
   ) {
-  this.magasinForm = this.fb.group({
+    this.magasinForm = this.fb.group({
       nom: ['', Validators.required],
-      localisation: ['', Validators.required], 
+      localisation: ['', Validators.required],
       description: ['', Validators.required],
       horaire: ['', Validators.required],
       telephone: ['', Validators.required],
       ville: ['', Validators.required]
     });
-    
   }
 
   ngOnInit(): void {
+    // Récupérer l'ID de l'utilisateur connecté
+    this.authService.getIdToken().then((token) => {
+      if (!token) {
+        // Si aucun token n'est trouvé, rediriger vers la page de connexion
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      // En cas de succès, stocker l'ID de l'utilisateur
+      this.userId = token;
+    }).catch((error) => {
+      console.error('Erreur de récupération du token :', error);
+    });
+
     // Subscribe to alert service
     this.alertService.alert$.subscribe(alert => {
       this.alertMessage = alert.message;
@@ -42,24 +57,23 @@ export class MagasinFormComponent implements OnInit {
     });
   }
 
-  // Handle main image selection
+  // Gérer la sélection d'image
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      this.imageFile = file; // ✅ Stocke dans une propriété à part
+      this.imageFile = file;  // ✅ Stocke dans une propriété à part
     }
   }
-  
 
-  // Handle form submission
+  // Gérer la soumission du formulaire
   onSubmit() {
     if (this.magasinForm.invalid) {
       return;
     }
 
-    const magasinData = new FormData(); // Create FormData to append the store data
+    const magasinData = new FormData(); // Créer FormData pour ajouter les données du magasin
 
-    // Append non-file form fields
+    // Ajouter les champs non liés aux fichiers
     magasinData.append('nom', this.magasinForm.get('nom')?.value);
     magasinData.append('localisation', this.magasinForm.get('localisation')?.value);
     magasinData.append('description', this.magasinForm.get('description')?.value);
@@ -67,7 +81,7 @@ export class MagasinFormComponent implements OnInit {
     magasinData.append('telephone', this.magasinForm.get('telephone')?.value);
     magasinData.append('ville', this.magasinForm.get('ville')?.value);
 
-    // Append main image
+    // Ajouter l'image principale
     if (this.imageFile) {
       magasinData.append('image', this.imageFile, this.imageFile.name);
     } else {
@@ -75,24 +89,27 @@ export class MagasinFormComponent implements OnInit {
       this.alertService.error("Veuillez sélectionner une image.");
       return;
     }
-    
-    console.log('Data sent to server:', magasinData); // Log the FormData before sending
 
-    // Send the data to the backend via the service
+    // Ajouter l'ID du propriétaire (utilisateur connecté) à FormData
+    magasinData.append('proprietaireId', this.userId);
+
+    console.log('Data sent to server:', magasinData); // Afficher FormData avant l'envoi
+
+    // Envoyer les données au backend via le service
     this.magasinService.createMagasin(magasinData).subscribe({
       next: (response) => {
-        console.log('Store successfully created', response);
-        this.alertService.success('votre magasin est crée avec succées');
-        this.router.navigate(['/']);  // Navigate after successful creation
+        console.log('Magasin créé avec succès', response);
+        this.alertService.success('Votre magasin a été créé avec succès');
+        this.router.navigate(['/']);  // Redirection après création réussie
       },
       error: (error) => {
-        console.error('Error creating store', error);
-        this.alertService.error('il y a une erreur lors de la création, veuillez essayez plus tard');
+        console.error('Erreur lors de la création du magasin', error);
+        this.alertService.error('Il y a une erreur lors de la création, veuillez réessayer plus tard');
       }
     });
   }
 
-  // Method to close the alert
+  // Méthode pour fermer l'alerte
   closeAlert() {
     this.alertMessage = null;
     this.alertType = null;

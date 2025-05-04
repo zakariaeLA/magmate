@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, Produit } from '../../services/ProductService';
 import { MagasinService } from '../../services/MagasinService';
+import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,73 +26,120 @@ export class MarketplaceComponent implements OnInit {
     'Chefchaouen',
   ];
   magasin: any;
-  message: string = ''; // ou récupérées dynamiquement
-  showPopup:boolean=false;
+  message: string = '';
+  showPopup: boolean = false;
+  showMagasinPopup: boolean = false;
+
+  userId: string | null = null;  // ID de l'utilisateur
 
   constructor(
     private productService: ProductService,
     private magasinService: MagasinService,
-    private router: Router
+    private authService: AuthService,  // Injection du service AuthService
+    public router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadProduits();
+    this.loadProduits();  // Charger les produits sans vérifier l'authentification au début
   }
 
+  // Charger les produits du marketplace
   loadProduits(): void {
     console.log('Recherche avec :', this.search, 'Ville :', this.selectedVille);
 
     this.productService.getProduits(this.search, this.selectedVille).subscribe(
       (data) => {
-        console.log('Produits récupérés dans Angular:', data);
+        console.log('Produits récupérés:', data);
         this.produits = data;
       },
       (error) => {
-        console.error('Erreur dans la récupération des produits :', error);
+        console.error('Erreur lors de la récupération des produits :', error);
       }
     );
   }
 
-  showMagasinPopup = false;
+ // Vérification de l'utilisateur connecté avant de permettre l'action
+checkUserAuthentication(action: string, produitId?: number): void {
+  this.authService.getIdToken().then((token) => {
+    if (token) {
+      // Si un token est présent, l'utilisateur est connecté
+      this.userId = token;  // Vous pouvez également récupérer l'ID de l'utilisateur à partir du token
 
-  openPopup() {
-    const userId = 1; // Remplace par l'ID utilisateur réel, par exemple récupéré via un service d'authentification.
+      if (action === 'monMagasin') {
+        this.openStorePopup();  // Ouvrir le popup du magasin
+      } else if (action === 'voirDetails' && produitId) {
+        // Si l'utilisateur est connecté, rediriger vers la page de détails du produit
+        this.router.navigate(['/product-details', produitId]);  
+      }
+    } else {
+      // Si aucun token, rediriger vers la page de login pour la connexion
+      this.router.navigate(['/login']);  
+    }
+  });
+}
 
-    this.magasinService.getMagasinByUser(userId).subscribe({
-      next: (magasin) => {
-        console.log('Magasin trouvé:', magasin);
-        if (magasin) {
-          if (magasin.estApprouve) {
-            this.magasin = magasin;
-            // Redirige vers la page du magasin
-            this.router.navigate(['/magasin', magasin.idMagasin]);
+  
+  // Ouvrir le popup pour afficher le magasin
+  openStorePopup() {
+    if (this.userId) {
+      // Si l'utilisateur est connecté, obtenir son magasin
+      this.magasinService.getMagasinByUser(this.userId).subscribe({
+        next: (magasin) => {
+          console.log('Magasin trouvé:', magasin);
+          if (magasin) {
+            if (magasin.estApprouve) {
+              this.magasin = magasin;
+              // Rediriger vers la page du magasin
+              this.router.navigate(['/magasin', magasin.idMagasin]);
+            } else {
+              this.message = 'Votre magasin est en cours de traitement.'; // Message pour magasin en attente d'approbation
+              this.showPopup = true; // Afficher le popup pour informer l'utilisateur
+            }
           } else {
-            this.message = 'Votre magasin est en cours de traitement.';
-            this.showPopup = true;
+            // Si aucun magasin n'est trouvé, afficher un message pour créer un magasin
+            this.message = 'Vous n\'avez pas encore de magasin. Veuillez en créer un.'; // Message incitant à créer un magasin
+            this.showMagasinPopup = true; // Afficher le popup pour créer un magasin
           }
-        } else {
-          // Affiche le popup si aucun magasin n'est trouvé
-          this.showMagasinPopup = true;
-        }
-      },
-      error: (err) => {
-        console.error('Erreur récupération magasin', err);
-        this.showMagasinPopup = true; // Afficher le popup si une erreur se produit
-      },
-    });
+        },
+        error: (err) => {
+          console.error('Erreur récupération magasin', err);
+          this.showMagasinPopup = true; // Afficher le popup en cas d'erreur
+        },
+      });
+    } else {
+      // Si l'utilisateur n'est pas connecté, rediriger vers la page de login
+      this.router.navigate(['/login']);
+    }
   }
+
+  // Fermer le popup
   closePopup() {
     this.showPopup = false;
   }
 
-
-
+  // Méthode pour faire défiler la page vers la section des produits
   scrollToProduits() {
     const produitsSection = document.querySelector('.search-bar');
     if (produitsSection) {
       produitsSection.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  // Méthode pour voir les détails d'un produit
+voirDetails(produitId: number): void {
+  this.authService.getIdToken().then((token) => {
+    if (token) {
+      // Si l'utilisateur est connecté, rediriger vers la page de détails du produit
+      console.log('Utilisateur connecté, redirection vers product-details');
+      this.router.navigate(['/product-details', produitId]);
+    } else {
+      // Si l'utilisateur n'est pas connecté, rediriger vers la page de login
+      console.log('Utilisateur non connecté, redirection vers login');
+      this.router.navigate(['/login']);
+    }
+  });
+}
+
   
   
 }

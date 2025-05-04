@@ -1,3 +1,4 @@
+import { User } from './user.model';
 export class Magasin {
     idMagasin: number;
     nom: string;
@@ -8,7 +9,7 @@ export class Magasin {
     horaire: string;
     telephone: string;
     ville: string;
-    proprietaire: any;  // Remplacer `any` par Utilisateur si nécessaire
+    proprietaire: User;  
   
     constructor(
       idMagasin: number,
@@ -20,7 +21,7 @@ export class Magasin {
       horaire: string,
       telephone: string,
       ville: string,
-      proprietaire: any
+      proprietaire: User
     ) {
       this.idMagasin = idMagasin;
       this.nom = nom;

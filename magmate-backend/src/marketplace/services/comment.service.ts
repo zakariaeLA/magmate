@@ -10,42 +10,44 @@ import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class CommentService {
   constructor(
-
     @InjectRepository(User)
     private readonly utilisateurRepository: Repository<User>,
-
     @InjectRepository(Avis)
     private readonly avisRepository: Repository<Avis>,
   ) {}
 
   async getCommentsByProductId(productId: number): Promise<Avis[]> {
-
-  return this.avisRepository.find({
-    where: { produit: { idProduit: productId } },
-    relations: ['auteur'],  
-    select: {
-      auteur: {
-        fname: true,   
-        lname: true, 
+    return this.avisRepository.find({
+      where: { produit: { idProduit: productId } },
+      relations: ['auteur'], // Charger l'entité 'auteur' (Utilisateur)
+      select: {
+        auteur: {
+          lname: true, // Charger uniquement 'nom'
+          fname: true, // Charger uniquement 'prenom'
+        },
       },
-    },
-    order: { date: 'DESC' },  
-  });
-}
+      order: { date: 'DESC' }, // Trier les avis par date décroissante
+    });
+  }
 
+  async createComment(productId: number, dto: CreateAvisDto): Promise<Avis> {
+    const utilisateur = await this.utilisateurRepository.findOne({
+      where: { id: dto.id }, // Recherche l'utilisateur avec l'ID envoyé depuis le frontend
+    });
   
-
-async createComment(productId: number, dto: CreateAvisDto, user: { email: string }): Promise<Avis> {
-  const avis = this.avisRepository.create({
-    note: dto.note,
-    commentaire: dto.commentaire,
-    date: new Date(),
-    produit: { idProduit: productId }, 
-    auteur: { email: user.email }, 
-  });
-  return this.avisRepository.save(avis);
+    if (!utilisateur) {
+      throw new Error('Utilisateur non trouvé');
+    }
+  
+    const avis = this.avisRepository.create({
+      note: dto.note,
+      commentaire: dto.commentaire,
+      date: new Date(),
+      produit: { idProduit: dto.idProduit },
+      auteur: utilisateur, // Lier l'utilisateur au commentaire
+    });
+  
+    return this.avisRepository.save(avis); // Sauvegarder et retourner le commentaire
+  }
+  
 }
-
-
-} 
-

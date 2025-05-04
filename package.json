@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@angular/fire": "^19.1.0",
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.1.5",
     "class-validator": "^0.14.1",
+    "firebase": "^11.6.1",
     "swagger-ui-express": "^5.0.1"
   }
 }

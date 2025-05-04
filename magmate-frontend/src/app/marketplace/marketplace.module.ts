@@ -39,19 +39,12 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     ProductDetailsComponent,
-<<<<<<< HEAD
-    MarketplaceComponent
-=======
-    CommentListComponent,
-    /*ProductActionsComponent,
-    RatingStarsComponent,*/
-    ReportFormComponent,
     MarketplaceComponent,
     ProductUpdateComponent,
     MagasinUpdateComponent,
     MagasinFormComponent,
     ProductFormComponent, 
->>>>>>> 8c53c48e96505cca0cb35dd27634e6ac61c8415f
+
   ]
 })
 export class MarketplaceModule {}

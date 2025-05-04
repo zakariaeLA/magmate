@@ -10,10 +10,12 @@ import { Observable } from 'rxjs';
 export class MagasinService {
   private baseUrl = 'http://localhost:3000/magasins'; // URL de base pour l'API
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+        
+  ) {}
 
   // Méthode pour récupérer un magasin par userId
-  getMagasinByUser(userId: number): Observable<any> {
+  getMagasinByUser(userId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/user/${userId}`); // Appel à l'API backend
   }
   getMagasinById(id: number): Observable<any> {

@@ -11,8 +11,8 @@ export class CreateAvisDto {
   @IsNotEmpty()
   commentaire: string; // Commentaire
 
-  @IsNumber()
-  idUtilisateur:string; // ID de l'utilisateur qui fait l'avis ou le commentaire
+  @IsString()
+  id:string; // ID de l'utilisateur qui fait l'avis ou le commentaire
 
   @IsNumber()
   idProduit: number; // ID du produit concerné par l'avis ou le commentaire
