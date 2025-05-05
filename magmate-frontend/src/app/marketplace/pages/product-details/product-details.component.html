@@ -45,32 +45,33 @@
   </div>
 
   <!-- Section des commentaires -->
-  <div class="comments-section">
-    <h3>Commentaires</h3>
-    <div *ngFor="let comment of comments" class="comment">
-      <p class="username">{{ comment.auteur.lname }} {{ comment.auteur.fname }} :</p>
-      <p>{{ comment.commentaire }}</p>
-      <div class="rating">
-        <span *ngFor="let star of [].constructor(comment.note); let i = index">★</span>
-      </div>
-    </div>
-
-    <!-- Formulaire pour ajouter un commentaire -->
-    <div class="add-comment">
-      <textarea [(ngModel)]="newComment" placeholder="Écrivez votre commentaire" id="newComment" name="newComment"></textarea>
-      <div class="rating">
-        <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)" [class.selected]="star <= rating">★</span>
-      </div>
-      <button (click)="addComment()">Ajouter le commentaire</button>
+<div class="comments-section">
+  <h3>Commentaires</h3>
+  <div *ngFor="let comment of comments" class="comment">
+    <p class="username">{{ comment.auteur?.lname }} {{ comment.auteur?.fname }} :</p>
+    <p>{{ comment.commentaire }}</p>
+    <div class="rating">
+      <span *ngFor="let star of [].constructor(comment.note); let i = index">★</span>
     </div>
   </div>
+  
+  
+
+  <div class="add-comment">
+    <textarea [(ngModel)]="newComment" placeholder="Écrivez votre commentaire"></textarea>
+    <div class="rating">
+      <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)" [class.selected]="star <= rating">★</span>
+    </div>
+    <button (click)="addComment()">Ajouter le commentaire</button>
+  </div>
+</div>
 
   <!-- Modal pour la réclamation -->
   <div *ngIf="showReclamationForm" class="modal">
     <div class="modal-content">
       <span class="close" (click)="closeReclamationForm()">&times;</span>
       <h3>Formulaire de réclamation</h3>
-      <form (ngSubmit)="submitReclamation()">
+      <form (ngSubmit)="addReclamation()">
         
         <!-- Description de la réclamation -->
         <div class="form-group">

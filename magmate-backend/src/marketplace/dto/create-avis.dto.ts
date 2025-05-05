@@ -1,19 +1,26 @@
-import { IsNotEmpty, IsNumber, IsString, Min, Max, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Min, Max, IsOptional, IsUUID, IsInt } from 'class-validator';
 
 export class CreateAvisDto {
+  // Note de l'avis, optionnelle
   @IsNumber()
   @Min(1)
   @Max(5)
   @IsOptional()  // La note est optionnelle pour les commentaires
-  note?: number; // Étoiles (c'est une option pour les commentaires)
+  note?: number; 
+
+  // Commentaire de l'utilisateur
+  @IsString()
+  @IsNotEmpty()
+  commentaire: string; // Le texte du commentaire
+
+
+
+  // ID du produit concerné par l'avis
+  @IsInt()
+  idProduit: number; // ID du produit concerné, doit être un nombre entier
 
   @IsString()
   @IsNotEmpty()
-  commentaire: string; // Commentaire
-
-  @IsString()
-  id:string; // ID de l'utilisateur qui fait l'avis ou le commentaire
-
-  @IsNumber()
-  idProduit: number; // ID du produit concerné par l'avis ou le commentaire
+  email: string; // Ajout de l'email de l'utilisateur
+  
 }

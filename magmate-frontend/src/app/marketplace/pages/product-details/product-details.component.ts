@@ -9,6 +9,11 @@ import { Avis } from '../../models/avis.model';
 import { CreateAvisDto } from '../../dto/create-avis.dto';
 import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service'; 
 import { Router } from '@angular/router'; 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import { ChangeDetectorRef } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-product-details',
@@ -28,8 +33,9 @@ export class ProductDetailsComponent implements OnInit {
   reclamationData: CreateReclamationDto = {
     idCible: 0,  // Initialisation à 0, sera mis à jour avec l'ID du produit lors de la soumission
     description: '',
-    pieceJointe: '',  // Nom du fichier ou lien de la pièce jointe
-    id: '', // ID de l'utilisateur, à remplir lors de la soumission
+    pieceJointe: '',  
+    email: '', 
+     
   };
 
   constructor(
@@ -38,7 +44,8 @@ export class ProductDetailsComponent implements OnInit {
     private reclamationService: ReclamationService,
     private route: ActivatedRoute,
     private authService: AuthService, // Injection de AuthService
-    private router: Router // Injection de Router
+    private router: Router ,// Injection de Router
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -98,87 +105,89 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  submitReclamation() {
+  async addReclamation() {
     if (this.reclamationData.description) {
-      // Récupérer le token de l'utilisateur pour obtenir l'ID
-      this.authService.getIdToken().then((token) => {
-        if (token) {
-          // Remplir idUtilisateur avec le token de l'utilisateur
-          this.reclamationData.id = token;
+      try {
+        const token = await this.authService.getIdToken();
   
-          // Mettre à jour idCible avec l'ID du produit (idProduit)
-          this.reclamationData.idCible = this.productId;  // `productId` doit être défini et correspondre au produit concerné
-  
-          // Créer la réclamation avec les données
-          const reclamation: CreateReclamationDto = {
-            idCible: this.reclamationData.idCible,  // ID du produit concerné (idProduit)
-            description: this.reclamationData.description!,  // Description de la réclamation
-            pieceJointe: this.reclamationData.pieceJointe!,  // Pièce jointe (nom du fichier ou URL)
-            id: this.reclamationData.id!,  // ID de l'utilisateur (token)
-          };
-  
-          // Soumettre la réclamation via le service
-          this.reclamationService.addReclamation(this.productId, reclamation).subscribe(
-            (response) => {
-              console.log('Réclamation envoyée', response);
-              this.showReclamationForm = false;  // Fermer le formulaire après soumission
-            },
-            (error) => {
-              console.error('Erreur lors de l\'envoi de la réclamation', error);
-            }
-          );
-        } else {
-          // Si aucun token, rediriger vers la page de login
-          this.router.navigate(['/login']);
+        if (!token) {
+          console.error('Utilisateur non authentifié');
+          return;
         }
-      }).catch((error) => {
+  
+        const user = firebase.auth().currentUser;
+        const userEmail = user ? user.email : '';  // Récupérer l'email de l'utilisateur
+  
+        if (!userEmail) {
+          console.error('Email utilisateur non trouvé');
+          return;
+        }
+  
+        const newReclamationData: CreateReclamationDto = {
+          description: this.reclamationData.description,
+          idCible: this.productId,  // L'ID du produit concerné
+          pieceJointe: this.reclamationData.pieceJointe,
+          email: userEmail,  // Envoyer l'email de l'utilisateur
+        };
+  
+        // Appeler le service pour ajouter la réclamation
+        this.reclamationService.addReclamation(this.productId, newReclamationData).subscribe(
+          (newReclamation: any) => {
+            console.log('Nouvelle réclamation ajoutée:', newReclamation);
+            
+         
+            this.reclamationData.description = '';
+            this.reclamationData.pieceJointe = '';
+          },
+          (error) => {
+            console.error('Erreur lors de l\'ajout de la réclamation', error);
+          }
+        );
+      } catch (error) {
         console.error('Erreur lors de la récupération du token:', error);
-        this.router.navigate(['/login']);  // Rediriger si le token n'est pas récupéré
-      });
+      }
     } else {
       alert('Veuillez entrer une description pour la réclamation.');
     }
   }
+  
 
   async addComment() {
-    console.log('Commentaire:', this.newComment);
-    console.log('Note:', this.rating);
-  
-    if (this.newComment && this.rating) {
+    if (this.newComment && this.rating > 0) {
       try {
-        // Récupérer le token de l'utilisateur pour extraire l'ID
         const token = await this.authService.getIdToken();
   
-        // Vérifier que le token n'est pas null
         if (!token) {
           console.error('Utilisateur non authentifié');
-          return; // Si le token est null, on arrête l'exécution
+          return;
         }
   
-        // Décoder le token pour obtenir l'ID utilisateur (UUID)
-        const decoded = this.decodeJWT(token);  // Méthode de décodage à ajouter ci-dessous
-        const userId = decoded.sub;  // ID utilisateur (UUID) extrait du token
+        const user = firebase.auth().currentUser;
+        const userEmail = user ? user.email : '';  // Récupérer l'email de l'utilisateur
   
-        if (!userId) {
-          console.error('ID utilisateur non trouvé');
-          return; // Si l'ID utilisateur est introuvable, on arrête l'exécution
+        if (!userEmail) {
+          console.error('Email utilisateur non trouvé');
+          return;
         }
   
-        // Créer un objet de données de commentaire avec l'ID utilisateur récupéré
         const newCommentData: CreateAvisDto = {
           commentaire: this.newComment,
           note: this.rating,
           idProduit: this.productId,
-          id: userId,  // Utiliser l'ID de l'utilisateur récupéré du token
+          email: userEmail,  // Envoyer l'email de l'utilisateur
         };
   
         // Appeler le service pour ajouter le commentaire
         this.commentService.addComment(this.productId, newCommentData).subscribe(
           (newComment: Avis) => {
             console.log('Nouveau commentaire ajouté:', newComment);
-            this.comments.push(newComment);  // Ajouter le nouveau commentaire à la liste
-            this.newComment = '';  // Réinitialiser le champ commentaire
-            this.rating = 0;  // Réinitialiser la note
+           
+            this.comments.push(newComment);
+            
+            
+            this.newComment = '';
+            this.rating = 0;
+            this.loadComments();
           },
           (error) => {
             console.error('Erreur lors de l\'ajout du commentaire', error);
@@ -192,19 +201,7 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
   
-  // Méthode pour décoder le token JWT et récupérer l'ID utilisateur
-  decodeJWT(token: string) {
-    const base64Url = token.split('.')[1];  // Le payload est la deuxième partie du JWT
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64)
-      .split('')
-      .map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join(''));
   
-    return JSON.parse(jsonPayload);  // Retourner le payload décodé
-  }
   
   
   setRating(star: number) {

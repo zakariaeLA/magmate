@@ -24,8 +24,8 @@ export class CommentController {
     @Param('productId') productId: number,
     @Body() createAvisDto: CreateAvisDto,
     @GetUser() user: any, // Utilisation du décorateur pour récupérer l'utilisateur complet
-  ) : Promise<any> {
-    createAvisDto.id = user.uid;  // Vous pouvez maintenant utiliser `user.uid` ou d'autres informations
-    return this.commentService.createComment(productId, createAvisDto);
+  )  {
+    
+    return this.commentService.createComment(user, productId, createAvisDto);
   }
 }

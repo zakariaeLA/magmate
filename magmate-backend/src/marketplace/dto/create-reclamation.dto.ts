@@ -1,5 +1,4 @@
-// src/marketplace/dto/create-reclamation.dto.ts
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsEmail } from 'class-validator';
 
 export class CreateReclamationDto {
   @IsNumber()
@@ -14,7 +13,7 @@ export class CreateReclamationDto {
   @IsNotEmpty()
   pieceJointe: string;  // Pièce jointe (nom du fichier ou lien URL)
 
-  @IsNumber()
+  @IsEmail()
   @IsNotEmpty()
-  idUtilisateur: string;  // ID de l'utilisateur qui fait la réclamation
+  email: string;  // Email de l'utilisateur qui fait la réclamation
 }
