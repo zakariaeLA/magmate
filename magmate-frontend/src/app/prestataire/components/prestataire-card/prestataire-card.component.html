@@ -1,0 +1,15 @@
+<div class="prestataire-card">
+  <div class="card-content">
+    <img
+      class="profile-img"
+      [src]="prestataire.utilisateur?.photo"
+      alt="Photo de profil"
+    />
+    <h3>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</h3>
+    <p class="specialite">{{ prestataire.specialite }}</p>
+  </div>
+  <button class="details-button" (click)="voirDetails(prestataire.idPrestataire)">
+    Voir détails
+  </button>
+ 
+</div>

@@ -1,0 +1,59 @@
+<div class="welcome-banner">
+  <img
+    src="http://localhost:3000/public/images/artisanat.jpg"
+    alt="Bienvenue chez nos prestataires"
+  />
+  <div class="welcome-text">
+    <h1>Bienvenue sur notre plateforme de prestataires</h1>
+    <p>Trouvez les meilleurs professionnels selon vos besoins.</p>
+    <button class="scroll-button" (click)="scrollToPrestataires()">
+      Voir les prestataires
+    </button>
+  </div>
+</div>
+
+<div class="search-bar">
+  <div class="search-left">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      (input)="loadPrestataires()"
+      placeholder="Recherche un prestataire, ville, nom..."
+    />
+    <select [(ngModel)]="selectedVille" (change)="loadPrestataires()">
+      <option value="">Toutes les villes</option>
+      <option *ngFor="let ville of villes" [value]="ville">{{ ville }}</option>
+    </select>
+  </div>
+
+  <div class="search-right">
+    <button class="market-button"  (click)="monprofil()">
+      Mon profil
+    </button>
+  </div>
+  <!-- Modal (pop-up) -->
+<div id="prestataireModal" class="modal">
+  <div class="modal-content">
+    <button class="close" (click)="closeModal()">&times;</button>
+    <h2>Devenez Prestataire</h2>
+    <p>Vous n'êtes pas encore un prestataire. Souhaitez-vous créer votre profil ?</p>
+    <button class="create-magasin" >Créer Profil</button>
+    
+  </div>
+</div>
+
+
+  
+</div>
+
+
+<div *ngIf="prestataires.length === 0">
+  <p>Aucun prestataire trouvé.</p>
+</div>
+
+<div class="prestataires-container" *ngIf="prestataires.length > 0">
+  <app-prestataire-card
+    *ngFor="let p of prestataires"
+    [prestataire]="p"
+  ></app-prestataire-card>
+</div>
