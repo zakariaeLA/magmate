@@ -18,16 +18,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
+
 import { MarketplaceModule } from './marketplace/marketplace.module';  // Importation du module Marketplace
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-
+import { PrestataireModule } from './prestataire/prestataire.module';
 @NgModule({
   declarations: [
     HeaderComponent, FooterComponent, 
     LoginComponent,
+    PrestataireModule,
     AuthComponent,
     SignupComponent,
     DashboardComponent,
@@ -38,11 +40,13 @@ import { FooterComponent } from './components/footer/footer.component';
     
   ],
   imports: [
+    PrestataireModule,
     CommonModule,
     BrowserModule,
     MarketplaceModule ,  // Assurez-vous que le module marketplace est importé
     HttpClientModule,
     FormsModule,
+    PrestataireModule,
     HomeComponent,
 
     RouterModule,

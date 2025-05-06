@@ -1,0 +1,23 @@
+// ✅ pages/prestataire.component.html
+<div *ngIf="prestataire && !editing">
+  <p><strong>Spécialité:</strong> {{ prestataire.specialite }}</p>
+  <p><strong>Expérience:</strong> {{ prestataire.experience }}</p>
+  <p><strong>Localisation:</strong> {{ prestataire.localisation }}</p>
+  <p><strong>Ville:</strong> {{ prestataire.ville }}</p>
+  <p><strong>Téléphone:</strong> {{ prestataire.telephone }}</p>
+  <p><strong>Disponibilité:</strong> {{ prestataire.disponibilite ? 'Oui' : 'Non' }}</p>
+  <button (click)="editing = true">Modifier</button>
+  <button (click)="delete()">Supprimer</button>
+</div>
+
+<form *ngIf="editing || !prestataire" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div *ngFor="let field of ['specialite', 'experience', 'localisation', 'telephone', 'ville']">
+    <label [for]="field">{{ field }}</label>
+    <input [id]="field" [formControlName]="field" />
+  </div>
+  <label>
+    Disponibilité
+    <input type="checkbox" formControlName="disponibilite" />
+  </label>
+  <button type="submit">Soumettre</button>
+</form>
