@@ -28,7 +28,7 @@ export interface Prestataire {
 
 @Injectable({ providedIn: 'root' })
 export class PrestataireService {
-  private apiUrl = '/prestataire';
+  private apiUrl = 'http://localhost:3000/prestataire';
 
   constructor(private http: HttpClient) {}
 

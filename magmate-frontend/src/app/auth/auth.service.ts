@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireAuth } from '@angular/fire/compat/auth';  // Utilisez AngularFireAuth
 import { Router } from '@angular/router';
-import { environment } from  'C:/magmate/magmate-frontend/src/environments/environment'; // Votre configuration Firebase
+import { environment } from  '../../environments/environment'; // Votre configuration Firebase
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MagasinService } from '../../services/MagasinService';
 import { ProductService } from '../../services/ProductService';
 import { Router } from '@angular/router';
-import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-magasin-page',

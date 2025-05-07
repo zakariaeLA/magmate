@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MagasinService } from '../../services/magasin.service';
 import { AlertService } from '../../services/alerte.service'; // Import du service d'alerte
-import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-magasin-form',

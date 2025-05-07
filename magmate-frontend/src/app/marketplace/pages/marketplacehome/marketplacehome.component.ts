@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, Produit } from '../../services/ProductService';
 import { MagasinService } from '../../services/MagasinService';
-import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MagasinService } from '../../services/magasin.service';  // Service pour gérer les magasins
 import { AlertService } from '../../services/alerte.service'; // Service pour afficher les alertes
-import { AuthService } from 'C:/magmate/magmate-frontend/src/app/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { switchMap } from 'rxjs/operators';
 
 @Component({

@@ -1,18 +1,24 @@
-// ✅ pages/prestataire.component.ts
 import { Component, OnInit } from '@angular/core';
 import { PrestataireService, Prestataire } from '../services/prestataire.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertService } from '../../marketplace/services/alerte.service';
 
 @Component({
   selector: 'app-prestataire',
-  standalone:false,
+  standalone: false,
   templateUrl: './prestataire.component.html',
-  
+  styleUrls: ['./prestataire.component.scss']
 })
 export class PrestataireComponent implements OnInit {
   prestataire?: Prestataire;
   editing = false;
   form!: FormGroup;
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' = 'success';
+
+  closeAlert() {
+    this.alertMessage = null;
+  }
 
   constructor(
     private prestataireService: PrestataireService,
@@ -21,15 +27,8 @@ export class PrestataireComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.initForm();
   }
-
-  load(): void {
-    this.prestataireService.getMe().subscribe(data => {
-      this.prestataire = data;
-      this.initForm(data);
-    });
-  }
-
   initForm(data?: Prestataire): void {
     this.form = this.fb.group({
       specialite: [data?.specialite || '', Validators.required],
@@ -37,22 +36,68 @@ export class PrestataireComponent implements OnInit {
       localisation: [data?.localisation || '', Validators.required],
       telephone: [data?.telephone || '', Validators.required],
       ville: [data?.ville || '', Validators.required],
-      disponibilite: [data?.disponibilite ?? true]
+    });
+  
+    if (!data) this.editing = true; // Forcer affichage du formulaire si aucun prestataire
+  }
+
+  load(): void {
+    this.prestataireService.getMe().subscribe({
+      next: (data) => {
+        console.log(data);
+      //  this.prestataire = data;
+       // this.initForm(data);
+      },
+      error: (err) => {
+        console.error('Erreur de chargement :', err);
+      }
     });
   }
 
+  
+
   onSubmit(): void {
-    if (this.form.valid) {
-      const dto = this.form.value;
-      if (this.prestataire) {
-        this.prestataireService.update(dto).subscribe(() => {
-          this.editing = false;
-          this.load();
-        });
-      } else {
-        this.prestataireService.create(dto).subscribe(() => this.load());
+    if (!this.form.valid) return;
+
+    const dto = this.form.value;
+
+    // ❌ Partie mise à jour commentée temporairement
+    /*
+    const request$ = this.prestataire
+      ? this.prestataireService.update(dto)
+      : this.prestataireService.create(dto);
+
+    request$.subscribe({
+      next: () => {
+        this.alertType = 'success';
+        this.alertMessage = this.prestataire
+          ? 'Prestataire mis à jour avec succès.'
+          : 'Prestataire créé avec succès.';
+        this.editing = false;
+        this.load();
+      },
+      error: (err) => {
+        this.alertType = 'error';
+        this.alertMessage = 'Une erreur est survenue. Veuillez réessayer.';
+        console.error(err);
       }
-    }
+    });
+    */
+
+    // ✅ Création uniquement pour test
+    this.prestataireService.create(dto).subscribe({
+      next: () => {
+        this.alertType = 'success';
+        this.alertMessage = 'Prestataire créé avec succès.';
+        this.editing = false;
+        this.load();
+      },
+      error: (err) => {
+        this.alertType = 'error';
+        this.alertMessage = 'Une erreur est survenue lors de la création.';
+        console.error(err);
+      }
+    });
   }
 
   delete(): void {
