@@ -1,8 +1,10 @@
 
+
 // src/environments/environment.ts
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:3000', // URL de votre API en développement
+
     firebase: {
       apiKey: "AIzaSyDHzHAP7X8MYPX89lwMcUiykIci-8-84uw",
       authDomain: "magmate-6019a.firebaseapp.com",
@@ -13,4 +15,7 @@ export const environment = {
     }
 
   };
+   
+    
+  
   

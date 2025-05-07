@@ -2,12 +2,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
 import { AppRoutingModule } from './app-routing.module'; // Importation de AppRoutingModule
 import { AppComponent } from './app.component'; // Composant principal
 //import { MarketplaceModule } from './marketplace/marketplace.module';
 //import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -24,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
+
 import { PrestataireModule } from './prestataire/prestataire.module';
 
 @NgModule({
@@ -31,12 +34,14 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     HeaderComponent,
     FooterComponent,
     AppComponent,
+
     LoginComponent,
     AuthComponent,
     SignupComponent,
     DashboardComponent,
     ResetPasswordComponent,
     ProfileComponent,
+
     
   ],
 
@@ -49,6 +54,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     //MarketplaceModule,
     HttpClientModule, // Supprime la duplication
     FormsModule,
+
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
@@ -61,7 +67,9 @@ import { PrestataireModule } from './prestataire/prestataire.module';
       useClass: AuthInterceptor,
       multi: true,
     },
+
   ],
+
 
   bootstrap: [AppComponent],
 })

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-prestataire-card',
@@ -10,18 +12,22 @@ import { Router } from '@angular/router';
 export class PrestataireCardComponent {
   @Input() prestataire: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router , private authservice :AuthService ,private afAuth: AngularFireAuth,) {}
 
-  voirDetails(idPrestataire: number) {
-    const isConnected =
-      !!localStorage.getItem('user') || !!sessionStorage.getItem('user');
-
-    if (isConnected) {
-      this.router.navigate(['/']); //ici doit rediriger vers détails 
+  async voirDetails(idPrestataire: number) {
+    const user = await this.afAuth.currentUser;
+  
+    if (user) {
+      // Optionnel : récupérer le token si nécessaire
+      const token = await user.getIdToken();
+      console.log('Token de l\'utilisateur connecté :', token);
+      
+      // Naviguer vers la page de détails du prestataire
+      this.router.navigate(['/']);
     } else {
+      // Rediriger vers la page de connexion
       this.router.navigate(['/login']);
     }
   }
-
- 
+  
 }
