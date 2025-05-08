@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './profil.model';
-import { getAuth } from 'firebase/auth';
-
+import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -18,7 +17,7 @@ export class ProfileComponent implements OnInit {
   isUploading = false;
   uploadSuccess = false;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService) {}
 
   async ngOnInit() {
     try {
@@ -73,5 +72,9 @@ export class ProfileComponent implements OnInit {
     (event.target as HTMLElement)
       .closest('.profile-photo')
       ?.classList.add('loaded');
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
+
+import { getAuth } from '@angular/fire/auth';
+
 import { AngularFireAuth } from '@angular/fire/compat/auth';  // Utilisez AngularFireAuth
 import { Router } from '@angular/router';
-import { environment } from  'C:/magmate/magmate-frontend/src/environments/environment'; // Votre configuration Firebase
+import { environment } from  '../../environments/environment'; // Votre configuration Firebase
+
 import { firstValueFrom } from 'rxjs';
 import firebase from 'firebase/compat/app';
 
@@ -13,49 +18,53 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private afAuth: AngularFireAuth,  // Injection de AngularFireAuth
+
+    private afAuth: AngularFireAuth,
     private router: Router
+<<<<<<< HEAD
   ) {
     // Écoute les changements d'état de l'utilisateur
     this.afAuth.authState.subscribe((user) => {
       this.user = user;
     });
   }
+=======
+  ) {}
+  
+  
+  // Récupère le token Firebase actuel
+>>>>>>> e43b4b0296a069690c2673b7840095ceea1029fb
 
-  // Utilisez AngularFireAuth pour obtenir le token de l'utilisateur
   async getIdToken(): Promise<string | null> {
-    const user = await this.afAuth.currentUser; // Récupère l'utilisateur actuel
+    const user = await this.afAuth.currentUser;
     if (user) {
-      return await user.getIdToken(); // Obtenir le token directement
+      const token = await user.getIdToken();
+      localStorage.setItem('token', token);
+      return token;
     }
     return null;
   }
-
+  
+  
   
 
+
   async loginBackend() {
-    const token = await this.getIdToken();
-    if (token) {
-      return firstValueFrom(this.http.post(`${this.API}/login`, { token }));
-    } else {
-      throw new Error("Token non trouvé");
-    }
+    return firstValueFrom(this.http.post(`${this.API}/login`, { token: await this.getIdToken() }));
   }
 
   async signupBackend(fname: string, lname: string, password: string) {
-    const token = await this.getIdToken();
-    if (token) {
-      return firstValueFrom(
-        this.http.post(`${this.API}/signup`, {
-          token,
-          fname,
-          lname,
-          password,
-        })
-      );
-    } else {
-      throw new Error("Token non trouvé");
-    }
+    ;
+
+    return firstValueFrom(
+      this.http.post(`${this.API}/signup`, {
+        token: await this.getIdToken() ,
+        fname,
+        lname,
+        password,
+      })
+    );
+
   }
 
 
@@ -74,7 +83,9 @@ export class AuthService {
 
   async logout(): Promise<void> {
     try {
-      await this.afAuth.signOut();  // Déconnexion via AngularFireAuth
+
+      await this.afAuth.signOut();
+
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       sessionStorage.removeItem('user');

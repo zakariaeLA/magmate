@@ -1,0 +1,35 @@
+<div *ngIf="prestataire" class="profil-container">
+    <h2>Mon Profil</h2>
+    <div class="profil-content">
+      <img
+        class="profile-img"
+        [src]="prestataire.utilisateur?.photo"
+        alt="Photo de profil"
+      />
+      <div class="profil-info">
+        <p><strong>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</strong></p>
+        <p>{{ prestataire.utilisateur?.email }}</p>
+        <p>{{ prestataire.ville }}</p>
+        <p>{{ prestataire.specialite }}</p>
+        <p>{{ prestataire.telephone }}</p>
+        <p>{{ prestataire.experience }}</p>
+  
+        <button
+          class="availability-btn"
+          [ngClass]="{ 'available': prestataire.disponibilite, 'unavailable': !prestataire.disponibilite }"
+          (click)="toggleDisponibilite()"
+        >
+          {{ prestataire.disponibilite ? 'Disponible' : 'Indisponible' }}
+        </button>
+      </div>
+    </div>
+  
+    <button class="modify-btn" [routerLink]="['/modifier-profil']">Modifier</button>
+    <button class="delete-btn" (click)="deleteProfil()">
+    >Supprimer le compte</button>
+  </div>
+  
+  <div *ngIf="!prestataire">
+    Chargement des informations du profil...
+  </div>
+  

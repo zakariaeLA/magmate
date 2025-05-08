@@ -5,7 +5,7 @@ import { Prestataire } from '../entities/prestataire.entity';
 import { User } from '../../user/entities/user.entity';
 
 @Injectable()
-export class PrestataireService {
+export class PrestatairedetailsService {
   constructor(
     @InjectRepository(Prestataire)
     private readonly prestataireRepo: Repository<Prestataire>,

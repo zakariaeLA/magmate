@@ -1,0 +1,42 @@
+<div class="form-container">
+  <h2>Mon Profil prestataire</h2>
+  <!-- ✅ Fenêtre modale avec l'alerte -->
+<div *ngIf="alertMessage" class="modal-overlay">
+  <div class="modal" [ngClass]="alertType">
+    <p>{{ alertMessage }}</p>
+    <button (click)="closeAlert()" class="close-btn">OK</button>
+  </div>
+</div>
+
+  <!-- le formulaire DOIT rester à l’intérieur du même .form-container -->
+  <form *ngIf="editing || !prestataire" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="specialite">Spécialité</label>
+      <input id="specialite" formControlName="specialite" type="text" required />
+    </div>
+
+    <div class="form-group">
+      <label for="experience">Expérience</label>
+      <textarea id="experience" formControlName="experience" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="localisation">Localisation</label>
+      <input id="localisation" formControlName="localisation" type="text" required />
+    </div>
+
+    <div class="form-group">
+      <label for="telephone">Téléphone</label>
+      <input id="telephone" formControlName="telephone" type="text" required />
+    </div>
+
+    <div class="form-group">
+      <label for="ville">Ville</label>
+      <input id="ville" formControlName="ville" type="text" required />
+    </div>
+
+    
+
+    <button type="submit" [disabled]="form.invalid">Soumettre</button>
+  </form>
+</div>

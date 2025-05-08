@@ -23,7 +23,7 @@ export interface Prestataire {
 @Injectable({
   providedIn: 'root',
 })
-export class PrestataireService {
+export class PrestatairedetailsService {
   private baseUrl = 'http://localhost:3000/prestataires';
 
   constructor(private http: HttpClient) {}
@@ -35,10 +35,5 @@ export class PrestataireService {
     return this.http.get<Prestataire>(`${this.baseUrl}/uuid/${uuid}`);
   }
 
-  /**
-   * Récupérer le prestataire par email
-   */
-  getPrestataireByEmail(email: string): Observable<Prestataire> {
-    return this.http.get<Prestataire>(`${this.baseUrl}/email/${email}`);
-  }
+ 
 }

@@ -1,0 +1,22 @@
+<div class="navigation">
+    <div class="nav__header">
+      <div class="nav__logo">
+        <a href="#" class="logo">Magmate</a>
+      </div>
+      <div class="nav__menu__btn" id="menu-btn">
+        <i class="ri-menu-line"></i>
+      </div>
+    </div>
+    <ul class="nav__links" id="nav-links">
+      <li><a [routerLink]="['/']" (click)="smoothScroll($event)">HOME</a></li>
+      <li><a   (click)="smoothScroll($event)">Marketplace</a></li>
+      <li><a href="#événement" (click)="smoothScroll($event)">Événement</a></li>
+      <li><a href="#Service de traduction et monnaie" (click)="smoothScroll($event)">Service de traduction et monnaie</a></li>
+      <li><a [routerLink]="['/prestataires']" (click)="smoothScroll($event)">Service de prestataire</a></li>
+      
+      <li class="nav__profile">
+        <a [routerLink]="['/profile']" (click)="smoothScroll($event)"><img src="images/header-bg1.jpg" alt="header" class="nav__profile-pic" /></a>
+      </li>
+    </ul>
+    
+  </div>

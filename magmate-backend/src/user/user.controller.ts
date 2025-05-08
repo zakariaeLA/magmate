@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Put,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -11,7 +21,7 @@ export class UserController {
   // Route pour obtenir le profil
   @Get('profile/:id')
   // @UseGuards(FirebaseAuthGuard)
-  async getProfile(@Param('id' , ParseUUIDPipe) id: string) {
+  async getProfile(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getProfile(id);
   }
   //   avec firebase
@@ -31,8 +41,15 @@ export class UserController {
   // }
 
   //Route pour creer un utilisateur
-  @Post()  
-  async createUser(@Body(new ValidationPipe({ whitelist: true })  ) createUserDto: CreateUserDto) {
+  @Post()
+  async createUser(
+    @Body(new ValidationPipe({ whitelist: true })) createUserDto: CreateUserDto,
+  ) {
     return this.userService.createUser(createUserDto);
+  }
+  @Get('uuid-by-email')
+  async getUuidByEmail(@Query('email') email: string) {
+    const uuid = await this.userService.getUuidByEmail(email);
+    return { uuid }; // <- Objet contenant le champ `uuid`
   }
 }

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Prestataire } from './prestataire.entity';
 
+
 @Entity()
 export class Avis {
   @PrimaryGeneratedColumn()

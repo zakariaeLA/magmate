@@ -22,6 +22,19 @@ import * as fs from 'fs';
         } catch (error) {
           console.error('Erreur lors de l\'initialisation de Firebase:', error);
         }
+        const serviceAccountPath = join(
+          __dirname,
+          '..',
+          '..',
+          'firebase-service-account.json',
+        );
+        const serviceAccount = JSON.parse(
+          fs.readFileSync(serviceAccountPath, 'utf8'),
+        );
+
+        return admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount),
+        });
       },
     },
   ],

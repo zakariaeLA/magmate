@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PrestataireService, Prestataire } from '../services/prestatairedetails.service';
+import { PrestatairedetailsService, Prestataire } from '../services/prestatairedetails.service';
 
 @Component({
   selector: 'app-prestataire-detail',
@@ -13,7 +13,7 @@ export class PrestataireDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private prestataireService: PrestataireService
+    private prestataireService: PrestatairedetailsService
   ) {}
 
   ngOnInit(): void {
@@ -29,13 +29,5 @@ export class PrestataireDetailComponent implements OnInit {
       });
     }
 
-    if (email) {
-      this.prestataireService.getPrestataireByEmail(email).subscribe({
-        next: (data) => {
-          this.prestataire = data;
-        },
-        error: (err) => console.error('Erreur Email :', err),
-      });
-    }
   }
 }

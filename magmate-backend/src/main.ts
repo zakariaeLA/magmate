@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // Importez Swagger
 import * as express from 'express';
 import { join } from 'path';
@@ -9,10 +10,21 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
-  app.use('/public', express.static(join(__dirname, '..', 'public')));
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
-    prefix: '/uploads/', 
+
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/public/',
   });
+
+  // Pour servir des fichiers statiques (comme les images uploadées)
+  /*app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });*/
+
+  await app.listen(process.env.PORT || 3000);
+
+  // 📂 Exposer le dossier public pour les images
+
+  // ✅ Activer la validation automatique pour les DTO
   app.useGlobalPipes(new ValidationPipe());
 
   app.use(express.json({ limit: '10mb' }));
@@ -34,7 +46,6 @@ async function bootstrap() {
 
   // Démarrer l'application sur un port spécifié dans les variables d'environnement ou sur 3000
 
-  await app.listen(process.env.PORT ?? 3000);
 }
 
 bootstrap();

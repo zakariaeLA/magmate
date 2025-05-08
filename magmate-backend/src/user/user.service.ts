@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -24,6 +24,15 @@ export class UserService {
 
     return user;
   }
+  async getUuidByEmail(email: string): Promise<string> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('Utilisateur non trouvé');
+    }
+    return user.id;
+  }
+  
+  
 
   
 
@@ -97,4 +106,5 @@ export class UserService {
 
     return this.userRepository.save(user);
   }
+  
 }
