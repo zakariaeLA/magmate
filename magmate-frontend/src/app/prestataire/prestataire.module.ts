@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,9 +10,12 @@ import { PrestataireCardComponent } from './components/prestataire-card/prestata
 import { PrestataireRoutingModule } from './prestatire-routing.module';
 import { MonProfilPrestataireComponent } from './pages/mon-profil-prestataire/mon-profil-prestataire.component';
 
+import {PrestataireComponent } from './pages/prestataire.component';
+import { PrestataireUpdateComponent } from './pages/prestataire-update.component';
+
 @NgModule({
   declarations: [
-    AccueilPrestataireComponent,PrestataireCardComponent, MonProfilPrestataireComponent,
+    AccueilPrestataireComponent,PrestataireCardComponent, MonProfilPrestataireComponent,PrestataireComponent ,PrestataireUpdateComponent
   ],
   imports: [
     PrestataireRoutingModule,
@@ -21,9 +25,10 @@ import { MonProfilPrestataireComponent } from './pages/mon-profil-prestataire/mo
     HttpClientModule,
   ],
   exports: [
-    AccueilPrestataireComponent 
+    AccueilPrestataireComponent ,PrestataireComponent,PrestataireUpdateComponent
   ]
 })
 export class PrestataireModule {}
+
 
 

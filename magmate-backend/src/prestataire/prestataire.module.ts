@@ -11,3 +11,4 @@ import { Prestataire } from './entities/prestataire.entity';
   exports: [TypeOrmModule],
 })
 export class PrestataireModule {}
+

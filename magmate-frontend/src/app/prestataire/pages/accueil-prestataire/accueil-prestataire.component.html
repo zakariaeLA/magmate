@@ -37,7 +37,8 @@
     <button class="close" (click)="closeModal()">&times;</button>
     <h2>Devenez Prestataire</h2>
     <p>Vous n'êtes pas encore un prestataire. Souhaitez-vous créer votre profil ?</p>
-    <button class="create-magasin" >Créer Profil</button>
+    <button class="create-magasin" [routerLink]="['/créer-profil']" routerLinkActive="router-link-active">Créer Profil</button>
+
     
   </div>
 </div>

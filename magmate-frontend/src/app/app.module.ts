@@ -36,6 +36,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     AppComponent,
 
     LoginComponent,
+   
     AuthComponent,
     SignupComponent,
     DashboardComponent,
@@ -44,6 +45,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
 
     
   ],
+
 
   imports: [
     AngularFireModule.initializeApp(environment.firebase), // Initialisation correcte de Firebase

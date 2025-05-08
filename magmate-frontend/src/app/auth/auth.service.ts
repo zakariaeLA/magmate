@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+
 import { getAuth } from '@angular/fire/auth';
 
-import { firstValueFrom } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';  // Utilisez AngularFireAuth
 import { Router } from '@angular/router';
+import { environment } from  '../../environments/environment'; // Votre configuration Firebase
+
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

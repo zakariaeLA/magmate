@@ -14,7 +14,9 @@ import { ProfileModule } from './profile/profile.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+
 import { PrestataireModule } from './prestataire/prestataire.module';
+
 
 @Module({
   imports: [
@@ -23,7 +25,11 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     UserModule,
     FirebaseAdminModule,
     ProfileModule,
+
     //MarketplaceModule,
+
+    PrestataireModule,
+    
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',

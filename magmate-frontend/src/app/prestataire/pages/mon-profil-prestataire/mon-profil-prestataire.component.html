@@ -24,8 +24,9 @@
       </div>
     </div>
   
-    <button class="modify-btn">Modifier</button>
-    <button class="delete-btn">Supprimer le compte</button>
+    <button class="modify-btn" [routerLink]="['/modifier-profil']">Modifier</button>
+    <button class="delete-btn" (click)="deleteProfil()">
+    >Supprimer le compte</button>
   </div>
   
   <div *ngIf="!prestataire">

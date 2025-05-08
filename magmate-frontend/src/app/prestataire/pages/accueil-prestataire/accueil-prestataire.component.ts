@@ -118,30 +118,33 @@ export class AccueilPrestataireComponent implements OnInit {
   // Votre logique pour vérifier si l'utilisateur est un prestataire, etc.
   monprofil() {
     const userString = localStorage.getItem('user') || sessionStorage.getItem('user');
-
+  
     if (userString) {
       const user = JSON.parse(userString);
       const email = user.email;
-
+  
       this.prestataireService.getUuidByEmail(email).subscribe({
         next: (response) => {
           const uuid = response.uuid;
           console.log('UUID depuis la BDD :', uuid);
-
-          // Stocker le UUID
+  
           localStorage.setItem('uuid', uuid);
-
-          // Vérifier si l'utilisateur est un prestataire
-          this.prestataireService.isPrestataire(uuid).subscribe({
-            next: (isPrestataire) => {
-              if (isPrestataire) {
-                this.router.navigate(['/monprofil']);
+  
+          // Récupérer les infos complètes du prestataire
+          this.prestataireService.getByUuid(uuid).subscribe({
+            next: (prestataire) => {
+              if (prestataire) {
+                if (prestataire.estApprouve) {
+                  this.router.navigate(['/monprofil']);
+                } else {
+                  alert("Votre demande est en cours de traitement par l'administration.");
+                }
               } else {
-                this.openModal(); // Ouvrir le modal si l'utilisateur n'est pas un prestataire
+                this.openModal(); // Pas encore prestataire
               }
             },
             error: (err) => {
-              console.error("Erreur lors de la vérification du rôle prestataire :", err);
+              console.error("Erreur lors de la récupération du prestataire :", err);
             }
           });
         },
@@ -149,10 +152,11 @@ export class AccueilPrestataireComponent implements OnInit {
           console.error('Erreur lors de la récupération de l\'UUID :', err);
         }
       });
-
+  
     } else {
       this.router.navigate(['/login']);
     }
   }
+  
 }
  

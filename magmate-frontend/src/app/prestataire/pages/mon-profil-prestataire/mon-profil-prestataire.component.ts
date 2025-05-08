@@ -47,6 +47,27 @@ export class MonProfilPrestataireComponent {
         error: err => console.error('Erreur lors de la mise à jour de la disponibilité', err)
       });
   }
+  delete(): void {
+    this.prestataireService.delete().subscribe(() => {
+      this.prestataire = undefined;
+    });
+  }
+  deleteProfil() {
+    if (this.prestataire && this.prestataire.idPrestataire) {
+      const prestataireId = this.prestataire.idPrestataire;
+      this.prestataireService.deletePrestataire(prestataireId).subscribe({
+        next: () => {
+          alert('Profil supprimé avec succès');
+          this.router.navigate(['/']); // Redirige vers la page d'accueil ou une autre page
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du profil', err);
+          alert('Une erreur est survenue lors de la suppression du profil');
+        }
+      });
+    }
+  }
+  
   
 
 }

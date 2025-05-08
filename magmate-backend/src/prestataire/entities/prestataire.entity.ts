@@ -4,8 +4,14 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  
+  OneToMany
 } from 'typeorm';
+
 import { User } from '../../user/entities/user.entity'; // adapte le chemin selon ton projet
+//import { Avis } from '../../marketplace/entities/avis.entity';
+//import { Reclamation} from '../../marketplace/entities/reclamation.entity';
+
 
 @Entity()
 export class Prestataire {
@@ -20,6 +26,7 @@ export class Prestataire {
 
   @Column()
   localisation: string;
+
 
   @Column({ default: true })
   disponibilite: boolean;
@@ -38,5 +45,15 @@ export class Prestataire {
   // 🔗 Relation avec User
   @OneToOne(() => User)
   @JoinColumn({ name: 'idUtilisateur', referencedColumnName: 'id' })
+
   utilisateur: User;
 }
+
+
+  /*@OneToMany(() => Avis, (avis) => avis.auteur)
+  avis: Avis[];
+    
+  @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
+  reclamations: Reclamation[];*/
+    
+
