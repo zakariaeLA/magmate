@@ -6,10 +6,9 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typ
 
 import { Prestataire } from 'src/prestataire/entities/prestataire.entity';
 
-/*import { OneToMany } from 'typeorm';
-import { Avis } from 'src/marketplace/entities/avis.entity';
-import { Reclamation } from 'src/marketplace/entities/reclamation.entity';
-import { Magasin } from 'src/marketplace/entities/magasin.entity';*/
+
+
+/*import { Magasin } from 'src/marketplace/entities/magasin.entity';*/
 
 
 enum UserRole {

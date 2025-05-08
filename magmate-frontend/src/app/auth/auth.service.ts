@@ -9,31 +9,20 @@ import { Router } from '@angular/router';
 import { environment } from  '../../environments/environment'; // Votre configuration Firebase
 
 import { firstValueFrom } from 'rxjs';
-import firebase from 'firebase/compat/app';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private API = 'http://localhost:3000/auth';
-  private user: firebase.User | null = null;
 
   constructor(
     private http: HttpClient,
 
     private afAuth: AngularFireAuth,
     private router: Router
-<<<<<<< HEAD
-  ) {
-    // Écoute les changements d'état de l'utilisateur
-    this.afAuth.authState.subscribe((user) => {
-      this.user = user;
-    });
-  }
-=======
   ) {}
   
   
   // Récupère le token Firebase actuel
->>>>>>> e43b4b0296a069690c2673b7840095ceea1029fb
 
   async getIdToken(): Promise<string | null> {
     const user = await this.afAuth.currentUser;
@@ -65,20 +54,6 @@ export class AuthService {
       })
     );
 
-  }
-
-
-   // Récupère l'email de l'utilisateur connecté
-   getEmail(): string | null {
-    return this.user?.email || null;
-  }
-
-  // Récupère le token de l'utilisateur connecté
-  async getToken(): Promise<string> {
-    if (!this.user) {
-      throw new Error('Utilisateur non authentifié');
-    }
-    return this.user.getIdToken();
   }
 
   async logout(): Promise<void> {

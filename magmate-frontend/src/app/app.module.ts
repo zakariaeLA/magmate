@@ -1,3 +1,4 @@
+// src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -6,8 +7,8 @@ import { AppRoutingModule } from './app-routing.module'; // Importation de AppRo
 import { AppComponent } from './app.component'; // Composant principal
 //import { MarketplaceModule } from './marketplace/marketplace.module';
 //import { HomeComponent } from './components/home/home.component';
-//import { HeaderComponent } from './components/header/header.component';
-//import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,52 +23,53 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
-import { RouterModule } from '@angular/router';
+
 import { PrestataireModule } from './prestataire/prestataire.module';
 
 @NgModule({
   declarations: [
-   // HeaderComponent,
-    //FooterComponent,
+    HeaderComponent,
+    FooterComponent,
     AppComponent,
-
 
     LoginComponent,
    
     AuthComponent,
     SignupComponent,
+    DashboardComponent,
     ResetPasswordComponent,
     ProfileComponent,
-    AppComponent,
-    
+
     
   ],
+
+
   imports: [
-    CommonModule,
-    BrowserModule,
-    PrestataireModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase), // Initialisation correcte de Firebase
     AngularFireAuthModule,
+    BrowserModule,
+    CommonModule,
+    AppRoutingModule,
+    //MarketplaceModule,
+    HttpClientModule, // Supprime la duplication
+    FormsModule,
+
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    PrestataireModule
     
   ],
-
-
-
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
     },
+
   ],
 
 

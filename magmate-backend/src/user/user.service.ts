@@ -34,8 +34,6 @@ export class UserService {
   
   
 
-  
-
   // // Méthode pour mettre à jour le profil
   // async updateProfile(id: string, updateUserDto: UpdateUserDto): Promise<User> {
   //   // const user = await this.userRepository.findOne({ where: { id } });

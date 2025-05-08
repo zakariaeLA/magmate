@@ -11,9 +11,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
 
-import { PrestataireDetailComponent } from './prestataire/pages/prestataire-details.component'; // Import du composant des détails du prestataire
-
-
 import { AuthGuard } from './auth/guards/auth.guard';
 
 //import { ProductDetailsComponent } from './marketplace/pages/product-details/product-details.component';  // Importation de votre composant de détails de produit
@@ -21,25 +18,26 @@ import { AuthGuard } from './auth/guards/auth.guard';
 //import { MarketplaceComponent } from './marketplace/pages/marketplacehome/marketplacehome.component';
 
 
-//import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { AccueilPrestataireComponent } from './prestataire/pages/accueil-prestataire/accueil-prestataire.component';
-
 
 const routes: Routes = [
 
   //{ path: 'product/:id', component: ProductDetailsComponent },  // Route dynamique pour afficher les détails du produit
-  //{ path: '', component: HomeComponent },
+  { path: '', component: HomeComponent },
   //{ path: 'marketplace', component: MarketplaceComponent },
   { path: 'prestataires', component: AccueilPrestataireComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'prestataires/uuid/:uuid', component: PrestataireDetailComponent },
-  
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  //{ path: 'product/:id', component: ProductDetailsComponent },  // Route dynamique pour afficher les détails du produit
+  { path: '', component: HomeComponent },
+  //{ path: 'marketplace', component: MarketplaceComponent },
+  //{ path: '**', redirectTo: '/login' },
+
+  // autres routes...
 ];
-
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)], // Utilisation de RouterModule pour la configuration des routes
