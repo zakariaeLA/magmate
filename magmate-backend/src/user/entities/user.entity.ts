@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn , OneToMany } from 'typeorm';
-import { Avis } from 'src/marketplace/entities/avis.entity';
-import { Reclamation } from 'src/marketplace/entities/reclamation.entity';
-import { Magasin } from 'src/marketplace/entities/magasin.entity';
+import { Avis } from 'src/prestataire/entities/avis.entity'
+import { Reclamation } from 'src/prestataire/entities/reclamation.entity';
+
 enum UserRole {
   ADMIN = 'admin',
   NORMAL_USER = 'normal_user',
@@ -38,6 +38,4 @@ export class User {
     @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
     reclamations: Reclamation[];
   
-    @OneToMany(() => Magasin, (magasin) => magasin.proprietaire)
-    magasins: Magasin[];
 }

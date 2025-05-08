@@ -1,4 +1,3 @@
-// src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,45 +14,37 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
-import { MarketplaceModule } from './marketplace/marketplace.module';  // Importation du module Marketplace
+import { PrestataireModule } from './prestataire/prestataire.module'; // Importer le module Prestataire
 import { RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
-    HeaderComponent, FooterComponent, 
+   
     LoginComponent,
     AuthComponent,
     SignupComponent,
-    DashboardComponent,
     ResetPasswordComponent,
     ProfileComponent,
-    AppComponent, 
-        
+    AppComponent,
+    
     
   ],
   imports: [
     CommonModule,
     BrowserModule,
-    MarketplaceModule ,  // Assurez-vous que le module marketplace est importé
+    PrestataireModule,
     HttpClientModule,
     FormsModule,
-    HomeComponent,
-
+    ReactiveFormsModule,
     RouterModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    HttpClientModule,
-   
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+   
   ],
   providers: [
     {
@@ -61,7 +52,6 @@ import { FooterComponent } from './components/footer/footer.component';
       useClass: AuthInterceptor,
       multi: true,
     },
-
   ],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,73 @@
+.prestataire-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+    border: 2px solid #007bff;
+  }
+  
+  .header-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header-info h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .header-info .email {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .details {
+    margin-top: 1rem;
+  }
+  
+  .details h3 {
+    font-size: 1.3rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .detail-item .label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .detail-item .value {
+    color: #333;
+  }
+  
+  .no-data {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #888;
+    padding: 2rem;
+  }
+  

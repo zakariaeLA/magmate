@@ -4,16 +4,23 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';  // Utilisez Angula
 import { Router } from '@angular/router';
 import { environment } from  'C:/magmate/magmate-frontend/src/environments/environment'; // Votre configuration Firebase
 import { firstValueFrom } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private API = 'http://localhost:3000/auth';
+  private user: firebase.User | null = null;
 
   constructor(
     private http: HttpClient,
     private afAuth: AngularFireAuth,  // Injection de AngularFireAuth
     private router: Router
-  ) {}
+  ) {
+    // Écoute les changements d'état de l'utilisateur
+    this.afAuth.authState.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   // Utilisez AngularFireAuth pour obtenir le token de l'utilisateur
   async getIdToken(): Promise<string | null> {
@@ -49,6 +56,20 @@ export class AuthService {
     } else {
       throw new Error("Token non trouvé");
     }
+  }
+
+
+   // Récupère l'email de l'utilisateur connecté
+   getEmail(): string | null {
+    return this.user?.email || null;
+  }
+
+  // Récupère le token de l'utilisateur connecté
+  async getToken(): Promise<string> {
+    if (!this.user) {
+      throw new Error('Utilisateur non authentifié');
+    }
+    return this.user.getIdToken();
   }
 
   async logout(): Promise<void> {
