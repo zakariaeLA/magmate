@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PrestataireService, Prestataire } from '../services/prestataire.service';
+import { PrestataireService, Prestataire } from '../../services/prestataire.service';
 
 @Component({
   selector: 'app-prestataire-update',

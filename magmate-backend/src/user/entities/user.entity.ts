@@ -1,20 +1,13 @@
-
-import { Avis } from 'src/prestataire/entities/avis.entity'
-import { Reclamation } from 'src/prestataire/entities/reclamation.entity';
-
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
-
+import {  avisprestataire } from 'src/prestataire/entities/avisprestataire.entity';
+import { Reclamationprestataire } from 'src/prestataire/entities/reclamationprestataire.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Prestataire } from 'src/prestataire/entities/prestataire.entity';
-
-
-
-/*import { Magasin } from 'src/marketplace/entities/magasin.entity';*/
-
 
 enum UserRole {
   ADMIN = 'admin',
   NORMAL_USER = 'normal_user',
 }
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -41,17 +34,14 @@ export class User {
   @Column({ name: 'registration_date', default: () => 'CURRENT_TIMESTAMP' })
   registrationDate: Date;
 
-  @OneToOne(() => Prestataire, (prestataire) => prestataire.utilisateur)
-  prestataire: Prestataire | null;
+  // 🔗 Relation OneToOne avec Prestataire
+  @OneToOne(() => Prestataire, (prestataire) => prestataire.utilisateur, { nullable: true })
+  prestataire?: Prestataire | null;
 
-  @OneToMany(() => Avis, (avis) => avis.auteur)
-    avis: Avis[];
-  
-  @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
-    reclamations: Reclamation[];
-  
+  @OneToMany(() => avisprestataire, (avis) => avis.auteur)
+  avis: avisprestataire[];
 
-    //@OneToMany(() => Magasin, (magasin) => magasin.proprietaire)
-    //magasins: Magasin[];*/
 
+  @OneToMany(() => Reclamationprestataire, (reclamation) => reclamation.utilisateur)
+  reclamations: Reclamationprestataire[];
 }

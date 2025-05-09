@@ -1,39 +1,22 @@
+// src/app/services/prestataire.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Prestataire {
-  idPrestataire: string;
-  specialite: string;
-  experience: string;
-  localisation: string;
-  telephone: string;
-  ville: string;
-  disponibilite: boolean;
-  estApprouve: boolean;
-  idUtilisateur: string;
-  utilisateur: {
-    email: string;
-    fname: string;
-    lname: string;
-    photo: string;
-  };
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrestatairedetailsService {
-  private baseUrl = 'http://localhost:3000/prestataires';
+  private API_URL = 'http://localhost:3000/prestataires';
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Récupérer le prestataire par UUID
+   * Récupérer les détails d'un prestataire par UUID
+   * @param uuid - UUID du prestataire
+   * @returns Observable avec les informations du prestataire
    */
-  getPrestataireByUuid(uuid: string): Observable<Prestataire> {
-    return this.http.get<Prestataire>(`${this.baseUrl}/uuid/${uuid}`);
+  getPrestataireByUuid(uuid: string): Observable<any> {
+    return this.http.get(`${this.API_URL}/${uuid}`);
   }
-
- 
 }

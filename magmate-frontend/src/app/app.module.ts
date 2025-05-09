@@ -64,6 +64,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     
   ],
   providers: [
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

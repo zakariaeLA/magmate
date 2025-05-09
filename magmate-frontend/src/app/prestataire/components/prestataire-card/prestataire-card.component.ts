@@ -14,7 +14,7 @@ export class PrestataireCardComponent {
 
   constructor(private router: Router , private authservice :AuthService ,private afAuth: AngularFireAuth,) {}
 
-  async voirDetails(idPrestataire: number) {
+  async voirDetails(idPrestataire: String) {
     const user = await this.afAuth.currentUser;
   
     if (user) {
@@ -23,7 +23,7 @@ export class PrestataireCardComponent {
       console.log('Token de l\'utilisateur connecté :', token);
       
       // Naviguer vers la page de détails du prestataire
-      this.router.navigate(['/']);
+      this.router.navigate(['/prestataires', idPrestataire]);
     } else {
       // Rediriger vers la page de connexion
       this.router.navigate(['/login']);

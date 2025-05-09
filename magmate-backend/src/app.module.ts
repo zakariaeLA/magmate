@@ -14,7 +14,6 @@ import { ProfileModule } from './profile/profile.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-
 import { PrestataireModule } from './prestataire/prestataire.module';
 
 
@@ -34,7 +33,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    // Database module
+    DatabaseModule,
     //MarketplaceModule,
     PrestataireModule,
     // Marketplace module
