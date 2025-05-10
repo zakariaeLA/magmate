@@ -13,9 +13,9 @@ import { ProfileComponent } from './profile/profile.component';
 
 import { AuthGuard } from './auth/guards/auth.guard';
 
-//import { ProductDetailsComponent } from './marketplace/pages/product-details/product-details.component';  // Importation de votre composant de détails de produit
+import { ProductDetailsComponent } from './marketplace/pages/product-details/product-details.component';  // Importation de votre composant de détails de produit
 
-//import { MarketplaceComponent } from './marketplace/pages/marketplacehome/marketplacehome.component';
+import { MarketplaceComponent } from './marketplace/pages/marketplacehome/marketplacehome.component';
 
 
 import { HomeComponent } from './components/home/home.component';
@@ -31,9 +31,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  //{ path: 'product/:id', component: ProductDetailsComponent },  // Route dynamique pour afficher les détails du produit
+  { path: 'product/:id', component: ProductDetailsComponent },  // Route dynamique pour afficher les détails du produit
   { path: '', component: HomeComponent },
-  //{ path: 'marketplace', component: MarketplaceComponent },
+  { path: 'marketplace', component: MarketplaceComponent },
   //{ path: '**', redirectTo: '/login' },
 
   // autres routes...

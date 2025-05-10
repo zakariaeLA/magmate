@@ -1,11 +1,6 @@
-
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&display=swap');
-@import '../../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
-
-
-
 
 
 :root {
@@ -17,5 +12,5 @@
     --white: #ffffff;
     --max-width: 1200px;
   }
-
+  
 body{margin: 0;}

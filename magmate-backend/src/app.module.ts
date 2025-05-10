@@ -10,13 +10,12 @@ import { ProfileModule } from './profile/profile.module';
 
 //import { MarketplaceModule } from './marketplace/marketplace.module';
 
-//import { MarketplaceModule } from './marketplace/marketplace.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { PrestataireModule } from './prestataire/prestataire.module';
-
 
 @Module({
   imports: [
@@ -29,13 +28,13 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     //MarketplaceModule,
 
     PrestataireModule,
-    
+
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
     // Database module
-    //MarketplaceModule,
+    MarketplaceModule,
     PrestataireModule,
     // Marketplace module
   ],

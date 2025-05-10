@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module'; // Importation de AppRoutingModule
 import { AppComponent } from './app.component'; // Composant principal
-//import { MarketplaceModule } from './marketplace/marketplace.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 //import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -53,7 +53,7 @@ import { PrestataireModule } from './prestataire/prestataire.module';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
-    //MarketplaceModule,
+    MarketplaceModule,
     HttpClientModule, // Supprime la duplication
     FormsModule,
 

@@ -2,10 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 
 import { Prestataire } from 'src/prestataire/entities/prestataire.entity';
 
-/*import { OneToMany } from 'typeorm';
+import { OneToMany } from 'typeorm';
 import { Avis } from 'src/marketplace/entities/avis.entity';
 import { Reclamation } from 'src/marketplace/entities/reclamation.entity';
-import { Magasin } from 'src/marketplace/entities/magasin.entity';*/
+import { Magasin } from 'src/marketplace/entities/magasin.entity';
 
 enum UserRole {
   ADMIN = 'admin',
@@ -40,12 +40,12 @@ export class User {
   @OneToOne(() => Prestataire, (prestataire) => prestataire.utilisateur)
   prestataire: Prestataire | null;
 
-  /*@OneToMany(() => Avis, (avis) => avis.auteur)
-    avis: Avis[];
-  
-    @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
-    reclamations: Reclamation[];
-  
-    @OneToMany(() => Magasin, (magasin) => magasin.proprietaire)
-    magasins: Magasin[];*/
+  @OneToMany(() => Avis, (avis) => avis.auteur)
+  avis: Avis[];
+
+  @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
+  reclamations: Reclamation[];
+
+  @OneToMany(() => Magasin, (magasin) => magasin.proprietaire)
+  magasins: Magasin[];
 }
