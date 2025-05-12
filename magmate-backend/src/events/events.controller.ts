@@ -17,12 +17,14 @@ export class EventsController {
   async findAll(@Query() filters: { city?: string; type?: string }): Promise<Event[]> {
     return this.eventsService.findAll(filters);
   }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Event> {
-    return this.eventsService.findOne(id);
+  
+  @Get(':my-events')
+  @UseGuards(FirebaseAuthGuard)
+  async findMyEvents(@GetUser() user: User): Promise<Event[]> {
+    console.log("email recupere  ",user.email); // 🔁
+    return this.eventsService.findMyEvents(user.email); // 🔁
   }
-
+  
   @Post()
   @UseGuards(FirebaseAuthGuard)
   async create(
@@ -32,13 +34,7 @@ export class EventsController {
     return this.eventsService.create(createEventDto, user.email); // 🔁 On passe l'email
   }
 
-  @Get('my')
-  @UseGuards(FirebaseAuthGuard)
-  async findMyEvents(@GetUser() user: User): Promise<Event[]> {
-    console.log("email recupere  ",user.email); // 🔁
-    return this.eventsService.findMyEvents(user.email); // 🔁
-  }
-
+  
   @Delete(':id')
   @UseGuards(FirebaseAuthGuard)
   async deleteEvent(@Param('id') id: string, @GetUser() user: User): Promise<void> {
@@ -64,10 +60,14 @@ export class EventsController {
     return this.eventsService.addToFavorites(id, user.email); // 🔁
   }
 
-  @Get('favorites')
+  @Get('my-favorites')
   @UseGuards(FirebaseAuthGuard)
   async getFavorites(@GetUser() user: User): Promise<Event[]> {
     return this.eventsService.getFavorites(user.email); // 🔁
+  }
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Event> {
+    return this.eventsService.findOne(id);
   }
 
   @Delete(':id/favorite')
