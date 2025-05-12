@@ -21,7 +21,7 @@ import { PrestataireDetailsComponent } from './pages/prestatairedetails/prestata
     MonProfilPrestataireComponent,
     PrestataireComponent ,
     PrestataireUpdateComponent, 
-    PrestataireDetailsComponent,
+    PrestataireDetailsComponent, 
     
 
   ],
