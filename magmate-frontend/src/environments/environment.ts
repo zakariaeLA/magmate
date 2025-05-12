@@ -7,6 +7,7 @@ export const environment = {
       storageBucket: "magmate-6019a.appspot.com",
       messagingSenderId: "983652334483",
       appId: "1:983652334483:web:07328f042ccb7b16c64666"
-    }
+    },
+    apiUrl: 'http://localhost:3000', // URL de l'API backend
   };
   

@@ -1,0 +1,89 @@
+<div class="events-container">
+  <div class="header">
+    <h1>Événements</h1>
+    <button class="create-btn" (click)="createEvent()">
+      <i class="fa fa-plus"></i> Créer un événement
+    </button>
+  </div>
+
+  <!-- Formulaire de filtres -->
+  <div class="filters-section">
+    <form [formGroup]="filterForm" class="filter-form">
+      <div class="form-group">
+        <input 
+          type="text" 
+          formControlName="searchTerm"
+          placeholder="Rechercher un événement..."
+          class="search-input"
+        >
+      </div>
+      
+      <div class="form-group">
+        <select formControlName="city" class="filter-select">
+          <option value="">Toutes les villes</option>
+          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <select formControlName="type" class="filter-select">
+          <option value="">Tous les types</option>
+          <option *ngFor="let type of eventTypes" [value]="type">
+            {{ type === 'EVENT' ? 'Événement' : 'Activité' }}
+          </option>
+        </select>
+      </div>
+      
+      <button type="button" class="reset-btn" (click)="resetFilters()">
+        Réinitialiser
+      </button>
+    </form>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Liste des événements -->
+  <div *ngIf="!isLoading" class="events-grid">
+    <div *ngFor="let event of events" class="event-card" (click)="viewEventDetails(event.id)">
+      <div class="card-image" [style.backgroundImage]="'url(' + event.imageUrl + ')'">
+        <span class="event-type" [ngClass]="event.type.toLowerCase()">
+          {{ event.type === 'EVENT' ? 'Événement' : 'Activité' }}
+        </span>
+      </div>
+      
+      <div class="card-content">
+        <h3 class="event-title">{{ event.title }}</h3>
+        <p class="event-date">
+          <i class="fa fa-calendar"></i>
+          {{ event.date | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+        <p class="event-location">
+          <i class="fa fa-map-marker"></i>
+          {{ event.city }} - {{ event.lieu }}
+        </p>
+        <p class="event-description">{{ event.description | slice:0:100 }}{{ event.description.length > 100 ? '...' : '' }}</p>
+        
+        <div class="card-actions">
+          <button class="details-btn" (click)="viewEventDetails(event.id); $event.stopPropagation()">
+            Voir détails
+          </button>
+          <button 
+            class="favorite-btn" 
+            [class.active]="isFavorite(event.id)"
+            (click)="toggleFavorite(event, $event)"
+          >
+            <i class="fa" [ngClass]="isFavorite(event.id) ? 'fa-star' : 'fa-star-o'"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucun événement -->
+  <div *ngIf="!isLoading && events.length === 0" class="no-events">
+    <p>Aucun événement ne correspond à votre recherche.</p>
+  </div>
+</div>

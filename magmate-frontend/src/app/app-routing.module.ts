@@ -5,13 +5,27 @@ import { LoginComponent } from './auth/login/login.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { EventsListComponent } from './events/events-list/events-list.component';
+import { EventsCreateComponent } from './events/events-create/events-create.component';
+import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/login' },
+  { path: 'events', component: EventsListComponent },
+  {
+    path: 'events/create',
+    component: EventsCreateComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'events/edit/:id',
+    component: EventsCreateComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'events/:id', component: EventsDetailsComponent },
 ];
 
 @NgModule({

@@ -18,6 +18,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EventsComponent } from './events/events.component';
+import { EventsListComponent } from './events/events-list/events-list.component';
+import { EventsCreateComponent } from './events/events-create/events-create.component';
+import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,10 @@ import { ProfileComponent } from './profile/profile.component';
     DashboardComponent,
     ResetPasswordComponent,
     ProfileComponent,
+    EventsComponent,
+    EventsListComponent,
+    EventsCreateComponent,
+    EventsDetailsComponent,
   ],
   imports: [
     CommonModule,
