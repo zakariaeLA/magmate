@@ -19,8 +19,9 @@ export class MonProfilPrestataireComponent {
   ) {}
   ngOnInit(): void {
     this.uuid = localStorage.getItem('uuid');
+    console.log('UUID trouvé dans localStorage :', this.uuid);
     if (this.uuid) {
-      this.prestataireService.getPrestataireByUuid(this.uuid).subscribe({
+      this.prestataireService.getMe2(this.uuid).subscribe({
         next: (data) => {
           this.prestataire = data;
           console.log('Profil prestataire:', this.prestataire);  // Vérifie les données

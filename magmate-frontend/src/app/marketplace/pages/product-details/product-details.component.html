@@ -1,5 +1,5 @@
 <body>
-  <h1>Détails du produit</h1> <!-- Entête de la page avec le titre -->
+  <h1><i>{{ product.titre }}</i></h1><!-- Entête de la page avec le titre -->
 
   <div *ngIf="product" class="product-details">
     <!-- Section des images du produit -->
@@ -18,21 +18,22 @@
 
     <!-- Informations sur le produit -->
     <div class="product-info">
-      <h2>{{ product.titre }}</h2> <!-- Titre du produit -->
+       <!-- Titre du produit -->
+      <div class="price">
+        <span>{{ product.prix }} DH</span>
+      </div>
       <p>{{ product.description }}</p> <!-- Description du produit -->
       
       <!-- Affichage du prix -->
-      <div class="price">
-        <span>Prix : {{ product.prix }} DH</span>
-      </div>
+      
 
       <p class="store-name">
         Magasin : 
-        <a [routerLink]="['/magasin', product.magasin.idMagasin]">
+        
           {{ product.magasin.nom }}
-        </a>
+        
       </p>
-
+       <div class="button-container">
       <button (click)="showReclamationForm = true" class="report-button">
         Signaler le produit
       </button>
@@ -41,12 +42,13 @@
       <button class="contact-button" (click)="contactSeller()">
         Contacter le vendeur
       </button>
+      </div>
     </div>
   </div>
 
   <!-- Section des commentaires -->
 <div class="comments-section">
-  <h3>Commentaires</h3>
+  <h3>Vos commentaires</h3>
   <div *ngFor="let comment of comments" class="comment">
     <p class="username">{{ comment.auteur?.lname }} {{ comment.auteur?.fname }} :</p>
     <p>{{ comment.commentaire }}</p>
@@ -65,32 +67,32 @@
     <button (click)="addComment()">Ajouter le commentaire</button>
   </div>
 </div>
+<!-- Modal pour la réclamation -->
+<div *ngIf="showReclamationForm" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeReclamationForm()">&times;</span>
+    <h3>Formulaire de réclamation</h3>
 
-  <!-- Modal pour la réclamation -->
-  <div *ngIf="showReclamationForm" class="modal">
-    <div class="modal-content">
-      <span class="close" (click)="closeReclamationForm()">&times;</span>
-      <h3>Formulaire de réclamation</h3>
-      <form (ngSubmit)="addReclamation()">
-        
-        <!-- Description de la réclamation -->
-        <div class="form-group">
-          <label for="description" class="form-label">Description de la réclamation :</label>
-          <textarea [(ngModel)]="reclamationData.description" name="description" id="description" required class="form-input"></textarea>
-        </div>
+    <form class="reclamation-form" (ngSubmit)="addReclamation()">
+      <!-- Description de la réclamation -->
+      <div class="form-group">
+        <label for="description" class="form-label">Description </label>
+        <textarea [(ngModel)]="reclamationData.description" name="description" id="description" required></textarea>
+      </div>
 
-        <!-- Pièce jointe -->
-        <div class="form-group">
-          <label for="pieceJointe" class="form-label">Pièce jointe (facultatif) :</label>
-          <input type="file" (change)="onFileSelected($event)" name="pieceJointe" id="pieceJointe" class="form-input"/>
-        </div>
+      <!-- Pièce jointe -->
+      <div class="form-group">
+        <label for="pieceJointe" class="form-label">Pièce jointe (facultatif) </label>
+        <input type="file" (change)="onFileSelected($event)" name="pieceJointe" id="pieceJointe" />
+      </div>
 
-        <!-- Bouton Envoyer -->
-        <div class="form-group">
-          <button type="submit" [disabled]="!reclamationData.description" class="form-button">Envoyer la réclamation</button>
-        </div>
-      </form>
-    </div>
+      <!-- Bouton Envoyer -->
+      <div class="form-group">
+        <button type="submit" [disabled]="!reclamationData.description">Envoyer la réclamation</button>
+      </div>
+    </form>
   </div>
+</div>
+
 
 </body>

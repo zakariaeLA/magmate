@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrestataireService, Prestataire } from '../services/prestataire.service';
+import { PrestataireService, Prestataire } from '../../services/prestataire.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { AlertService } from '../../marketplace/services/alerte.service';
 

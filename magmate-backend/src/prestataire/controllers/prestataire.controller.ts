@@ -10,7 +10,7 @@ import {
   Put,
   Delete,
   Req,
-  UseGuards,
+  
 } from '@nestjs/common';
 
 import { PrestataireService } from '../services/prestataire.service';
@@ -18,7 +18,7 @@ import { Prestataire } from '../entities/prestataire.entity';
 
 import { CreatePrestataireDto } from '../dto/create-prestataire.dto';
 import { UpdatePrestataireDto } from '../dto/update-prestataire.dto';
-import { FirebaseAuthGuard } from '../../auth/firebase-auth.guard';
+
 //import { FirebaseAuthGuard } from 'src/auth/firebase-auth.guard';
 
 @Controller('prestataires')

@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
@@ -15,16 +16,13 @@ async function bootstrap() {
     prefix: '/public/',
   });
 
-  // Pour servir des fichiers statiques (comme les images uploadées)
-  /*app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
-  });*/
+  });
 
   await app.listen(process.env.PORT || 3000);
 
-  // 📂 Exposer le dossier public pour les images
-
-  // ✅ Activer la validation automatique pour les DTO
   app.useGlobalPipes(new ValidationPipe());
 
   app.use(express.json({ limit: '10mb' }));
@@ -32,7 +30,7 @@ async function bootstrap() {
 
   // Configuration de Swagger
   const config = new DocumentBuilder()
-    .setTitle('API de Magmate') // Titre de votre API
+    .setTitle('API de Magmate') 
     .setDescription(
       "La documentation de l'API pour gérer les magasins et produits",
     ) // Description

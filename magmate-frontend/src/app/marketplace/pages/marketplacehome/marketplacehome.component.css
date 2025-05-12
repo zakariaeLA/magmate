@@ -1,7 +1,7 @@
 /* Appliquer la couleur de fond uniquement au body */
 html, body {
   min-height: 100vh;
-  background-color: #edd1ab;
+  background-color: #fff0e7;
   margin: 0;
   padding: 0;
 }

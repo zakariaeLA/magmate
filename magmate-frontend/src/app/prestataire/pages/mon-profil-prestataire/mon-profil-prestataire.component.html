@@ -1,5 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <div *ngIf="prestataire" class="profil-container">
-    <h2>Mon Profil</h2>
+    <h2><strong>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</strong></h2>
     <div class="profil-content">
       <img
         class="profile-img"
@@ -7,12 +8,12 @@
         alt="Photo de profil"
       />
       <div class="profil-info">
-        <p><strong>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</strong></p>
-        <p>{{ prestataire.utilisateur?.email }}</p>
-        <p>{{ prestataire.ville }}</p>
-        <p>{{ prestataire.specialite }}</p>
-        <p>{{ prestataire.telephone }}</p>
-        <p>{{ prestataire.experience }}</p>
+        
+        <p><strong>Email :</strong>{{ prestataire.utilisateur?.email }}</p>
+        <p><strong>Ville :</strong>{{ prestataire.ville }}</p>
+        <p><strong>Spécialité :</strong>{{ prestataire.specialite }}</p>
+        <p><strong>Téléphone :</strong>{{ prestataire.telephone }}</p>
+        <p><strong>Expérience :</strong>{{ prestataire.experience }}</p>
   
         <button
           class="availability-btn"
@@ -24,9 +25,15 @@
       </div>
     </div>
   
-    <button class="modify-btn" [routerLink]="['/modifier-profil']">Modifier</button>
-    <button class="delete-btn" (click)="deleteProfil()">
-    >Supprimer le compte</button>
+    
+    <button class="modify-btn" [routerLink]="['/modifier-profil']">
+  <i class="fas fa-pen"></i> Modifier
+</button>
+
+    <button class="delete-btn">
+  <i class="fas fa-trash-alt"></i> Supprimer le compte
+</button>
+
   </div>
   
   <div *ngIf="!prestataire">

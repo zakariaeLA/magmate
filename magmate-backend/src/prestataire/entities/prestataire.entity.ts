@@ -4,14 +4,11 @@ import {
   Column,
   OneToOne,
   JoinColumn,
-  
-  OneToMany
+  OneToMany,
 } from 'typeorm';
-
-import { User } from '../../user/entities/user.entity'; // adapte le chemin selon ton projet
-//import { Avis } from '../../marketplace/entities/avis.entity';
-//import { Reclamation} from '../../marketplace/entities/reclamation.entity';
-
+import { User } from '../../user/entities/user.entity';
+import { avisprestataire } from './avisprestataire.entity';
+import { Reclamationprestataire } from './reclamationprestataire.entity';
 
 @Entity()
 export class Prestataire {
@@ -27,7 +24,6 @@ export class Prestataire {
   @Column()
   localisation: string;
 
-
   @Column({ default: true })
   disponibilite: boolean;
 
@@ -39,21 +35,21 @@ export class Prestataire {
 
   @Column({ default: false })
   estApprouve: boolean;
-  @Column()
+
+  @Column({ nullable: false })
   idUtilisateur: string;
 
-  // 🔗 Relation avec User
-  @OneToOne(() => User)
+  // Relation OneToOne avec User
+  @OneToOne(() => User, { eager: true })
   @JoinColumn({ name: 'idUtilisateur', referencedColumnName: 'id' })
-
   utilisateur: User;
+
+  @OneToMany(() => avisprestataire, (avis) => avis.prestataire)
+  avis: avisprestataire[];
+
+  @OneToMany(
+    () => Reclamationprestataire,
+    (reclamation) => reclamation.prestataire,
+  )
+  reclamations: Reclamationprestataire[];
 }
-
-
-  /*@OneToMany(() => Avis, (avis) => avis.auteur)
-  avis: Avis[];
-    
-  @OneToMany(() => Reclamation, (reclamation) => reclamation.utilisateur)
-  reclamations: Reclamation[];*/
-    
-

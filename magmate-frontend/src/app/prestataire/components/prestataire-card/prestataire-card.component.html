@@ -5,6 +5,8 @@
       [src]="prestataire.utilisateur?.photo"
       alt="Photo de profil"
     />
+    <div class="disponibilite-indicateur" *ngIf="prestataire.disponibilite === true" title="Disponible"></div>
+
     <h3>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</h3>
     <p class="specialite">{{ prestataire.specialite }}</p>
   </div>
