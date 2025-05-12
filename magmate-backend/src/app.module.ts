@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 import { ProfileModule } from './profile/profile.module';
+import { EventsModule } from './events/events.module';
 
 
 @Module({
@@ -15,6 +16,7 @@ import { ProfileModule } from './profile/profile.module';
     UserModule,
     FirebaseAdminModule,
     ProfileModule,
+    EventsModule,
   ],
   controllers: [AppController, ],
   providers: [AppService, ],
