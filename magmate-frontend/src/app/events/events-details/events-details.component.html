@@ -4,7 +4,7 @@
     <button class="back-btn" (click)="goBack()">
       <i class="fa fa-arrow-left"></i> Retour aux événements
     </button>
-    <div class="actions" *ngIf="isAuthenticated">
+    <div class="actions" >
       <button 
         class="favorite-btn" 
         [class.active]="isFavorite"
@@ -29,7 +29,7 @@
   </div>
 
   <!-- Event details -->
-  <div *ngIf="event && !isLoading && !error" class="event-card">
+  <div *ngIf="event " class="event-card">
     <div class="event-header">
       <span class="event-type" [ngClass]="event.type.toLowerCase()">
         {{ event.type === 'EVENT' ? 'Événement' : 'Activité' }}

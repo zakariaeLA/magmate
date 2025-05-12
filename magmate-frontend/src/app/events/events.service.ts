@@ -5,30 +5,34 @@ import { Event, CreateEventDto, UpdateEventDto } from './event.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventsService {
   private apiUrl = `${environment.apiUrl}/events`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Récupérer tous les événements avec filtres optionnels
-  getAllEvents(filters?: { city?: string; type?: string }): Observable<Event[]> {
+  getAllEvents(filters?: {
+    city?: string;
+    type?: string;
+  }): Observable<Event[]> {
     let params = new HttpParams();
-    
+
     if (filters?.city) {
       params = params.set('city', filters.city);
     }
-    
+
     if (filters?.type) {
       params = params.set('type', filters.type);
     }
-    
+
     return this.http.get<Event[]>(this.apiUrl, { params });
   }
 
   // Récupérer un événement par son ID
   getEventById(id: string): Observable<Event> {
+    console.log('Event ID:', id);
     return this.http.get<Event>(`${this.apiUrl}/${id}`);
   }
 

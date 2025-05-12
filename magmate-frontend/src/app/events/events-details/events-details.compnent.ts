@@ -10,13 +10,12 @@ import { switchMap, takeUntil, Subject } from 'rxjs';
   styleUrls: ['./events-details.component.css'],
   standalone: false,
 })
-export class EventsDetailsComponent {
+export class EventsDetailsComponent implements OnInit {
   event: Event | null = null;
   isLoading = true;
   error = '';
   isCreator = false;
   isFavorite = false;
-  isAuthenticated = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -24,14 +23,15 @@ export class EventsDetailsComponent {
     private router: Router,
     private eventsService: EventsService
   ) {}
+ ngOnInit(): void {
+    this.loadEventDetails();
+    this.checkIfCreator();
+    this.checkIfFavorite();
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
+ }
   loadEventDetails(): void {
     const eventId = this.route.snapshot.paramMap.get('id');
+    console.log('Event ID:', eventId);
     if (!eventId) {
       this.error = "Identifiant d'événement manquant";
       this.isLoading = false;
@@ -40,14 +40,10 @@ export class EventsDetailsComponent {
 
     this.eventsService.getEventById(eventId).subscribe({
       next: (event) => {
+        console.log('Event ID:', event);
+
         this.event = event;
         this.isLoading = false;
-
-        // Vérifier si l'événement est dans les favoris
-        if (this.isAuthenticated) {
-          this.checkIfFavorite();
-          this.checkIfCreator();
-        }
       },
       error: (error) => {
         this.error = "Impossible de charger les détails de l'événement";
@@ -84,11 +80,6 @@ export class EventsDetailsComponent {
   }
 
   toggleFavorite(): void {
-    if (!this.isAuthenticated) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
     if (!this.event) return;
 
     if (this.isFavorite) {
