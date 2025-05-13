@@ -14,6 +14,7 @@ const routes: Routes = [
   {path :'créer-profil', component:PrestataireComponent},
   {path :'modifier-profil', component:PrestataireUpdateComponent},
 
+
 ];
 
 @NgModule({

@@ -30,7 +30,7 @@
       <p class="store-name">
         Magasin : 
         
-          {{ product.magasin.nom }}
+         <a [routerLink]="['/magasin-détails', product.magasin.idMagasin]">{{ product.magasin.nom }}</a> 
         
       </p>
        <div class="button-container">

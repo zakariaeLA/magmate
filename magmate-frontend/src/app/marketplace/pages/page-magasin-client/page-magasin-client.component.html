@@ -1,0 +1,38 @@
+
+
+
+
+<div *ngIf="magasin" class="magasin-container">
+  <div class="magasin-header">
+    <img [src]="'http://localhost:3000/public/images/' + magasin.image" alt="Image du magasin" class="header-image" />
+    <div class="overlay">
+      <div class="header-content">
+        <h1>{{ magasin.nom }}</h1>
+        <P>{{ magasin.telephone}}</P>  <P>{{ magasin.ville}}</P> <P>{{ magasin.localisation}}</P>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #errorTemplate>
+    <p class="error">{{ error || 'Aucun magasin trouvé.' }}</p>
+  </ng-template>
+
+  <div *ngIf="produits.length > 0">
+    <h2 class="section-title">Mes produits</h2>
+    <div class="product-list">
+      <div *ngFor="let produit of produits" class="product-card">
+        <img [src]="'http://localhost:3000/public/images/' + produit.imagePrincipale" alt="{{ produit.titre }}" class="product-image" />
+        <h3>{{ produit.titre }}</h3>
+        <p><strong>Prix:</strong> {{ produit.prix }} MAD</p>
+        
+  <button class="details-button" [routerLink]="['/produit', produit.idProduit]">Voir Détails</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="produits.length === 0">
+    <p>Aucun produit disponible dans ce magasin pour le moment.</p>
+  </div>
+</div>
+
+
