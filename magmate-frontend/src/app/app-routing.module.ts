@@ -8,6 +8,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { EventsListComponent } from './events/events-list/events-list.component';
 import { EventsCreateComponent } from './events/events-create/events-create.component';
 import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
+import { MyEventsComponent } from './events/my-events/my-events.component';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -19,13 +20,14 @@ const routes: Routes = [
     path: 'events/create',
     component: EventsCreateComponent,
     canActivate: [AuthGuard],
-  },
+  },  { path: 'events/my', component: MyEventsComponent },
   {
     path: 'events/edit/:id',
     component: EventsCreateComponent,
     canActivate: [AuthGuard],
   },
   { path: 'events/:id', component: EventsDetailsComponent },
+
 ];
 
 @NgModule({

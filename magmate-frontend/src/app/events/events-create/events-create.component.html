@@ -1,7 +1,7 @@
 <div class="create-event-container">
   <div class="form-header">
-    <h1>Créer un nouvel événement</h1>
-    <p>Remplissez le formulaire ci-dessous pour créer votre événement</p>
+    <h1>{{ isEditMode ? 'Modifier un événement' : 'Créer un nouvel événement' }}</h1>
+    <p>{{ isEditMode ? 'Modifiez les informations de votre événement' : 'Remplissez le formulaire ci-dessous pour créer votre événement' }}</p>
   </div>
 
   <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
@@ -130,8 +130,8 @@
     <div class="form-actions">
       <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
       <button type="submit" class="submit-btn" [disabled]="isSubmitting">
-        <span *ngIf="isSubmitting">Création en cours...</span>
-        <span *ngIf="!isSubmitting">Créer l'événement</span>
+        <span *ngIf="isSubmitting">{{ isEditMode ? 'Modification en cours...' : 'Création en cours...' }}</span>
+        <span *ngIf="!isSubmitting">{{ isEditMode ? 'Modifier l\'événement' : 'Créer l\'événement' }}</span>
       </button>
     </div>
   </form>

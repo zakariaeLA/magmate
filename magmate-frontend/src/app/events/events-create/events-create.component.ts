@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EventsService } from '../events.service';
 import { EventType } from '../event.model';
 
@@ -15,6 +16,8 @@ export class EventsCreateComponent implements OnInit {
   eventTypes = Object.values(EventType);
   isSubmitting = false;
   formError = '';
+  isEditMode = false; // Détecte si on est en mode modification
+  eventId: string | null = null;
   
   // Liste prédéfinie de villes françaises (à adapter selon vos besoins)
   cities = [
@@ -25,14 +28,31 @@ export class EventsCreateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private eventsService: EventsService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.eventForm = this.createForm();
   }
 
   ngOnInit(): void {
+        this.eventId = this.route.snapshot.paramMap.get('id');
+    if (this.eventId) {
+      this.isEditMode = true;
+      this.loadEventDetails(this.eventId);
+    }
   }
-
+  // Charger les détails de l'événement en mode modification
+  loadEventDetails(id: string): void {
+    this.eventsService.getEventById(id).subscribe({
+      next: (event) => {
+        this.eventForm.patchValue(event); // Pré-remplit le formulaire avec les données de l'événement
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des détails de l\'événement :', error);
+        this.router.navigate(['/events']); // Redirige si l'événement n'existe pas
+      }
+    });
+  }
   createForm(): FormGroup {
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -45,24 +65,40 @@ export class EventsCreateComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    if (this.eventForm.invalid) {
-      this.markFormGroupTouched(this.eventForm);
-      return;
-    }
+ onSubmit(): void {
+  if (this.eventForm.invalid) {
+    this.markFormGroupTouched(this.eventForm);
+    return;
+  }
 
-    this.isSubmitting = true;
-    this.formError = '';
+  this.isSubmitting = true;
+  this.formError = '';
 
-    // Formater la date si nécessaire
-    const formData = {
-      ...this.eventForm.value,
-      date: new Date(this.eventForm.value.date)
-    };
+  const formData = {
+    ...this.eventForm.value,
+    date: new Date(this.eventForm.value.date)
+  };
 
-    this.eventsService.createEvent(formData).subscribe({
-      next: (response) => {
+  if (this.isEditMode && this.eventId) {
+    // Mode modification
+    this.eventsService.updateEvent(this.eventId, formData).subscribe({
+      next: () => {
         this.isSubmitting = false;
+        alert('Événement modifié avec succès !');
+        this.router.navigate(['/events/my']);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.formError = error.error?.message || 'Une erreur est survenue lors de la modification de l\'événement';
+        console.error('Erreur de modification d\'événement', error);
+      }
+    });
+  } else {
+    // Mode création
+    this.eventsService.createEvent(formData).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        alert('Événement créé avec succès !');
         this.router.navigate(['/events']);
       },
       error: (error) => {
@@ -72,26 +108,33 @@ export class EventsCreateComponent implements OnInit {
       }
     });
   }
-
-  // Marquer tous les champs comme touchés pour afficher les erreurs
-  markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
-    });
-  }
-
-  // Vérifier si un champ a des erreurs et a été touché
-  hasError(controlName: string, errorName?: string): boolean {
-    const control = this.eventForm.get(controlName);
-    if (errorName) {
-      return !!control?.touched && control?.hasError(errorName);
+}
+private markFormGroupTouched(formGroup: FormGroup): void {
+  Object.keys(formGroup.controls).forEach((key) => {
+    const control = formGroup.get(key);
+    if (control) {
+      control.markAsTouched();
     }
-    return !!control?.touched && !!control?.errors;
+  });
+}
+hasError(controlName: string, errorName?: string): boolean {
+  const control = this.eventForm.get(controlName);
+  if (!control) return false;
+
+  if (errorName) {
+    return control.hasError(errorName) && (control.dirty || control.touched);
   }
 
-  // Annuler la création et retourner à la liste
-  cancel(): void {
+  return control.invalid && (control.dirty || control.touched);
+}
+cancel(): void {
+  if (this.isEditMode) {
+    // Redirige vers la page "Mes événements" en mode modification
+    this.router.navigate(['/events/my']);
+  } else {
+    // Redirige vers la liste des événements en mode création
     this.router.navigate(['/events']);
   }
+}
+
 }

@@ -70,4 +70,5 @@ export class EventsService {
   removeFromFavorites(eventId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${eventId}/favorite`);
   }
+  
 }

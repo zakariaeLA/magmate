@@ -152,4 +152,8 @@ export class EventsListComponent implements OnInit {
   isFavorite(eventId: string): boolean {
     return this.favorites.has(eventId);
   }
+
+  returnmyEvent(): void {
+  window.location.href = '/events/my-events';
+}
 }

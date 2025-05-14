@@ -10,6 +10,6 @@ export class Favorite {
   @ManyToOne(() => User, (user) => user.favorites)
   user: User;
 
-  @ManyToOne(() => Event, (event) => event.favorites)
+  @ManyToOne(() => Event, (event) => event.favorites, { onDelete: 'CASCADE' }) // Ajout de onDelete: 'CASCADE'
   event: Event;
 }

@@ -22,6 +22,7 @@ import { EventsComponent } from './events/events.component';
 import { EventsListComponent } from './events/events-list/events-list.component';
 import { EventsCreateComponent } from './events/events-create/events-create.component';
 import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
+import { MyEventsComponent } from './events/my-events/my-events.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { EventsDetailsComponent } from './events/events-details/events-details.c
     EventsListComponent,
     EventsCreateComponent,
     EventsDetailsComponent,
+    MyEventsComponent,
   ],
   imports: [
     CommonModule,
