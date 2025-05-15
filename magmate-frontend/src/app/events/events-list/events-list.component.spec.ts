@@ -1,23 +1,47 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
+import { EventsService } from '../events.service';
+import { Event } from '../event.model';
 
-import { EventsListComponent } from './events-list.component';
+@Component({
+  selector: 'app-events-list',
+  templateUrl: './events-list.component.html',
+  styleUrls: ['./events-list.component.css']
+})
+export class EventsListComponent implements OnInit {
+  events: Event[] = [];
+  favoritesIds: string[] = [];
 
-describe('EventsListComponent', () => {
-  let component: EventsListComponent;
-  let fixture: ComponentFixture<EventsListComponent>;
+  constructor(private eventsService: EventsService) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [EventsListComponent]
-    })
-    .compileComponents();
+  ngOnInit(): void {
+    this.loadEvents();
+    this.loadFavorites();
+  }
 
-    fixture = TestBed.createComponent(EventsListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  loadEvents() {
+    this.eventsService.getAllEvents().subscribe(events => this.events = events);
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  loadFavorites() {
+    this.eventsService.getFavorites().subscribe(favs => {
+      this.favoritesIds = favs.map(f => f.id);
+    });
+  }
+
+  isFavorite(eventId: string): boolean {
+    return this.favoritesIds.includes(eventId);
+  }
+
+  toggleFavorite(event: Event, e: MouseEvent): void {
+    e.stopPropagation();
+    if (this.isFavorite(event.id)) {
+      this.eventsService.removeFromFavorites(event.id).subscribe(() => {
+        this.favoritesIds = this.favoritesIds.filter(id => id !== event.id);
+      });
+    } else {
+      this.eventsService.addToFavorites(event.id).subscribe(() => {
+        this.favoritesIds.push(event.id);
+      });
+    }
+  }
+}

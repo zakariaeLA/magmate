@@ -106,23 +106,30 @@ export class EventsService {
 
     const user = await this.usersRepository.findOne({ where: { email: userEmail } });
     if (!user) throw new NotFoundException("Utilisateur non trouvé");
-
+  // Vérifie si le favori existe déjà
+  const existing = await this.favoritesRepository.findOne({ where: { user: { id: user.id }, event: { id: event.id } } });
+  if (existing) {
+    return existing; // Ou lève une erreur si tu préfères
+  }
     const favorite = this.favoritesRepository.create({ user, event });
     return this.favoritesRepository.save(favorite);
   }
 
   // 📥 8. Lister les favoris
-  async getFavorites(userEmail: string): Promise<Event[]> {
-    const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-    if (!user) throw new NotFoundException("Utilisateur non trouvé");
+async getFavorites(userEmail: string): Promise<Event[]> {
+  const user = await this.usersRepository.findOne({ where: { email: userEmail } });
+  if (!user) throw new NotFoundException("Utilisateur non trouvé");
 
-    const favorites = await this.favoritesRepository.find({
-      where: { user },
-      relations: ['event'],
-    });
+  const favorites = await this.favoritesRepository.find({
+    where: { user: { id: user.id } },
+    relations: ['event'],
+  });
 
-    return favorites.map(f => f.event);
-  }
+  console.log('user:', user);
+  console.log('favorites:', favorites);
+
+  return favorites.map(f => f.event);
+}
 
   // ❌ 9. Supprimer un favori
   async removeFromFavorites(eventId: string, userEmail: string): Promise<void> {

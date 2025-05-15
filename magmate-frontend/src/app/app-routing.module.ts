@@ -9,7 +9,7 @@ import { EventsListComponent } from './events/events-list/events-list.component'
 import { EventsCreateComponent } from './events/events-create/events-create.component';
 import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
 import { MyEventsComponent } from './events/my-events/my-events.component';
-
+import { MyFavoritesComponent } from './events/my-favorites/my-favorites.component';
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
@@ -26,8 +26,13 @@ const routes: Routes = [
     component: EventsCreateComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'events/:id', component: EventsDetailsComponent },
-
+  
+  {
+  path: 'events/my-favorites',
+  component: MyFavoritesComponent, // Remplacez par le nom réel de votre composant favoris
+  canActivate: [AuthGuard],
+},
+{ path: 'events/:id', component: EventsDetailsComponent },
 ];
 
 @NgModule({

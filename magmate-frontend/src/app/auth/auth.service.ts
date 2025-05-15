@@ -4,9 +4,16 @@ import { getAuth } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  isAuthenticated(): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      map(user => !!user)
+    );
+  }
   private API = 'http://localhost:3000/auth';
 
   constructor(

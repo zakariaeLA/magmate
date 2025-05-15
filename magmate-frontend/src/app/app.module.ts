@@ -23,6 +23,7 @@ import { EventsListComponent } from './events/events-list/events-list.component'
 import { EventsCreateComponent } from './events/events-create/events-create.component';
 import { EventsDetailsComponent } from './events/events-details/events-details.compnent';
 import { MyEventsComponent } from './events/my-events/my-events.component';
+import { MyFavoritesComponent } from './events/my-favorites/my-favorites.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MyEventsComponent } from './events/my-events/my-events.component';
     EventsCreateComponent,
     EventsDetailsComponent,
     MyEventsComponent,
+    MyFavoritesComponent,
   ],
   imports: [
     CommonModule,

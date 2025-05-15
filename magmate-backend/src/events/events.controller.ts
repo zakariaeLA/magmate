@@ -18,11 +18,10 @@ export class EventsController {
     return this.eventsService.findAll(filters);
   }
   
-  @Get(':my-events')
+  @Get('my-events')
   @UseGuards(FirebaseAuthGuard)
   async findMyEvents(@GetUser() user: User): Promise<Event[]> {
-    console.log("email recupere  ",user.email); // 🔁
-    return this.eventsService.findMyEvents(user.email); // 🔁
+    return this.eventsService.findMyEvents(user.email);
   }
   
   @Post()
@@ -31,14 +30,42 @@ export class EventsController {
     @Body() createEventDto: CreateEventDto,
     @GetUser() user: User,
   ): Promise<Event> {
-    return this.eventsService.create(createEventDto, user.email); // 🔁 On passe l'email
+    return this.eventsService.create(createEventDto, user.email);
   }
 
-  
+  @Get('my-favorites')
+  @UseGuards(FirebaseAuthGuard)
+  async getFavorites(@GetUser() user: User): Promise<Event[]> {
+    return this.eventsService.getFavorites(user.email);
+  }
+
+  @Delete(':id/favorite')
+  @UseGuards(FirebaseAuthGuard)
+  async removeFromFavorites(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.eventsService.removeFromFavorites(id, user.email);
+  }
+
+  @Post(':id/favorite')
+  @UseGuards(FirebaseAuthGuard)
+  async addToFavorites(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Favorite> {
+    return this.eventsService.addToFavorites(id, user.email);
+  }
+
   @Delete(':id')
   @UseGuards(FirebaseAuthGuard)
   async deleteEvent(@Param('id') id: string, @GetUser() user: User): Promise<void> {
-    return this.eventsService.deleteEvent(id, user.email); // 🔁
+    return this.eventsService.deleteEvent(id, user.email);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Event> {
+    return this.eventsService.findOne(id);
   }
 
   @Put(':id')
@@ -48,34 +75,6 @@ export class EventsController {
     @Body() updateEventDto: UpdateEventDto,
     @GetUser() user: User,
   ): Promise<Event> {
-    return this.eventsService.updateEvent(id, updateEventDto, user.email); // 🔁
-  }
-
-  @Post(':id/favorite')
-  @UseGuards(FirebaseAuthGuard)
-  async addToFavorites(
-    @Param('id') id: string,
-    @GetUser() user: User,
-  ): Promise<Favorite> {
-    return this.eventsService.addToFavorites(id, user.email); // 🔁
-  }
-
-  @Get('my-favorites')
-  @UseGuards(FirebaseAuthGuard)
-  async getFavorites(@GetUser() user: User): Promise<Event[]> {
-    return this.eventsService.getFavorites(user.email); // 🔁
-  }
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Event> {
-    return this.eventsService.findOne(id);
-  }
-
-  @Delete(':id/favorite')
-  @UseGuards(FirebaseAuthGuard)
-  async removeFromFavorites(
-    @Param('id') id: string,
-    @GetUser() user: User,
-  ): Promise<void> {
-    return this.eventsService.removeFromFavorites(id, user.email); // 🔁
+    return this.eventsService.updateEvent(id, updateEventDto, user.email);
   }
 }
