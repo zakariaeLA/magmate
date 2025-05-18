@@ -10,9 +10,8 @@ import {
 import { User } from '../../user/entities/user.entity';
 import { Prestataire } from './prestataire.entity';
 
-@Entity() 
+@Entity()
 export class Reclamationprestataire {
-  
   @PrimaryGeneratedColumn('uuid')
   idReclamation: string;
 
@@ -22,16 +21,23 @@ export class Reclamationprestataire {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
 
-  @Column({ nullable: true, type: 'varchar' })  
+  @Column({ nullable: true, type: 'varchar' })
   pieceJointe?: string | null;
 
   // Relation avec User
-  @ManyToOne(() => User, (user) => user.reclamations, { eager: true, nullable: false })
+  @ManyToOne(() => User, (user) => user.reclamations, {
+    eager: true,
+    nullable: false,
+  })
   @JoinColumn({ name: 'idUtilisateur' })
   utilisateur: User;
 
   // Relation avec Prestataire
-  @ManyToOne(() => Prestataire, (prestataire) => prestataire.reclamations, { eager: true, nullable: false })
+  @ManyToOne(() => Prestataire, (prestataire) => prestataire.reclamations, {
+    eager: true,
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
   @JoinColumn({ name: 'idPrestataire' })
   prestataire: Prestataire;
 }

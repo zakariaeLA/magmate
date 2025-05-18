@@ -16,6 +16,12 @@ export interface Magasin {
   horaire: string;
   telephone: string;
   ville: string;
+  proprietaire?: User;
+}
+
+export class User {
+  id!: string;
+ 
 }
 
 // Interface pour l'avis sur un produit

@@ -48,13 +48,13 @@
 </div>
 
 
-<div *ngIf="prestataires.length === 0">
+<div *ngIf="prestatairesApprouves.length === 0">
   <p>Aucun prestataire trouvé.</p>
 </div>
 
-<div class="prestataires-container" *ngIf="prestataires.length > 0">
+<div class="prestataires-container" *ngIf="prestatairesApprouves.length > 0">
   <app-prestataire-card
-    *ngFor="let p of prestataires"
+    *ngFor="let p of prestatairesApprouves"
     [prestataire]="p"
   ></app-prestataire-card>
 </div>

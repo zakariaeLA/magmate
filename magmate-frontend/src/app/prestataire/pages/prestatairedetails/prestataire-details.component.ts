@@ -221,6 +221,10 @@ openReclamationModal() {
 
     this.showReclamationForm = true;
   }
+  contactPrestataire(): string | null {
+  console.log('ID Prestataire:', this.prestataireId);
+  return this.prestataireId;
+}
 }
 
   

@@ -150,26 +150,28 @@ h1::after {
 
 /* ========== Section Réclamation ========== */
 .modal {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* Contenu du modal */
 .modal-content {
-  background-color: #721a1a;
-  color: white;
-  margin: 15% auto;
+  background-color: #fff0e7;
+  color: #721a1a;
   padding: 30px;
-  border: 1px solid #888;
-  width: 50%;
-  border-radius: 8px;
-  font-size: 1.2em;
-  text-align: center;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .reclamation-form .form-label,
@@ -180,6 +182,10 @@ h1::after {
   margin: 10px auto;
   width: 90%;
 }
+h3{
+  text-align: center;
+}
+
 
 .reclamation-form textarea,
 .reclamation-form input[type="file"] {

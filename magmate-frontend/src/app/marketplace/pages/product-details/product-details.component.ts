@@ -212,7 +212,12 @@ export class ProductDetailsComponent implements OnInit {
     this.showReclamationForm = false;
   }
   
-  contactSeller() {
-    console.log('Formulaire de contact du vendeur');
-  }
+  
+
+
+  contactSeller(): string | undefined {
+  const proprietaireId = this.product?.magasin?.proprietaire?.id;
+  console.log('Propriétaire ID :', proprietaireId);
+  return proprietaireId;
+}
 }

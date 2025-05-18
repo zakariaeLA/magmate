@@ -18,7 +18,7 @@
   </ng-template>
 
   <div *ngIf="produits.length > 0">
-    <h2 class="section-title">Mes produits</h2>
+    <h2 class="section-title">Les produits disponibles</h2>
     <div class="product-list">
       <div *ngFor="let produit of produits" class="product-card">
         <img [src]="'http://localhost:3000/public/images/' + produit.imagePrincipale" alt="{{ produit.titre }}" class="product-image" />

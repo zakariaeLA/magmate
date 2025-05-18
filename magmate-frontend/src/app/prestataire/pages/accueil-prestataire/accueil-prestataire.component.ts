@@ -157,6 +157,10 @@ export class AccueilPrestataireComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
+  get prestatairesApprouves() {
+  return this.prestataires.filter(p => p.estApprouve);
+}
+
   
 }
  
