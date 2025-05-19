@@ -56,4 +56,5 @@ export class AuthService {
       console.error('Erreur lors de la déconnexion', error);
     }
   }
+  
 }

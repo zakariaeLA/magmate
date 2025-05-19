@@ -20,19 +20,21 @@ const routes: Routes = [
     path: 'events/create',
     component: EventsCreateComponent,
     canActivate: [AuthGuard],
-  },  { path: 'events/my', component: MyEventsComponent },
+  },
+  { path: 'events/my', component: MyEventsComponent, canActivate: [AuthGuard] },
   {
     path: 'events/edit/:id',
     component: EventsCreateComponent,
     canActivate: [AuthGuard],
   },
-  
+
   {
-  path: 'events/my-favorites',
-  component: MyFavoritesComponent, // Remplacez par le nom réel de votre composant favoris
-  canActivate: [AuthGuard],
-},
-{ path: 'events/:id', component: EventsDetailsComponent },
+    path: 'events/my-favorites',
+    component: MyFavoritesComponent, // Remplacez par le nom réel de votre composant favoris
+    canActivate: [AuthGuard],
+  },
+  { path: 'events/:id', component: EventsDetailsComponent },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({

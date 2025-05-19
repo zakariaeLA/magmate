@@ -17,6 +17,7 @@ export class EventsService {
     city?: string;
     type?: string;
   }): Observable<Event[]> {
+    console.log('teest');
     let params = new HttpParams();
 
     if (filters?.city) {

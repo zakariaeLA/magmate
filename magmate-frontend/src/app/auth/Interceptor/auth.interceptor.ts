@@ -17,6 +17,21 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    // Liste des routes qui nécessitent un token
+    const protectedRoutes = [
+      '/my-events',
+      '/my-favorites',
+      '/events/create',
+      '/profile'
+       // pour POST, PUT, DELETE
+      // Ajoute ici les autres routes privées
+    ];
+        // Vérifie si la requête cible une route protégée
+
+    const isProtected = protectedRoutes.some((route) =>
+      req.url.includes(route)
+    );
+if (isProtected) {
     return from(this.authService.getIdToken()).pipe(
       switchMap((token) => {
         if (token) {
@@ -24,13 +39,16 @@ export class AuthInterceptor implements HttpInterceptor {
             setHeaders: {
               Authorization: `Bearer ${token}`,
             },
-            
           });
-          console.log('Token:', token); // Log the token for debugging
+          console.log('Token:', token);
           return next.handle(cloned);
         }
         return next.handle(req);
       })
     );
+  } else {
+      // Pour les routes publiques, ne rien ajouter
+      return next.handle(req);
+    }
   }
 }
