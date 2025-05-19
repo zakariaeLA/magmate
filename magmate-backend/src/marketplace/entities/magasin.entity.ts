@@ -4,10 +4,9 @@ import {
   Column,
   OneToMany,
   ManyToOne,
-  JoinColumn
 } from 'typeorm';
 import { Produit } from './produit.entity';
-import { User } from '../../user/entities/user.entity';
+import { Utilisateur } from './utilisateur.entity';
 
 @Entity()
 export class Magasin {
@@ -37,17 +36,13 @@ export class Magasin {
 
   @Column()
   ville: string;
-
   @Column({ default: false })
   estApprouve: boolean;
 
+  // Relation un à plusieurs entre Magasin et Produit
   @OneToMany(() => Produit, (produit) => produit.magasin)
   produits: Produit[];
 
-  @ManyToOne(() => User, (user) => user.magasins)
-  @JoinColumn({ name: 'proprietaireIdUtilisateur' })
-  proprietaire: User;
-
-  @Column({ type: 'uuid' })
-  proprietaireIdUtilisateur: string;
+  @ManyToOne(() => Utilisateur, (utilisateur) => utilisateur.magasins)
+  proprietaire: Utilisateur;
 }
