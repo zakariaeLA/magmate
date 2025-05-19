@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './profil.model';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -17,7 +18,7 @@ export class ProfileComponent implements OnInit {
   isUploading = false;
   uploadSuccess = false;
 
-  constructor(private profileService: ProfileService, private authService: AuthService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService,private router: Router) {}
 
   async ngOnInit() {
     try {
@@ -75,6 +76,9 @@ async uploadPhoto() {
     (event.target as HTMLElement)
       .closest('.profile-photo')
       ?.classList.add('loaded');
+  }
+  navigateToMessagerie() {
+    this.router.navigate(['/messagerie']);
   }
 
   logout() {

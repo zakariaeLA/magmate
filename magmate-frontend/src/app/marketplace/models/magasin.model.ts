@@ -1,0 +1,38 @@
+import { Utilisateur } from './utilisateur.model';
+export class Magasin {
+    idMagasin: number;
+    nom: string;
+    description: string;
+    image: string;
+    dateCreation: Date;
+    localisation: string;
+    horaire: string;
+    telephone: string;
+    ville: string;
+    proprietaire: Utilisateur;  // Remplacer `any` par Utilisateur si nécessaire
+  
+    constructor(
+      idMagasin: number,
+      nom: string,
+      description: string,
+      image: string,
+      dateCreation: Date,
+      localisation: string,
+      horaire: string,
+      telephone: string,
+      ville: string,
+      proprietaire: Utilisateur
+    ) {
+      this.idMagasin = idMagasin;
+      this.nom = nom;
+      this.description = description;
+      this.image = image;
+      this.dateCreation = dateCreation;
+      this.localisation = localisation;
+      this.horaire = horaire;
+      this.telephone = telephone;
+      this.ville = ville;
+      this.proprietaire = proprietaire;
+    }
+  }
+  

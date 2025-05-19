@@ -1,8 +1,14 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, UseGuards, ValidationPipe ,Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { FirebaseAuthGuard } from 'src/auth/firebase-auth.guard';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { User } from './entities/user.entity';
+import UserRequestEntity from './entities/userrequest.entity';
+import { UserRequestStatus } from './entities/userrequest.entity';  // Adaptez le chemin en fonction de la localisation de votre fichier
+import { BadRequestException } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -14,6 +20,61 @@ export class UserController {
   async getProfile(@Param('id' , ParseUUIDPipe) id: string) {
     return this.userService.getProfile(id);
   }
+
+  @Post()  
+  async createUser(@Body(new ValidationPipe({ whitelist: true })  ) createUserDto: CreateUserDto) {
+    return this.userService.createUser(createUserDto);
+  }
+
+/* zineb */
+  @UseGuards(FirebaseAuthGuard)
+  @Post('send/:receiverId')
+  async sendUserRequest(
+    @Param('receiverId') receiverId: string,
+    @Request() req,
+  ): Promise<UserRequestEntity | { error: string }> {
+    // Le payload Firebase est dans req.user
+    return this.userService.sendUserRequest(receiverId, req.user);
+  }
+
+  @UseGuards(FirebaseAuthGuard) 
+  @Get('send/status/:receiverId')
+  getUserRequestStatus(
+    @Param('receiverId') receiverId: string,
+    @Request() req,
+  ): Observable<{ status: string }> {
+    const creator =  req.user;
+    return this.userService.getUserRequestStatus(receiverId, creator);
+  }
+  
+  @UseGuards(FirebaseAuthGuard) 
+  @Put('send/response/:userRequestId')
+  respondToUserRequest(
+    @Param('userRequestId') userRequestStringId: string,
+    @Body('status') statusResponse: UserRequestStatus, // Extract just the status field
+  ): Observable<UserRequestStatus> {
+    const userRequestId = parseInt(userRequestStringId);
+    return this.userService.respondToUserRequest(
+      statusResponse, // Now passing just the status
+      userRequestId,
+    );
+  }
+
+// In UserController
+@UseGuards(FirebaseAuthGuard) 
+@Get('send/me/received-requests')
+getFriendRequestsFromRecipients(
+  @Request() req,
+): Observable<UserRequestEntity[]> {  // Changed from UserRequestStatus[] to UserRequestEntity[]
+  return this.userService.getUserRequestsFromRecipients(req.user);
+}
+
+@Post('friends/my') // Changement de GET à POST pour envoyer un body
+getFriends(@Body() body: { userId: string }) { // Reçoit l'ID dans le body
+  console.log('User ID reçu:', body.userId);
+  return this.userService.getUsers({ id: body.userId } as User); // Simule l'objet User
+}
+/*
   //   avec firebase
   //   @Get('profile')
   //   @UseGuards(FirebaseAuthGuard)
@@ -29,10 +90,8 @@ export class UserController {
   // ) {
   //   return this.userService.updateProfile(id, updateUserDto);
   // }
-
+*/
   //Route pour creer un utilisateur
-  @Post()  
-  async createUser(@Body(new ValidationPipe({ whitelist: true })  ) createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
-  }
+
+
 }

@@ -1,5 +1,6 @@
 // src/auth/auth.controller.ts
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, Headers} from '@nestjs/common';
+
 import * as admin from 'firebase-admin';
 import { AuthService } from './auth.service';
 
@@ -12,6 +13,7 @@ export class AuthController {
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
       return await this.authService.loginOrCreateUser(decodedToken);
+      
     } catch (error) {
       throw new UnauthorizedException('Token Firebase invalide');
     }
@@ -33,4 +35,29 @@ export class AuthController {
     );
     return user;
   }
+
+/* zineb */
+  /* meilleur approche 
+@Post('get-user-id')
+async getUserId(@Body('email') email: string) {
+  try {
+    return await this.authService.getUserIdByEmail(email);
+  } catch (error) {
+    throw new UnauthorizedException(error.message);
+  }
+}
+  */
+/* zineb */
+@Post('get-user-id-by-token')
+async getUserIdByToken(@Body('token') token: string) {
+  try {
+    const userId = await this.authService.getUserIdByToken(token);
+    return { userId }; // Retourne un objet au lieu d'une string
+  } catch (error) {
+    throw new UnauthorizedException(error.message);
+  }
+}
+
+
+
 }

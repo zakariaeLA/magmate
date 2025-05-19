@@ -9,4 +9,11 @@ export class CreateUserDto {
 
   @MinLength(6)
   password: string;
+
+  
+  @IsNotEmpty()
+  fname: string;
+
+  @IsNotEmpty()
+  lname: string;
 }

@@ -207,12 +207,13 @@ header::before {
 }
 
 .destination__container :is(.section__header, .section__description) {
+
   text-align: left;
   margin-inline-start: unset;
 }
 
 .destination__grid {
-  margin-top: 4rem;
+  margin-top: 9rem;
   display: grid;
   gap: 2rem 1rem;
 }

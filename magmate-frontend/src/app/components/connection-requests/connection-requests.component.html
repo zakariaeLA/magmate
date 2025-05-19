@@ -1,0 +1,61 @@
+<div class="container mt-4" style="margin-top: 100px;">
+    <!-- Affichage du chargement -->
+    <div *ngIf="isLoading" class="text-center loading-spinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p class="mt-2">Chargement des demandes en cours...</p>
+    </div>
+  
+    <!-- Affichage des erreurs -->
+    <div *ngIf="error && !isLoading" class="alert alert-danger error-message">
+      {{ error }}
+    </div>
+  
+    <!-- Contenu principal -->
+    <div *ngIf="!isLoading && !error">
+      <h2 class="mb-4">Demandes de connexion reçues</h2>
+  
+      <!-- Message "Aucune demande" -->
+      <div *ngIf="receivedRequests.length === 0" class="alert alert-info">
+        Vous n'avez aucune demande de connexion en attente.
+      </div>
+  
+      <!-- Liste des demandes -->
+      <div *ngFor="let request of receivedRequests" class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <!-- Image de profil -->
+              <div class="profile-image-container me-3">
+                <img [src]="request.creator.photo || 'assets/images/default-profile.png'" 
+                     alt="Photo de profil de {{ request.creator.fname }} {{request.creator.lname}}"
+                     class="profile-image">
+              </div>
+              
+              <!-- Détails de l'utilisateur -->
+              <div>
+                <h5 class="card-title">{{ request.creator.fname }} {{request.creator.lname}}</h5>
+                <!--<p class="card-text text-muted">{{ request.creator.email }}</p>-->
+                <!--<span class="status-badge status-{{request.status}}">
+                  {{ request.status | titlecase }}
+                </span>-->
+              </div>
+            </div>
+            
+            <!-- Boutons d'action -->
+            <div *ngIf="request.status === 'pending'" class="btn-group">
+              <button (click)="respondToRequest(request.id, 'accepted')" 
+                      class="btn btn-accept">
+                Accepter
+              </button>
+              <button (click)="respondToRequest(request.id, 'rejected')" 
+                      class="btn btn-reject">
+                Refuser
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

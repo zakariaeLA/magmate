@@ -50,5 +50,31 @@ export class AuthService {
 
     return user;
   }
+/* zineb */
+// Dans auth.service.ts
+  /* meilleur approche 
+async getUserIdByEmail(email: string): Promise<string> {
+  const user = await this.userRepo.findOne({ where: { email } });
+  if (!user) {
+    throw new Error('Utilisateur non trouvé');
+  }
+  return user.id; // Supposant que votre entité User a une colonne 'id' (UUID)
+}*/
+/* zineb */
+async getUserIdByToken(token: string): Promise<string> {
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const user = await this.userRepo.findOne({ where: { email: decodedToken.email } });
+    
+    if (!user) {
+      throw new Error('Utilisateur non trouvé');
+    }
+    
+    return user.id;
+  } catch (error) {
+    throw new Error('Token Firebase invalide ou utilisateur non trouvé');
+  }
+}
 
+  
   }
