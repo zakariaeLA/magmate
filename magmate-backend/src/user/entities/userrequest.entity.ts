@@ -21,7 +21,7 @@ export class UserRequestEntity {
   @ManyToOne(() => User, (user) => user.receivedUserRequests)
   receiver: User;
 
-  @Column({ type: 'enum', enum: UserRequestStatus, default: UserRequestStatus.NOT_SENT })
+  @Column({ type: 'enum', enum: UserRequestStatus, default: UserRequestStatus.ACCEPTED })
   status: UserRequestStatus;
 }
 

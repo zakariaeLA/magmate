@@ -126,7 +126,10 @@ html, body {
 
 .magasin-buttons {
   margin-top: 10px;
+  display: flex;
+  justify-content: flex-end; /* ✅ Aligne les éléments à droite */
 }
+
 
 .edit-magasin-btn,
 .delete-magasin-btn {

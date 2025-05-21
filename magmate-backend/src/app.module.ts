@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -11,6 +10,9 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MessagerieModule } from './messagerie/messagerie.module';
+
+
+import { PrestataireModule } from './prestataire/prestataire.module';
 
 @Module({
   imports: [
@@ -25,6 +27,18 @@ import { MessagerieModule } from './messagerie/messagerie.module';
     ProfileModule,
     MarketplaceModule,
     MessagerieModule,
+
+    PrestataireModule,
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    MarketplaceModule,
+
+    DatabaseModule,
+
+    PrestataireModule,
   ],
   controllers: [AppController],
   providers: [AppService],

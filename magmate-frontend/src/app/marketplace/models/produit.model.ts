@@ -16,6 +16,12 @@ export interface Magasin {
   horaire: string;
   telephone: string;
   ville: string;
+  proprietaire?: User;
+}
+
+export class User {
+  id!: string;
+ 
 }
 
 // Interface pour l'avis sur un produit
@@ -23,7 +29,7 @@ export interface Avis {
   idAvis: number;
   note: number;
   commentaire: string;
-  auteur: { nom: string; prenom: string }; // Auteur de l'avis
+  auteur: { lname: string; fname: string }; // Auteur de l'avis
   date: Date;
 }
 
@@ -33,7 +39,7 @@ export interface Reclamation {
   description: string;
   pieceJointe: string;
   produit: number; // ID du produit concerné
-  utilisateur: number; // ID de l'utilisateur qui a fait la réclamation
+  utilisateur: string; // ID de l'utilisateur qui a fait la réclamation
   dateCreation: Date;
 }
 

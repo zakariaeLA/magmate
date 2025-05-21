@@ -2,35 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MagasinService } from '../../services/magasin.service';
-import { AlertService } from '../../services/alerte.service';
+import { AlertService } from '../../services/alerte.service'; // Import du service d'alerte
 import { AuthService } from '../../../auth/auth.service';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // ✅
 
 @Component({
-  standalone: true,
   selector: 'app-magasin-form',
+  standalone: false,
   templateUrl: './magasin-form.component.html',
-  styleUrls: ['./magasin-form.component.scss'],
-  imports: [CommonModule,ReactiveFormsModule], // ✅ add this
+  styleUrls: ['./magasin-form.component.scss']
 })
 export class MagasinFormComponent implements OnInit {
   magasinForm: FormGroup;
   alertMessage: string | null = null;
   alertType: 'success' | 'error' | null = null;
   imageFile: File | null = null;
-  userId: string | null = null;
-  private apiUrl = 'http://localhost:3000'; // Your API base URL
+  userId: string = '';  // Pour stocker l'ID de l'utilisateur connecté
 
   constructor(
     private fb: FormBuilder,
-    private magasinService: MagasinService, // Use MagasinService instead of direct HTTP
-    private alertService: AlertService,
-    private authService: AuthService,
-    private router: Router
-    
+    private magasinService: MagasinService,
+    private alertService: AlertService, // Injection du service
+    private router: Router,
+    private authService: AuthService  // Injection du service AuthService
   ) {
     this.magasinForm = this.fb.group({
       nom: ['', Validators.required],
@@ -42,98 +35,96 @@ export class MagasinFormComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
-    this.userId = await this.authService.getUserId();
-    
-    if (!this.userId) {
-      this.alertService.error('Vous devez être connecté pour créer un magasin');
-      this.router.navigate(['/login']);
-      return;
-    }
+  ngOnInit(): void {
+    // Récupérer l'ID de l'utilisateur connecté
+    this.authService.getIdToken().then((token) => {
+      if (!token) {
+        // Si aucun token n'est trouvé, rediriger vers la page de connexion
+        this.router.navigate(['/login']);
+        return;
+      }
 
+      // En cas de succès, stocker l'ID de l'utilisateur
+      this.userId = token;
+    }).catch((error) => {
+      console.error('Erreur de récupération du token :', error);
+    });
+
+    // Subscribe to alert service
     this.alertService.alert$.subscribe(alert => {
       this.alertMessage = alert.message;
       this.alertType = alert.type;
     });
   }
 
-    onFileChange(event: any): void {
+  // Gérer la sélection d'image
+  onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      this.imageFile = file;
+      this.imageFile = file;  // ✅ Stocke dans une propriété à part
     }
   }
 
-  async onSubmit() {
-    if (this.magasinForm.invalid || !this.userId) return;
-
-    if (!this.imageFile) {
-      this.alertService.error("Veuillez sélectionner une image.");
+  // Gérer la soumission du formulaire
+  onSubmit(): void {
+    if (this.magasinForm.invalid) return;
+  
+    // 1. Récupérer les données du formulaire
+    const userString = localStorage.getItem('user') || sessionStorage.getItem('user');
+  
+    if (!userString) {
+      this.alertService.error('Utilisateur non connecté.');
       return;
     }
-
-    try {
-      // 1. Get UUID from Firebase UID
-      const userUUID = await firstValueFrom(
-        this.magasinService.getUserUUID(this.userId)
-      );
-      
-      if (!userUUID.uuid) {
-        throw new Error('UUID non trouvé dans la réponse');
+  
+    const user = JSON.parse(userString);
+    const email = user.email;
+  
+    // 2. Récupérer l'ID du propriétaire (UUID ou autre) via le service
+    this.magasinService.getUuidByEmail(email).subscribe({
+      next: (response) => {
+        const proprietaireId = response.uuid; // ou response.id selon ton backend
+  
+        const magasinData = new FormData();
+        magasinData.append('nom', this.magasinForm.get('nom')?.value);
+        magasinData.append('localisation', this.magasinForm.get('localisation')?.value);
+        magasinData.append('description', this.magasinForm.get('description')?.value);
+        magasinData.append('horaire', this.magasinForm.get('horaire')?.value);
+        magasinData.append('telephone', this.magasinForm.get('telephone')?.value);
+        magasinData.append('ville', this.magasinForm.get('ville')?.value);
+  
+        // 3. Ajouter l'image
+        if (this.imageFile) {
+          magasinData.append('image', this.imageFile, this.imageFile.name);
+        } else {
+          this.alertService.error("Veuillez sélectionner une image.");
+          return;
+        }
+  
+        magasinData.append('proprietaireId', proprietaireId);
+  
+        // 4. Envoyer les données
+        this.magasinService.createMagasin(magasinData).subscribe({
+          next: (response) => {
+            this.alertService.success('Votre magasin a été créé avec succès.');
+            this.router.navigate(['/marketplace']);
+          },
+          error: (error) => {
+            console.error('Erreur lors de la création du magasin', error);
+            this.alertService.error('Erreur lors de la création du magasin.');
+          }
+        });
+      },
+      error: (err) => {
+        this.alertService.error("Impossible de récupérer l'identifiant de l'utilisateur.");
+        console.error(err);
       }
-
-      // 2. Convert image to base64
-      const imageBase64 = await this.fileToBase64(this.imageFile);
-
-      // 3. Prepare the data object
-      const magasinData = {
-        proprietaireId: userUUID.uuid,
-        nom: this.magasinForm.get('nom')?.value,
-        description: this.magasinForm.get('description')?.value,
-        image: imageBase64,
-        localisation: this.magasinForm.get('localisation')?.value,
-        horaire: this.magasinForm.get('horaire')?.value,
-        telephone: this.magasinForm.get('telephone')?.value,
-        ville: this.magasinForm.get('ville')?.value
-      };
-
-      // 4. Send to backend
-      this.magasinService.createMagasin(magasinData).subscribe({
-        next: (response) => this.handleSuccess(response),
-        error: (error) => this.handleError(error)
-      });
-
-    } catch (error) {
-      this.handleError(error);
-    }
-  }
-
-  private fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64String = (reader.result as string).split(',')[1];
-        resolve(base64String);
-      };
-      reader.onerror = error => reject(error);
     });
   }
+  
 
-  private handleSuccess(response: any): void {
-    this.alertService.success('Magasin créé avec succès');
-    this.router.navigate(['/']);
-  }
-
-  private handleError(error: any): void {
-    console.error('Erreur:', error);
-    const errorMessage = error.error?.message || 
-                        error.message || 
-                        'Erreur lors de la création du magasin';
-    this.alertService.error(errorMessage);
-  }
-
-  closeAlert(): void {
+  // Méthode pour fermer l'alerte
+  closeAlert() {
     this.alertMessage = null;
     this.alertType = null;
   }

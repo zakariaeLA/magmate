@@ -1,5 +1,11 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
+import { MarketplaceModule } from './marketplace/marketplace.module';
+//import { HomeComponent } from './components/home/home.component';
+
+
+
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -17,7 +23,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth/Interceptor/auth.interceptor';
 import { environment } from '../environments/environment';
 
-import { MarketplaceModule } from './marketplace/marketplace.module';
+
 
 // Components
 import { AuthComponent } from './auth/auth.component';
@@ -31,6 +37,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { TranslationCurrencyComponent } from './components/translation-currency/translation-currency.component';
 import { MessagerieComponent } from './components/messagerie/messagerie.component';
+import { PrestataireModule } from './prestataire/prestataire.module';
 
 //
 
@@ -72,9 +79,16 @@ const socketConfig: SocketIoConfig = {
     autoConnect: true
   }
 };
+
+
 @NgModule({
   declarations: [
+    HeaderComponent,
+    FooterComponent,
     AppComponent,
+
+    LoginComponent,
+   
     AuthComponent,
     LoginComponent,
     SignupComponent,
@@ -96,7 +110,11 @@ const socketConfig: SocketIoConfig = {
     MessagerieComponent,//check
     BrowserModule,
     CommonModule,
+    
+    MarketplaceModule,
+     // Supprime la duplication
     FormsModule,
+
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -112,23 +130,30 @@ const socketConfig: SocketIoConfig = {
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    MarketplaceModule,
+    
     IonicModule,
     FormsModule,
     CommonModule,        // ✅ for *ngIf, *ngFor, ngClass, etc.
     ReactiveFormsModule,
                 InitialPipe,
-    InitialsPipe
+    InitialsPipe,
+
+    PrestataireModule
+
     
   ],
   providers: [
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
+
   ],
+
+
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {}

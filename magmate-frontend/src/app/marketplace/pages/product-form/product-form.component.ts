@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { AlertService } from '../../services/alerte.service'; // Import du service d'alerte
 
@@ -19,7 +19,8 @@ export class ProductFormComponent implements OnInit {
     private fb: FormBuilder,
     private productService: ProductService,
     private alertService: AlertService, // Injection du service
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute 
   ) {
     this.productForm = this.fb.group({
       titre: ['', Validators.required],
@@ -33,6 +34,10 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit(): void {
     // S'abonner à l'alerte
+    const magasinId = this.route.snapshot.paramMap.get('id');
+    if (magasinId) {
+      this.productForm.patchValue({ magasinIdMagasin: magasinId });
+    }
     this.alertService.alert$.subscribe(alert => {
       this.alertMessage = alert.message;
       this.alertType = alert.type;

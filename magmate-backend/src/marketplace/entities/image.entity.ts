@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Produit } from './produit.entity'; // Association à l'entité Produit
+import { Produit } from './produit.entity';
 
 @Entity()
 export class Image {
@@ -7,8 +7,11 @@ export class Image {
   idImage: number;
 
   @Column()
-  imageURL: string; // Le nom du fichier de l'image supplémentaire
+  imageURL: string;
 
-  @ManyToOne(() => Produit, (produit) => produit.images)
-  produit: Produit; // Lier l'image au produit
+  @ManyToOne(() => Produit, (produit) => produit.images, {
+    onDelete: 'CASCADE',
+    nullable: false, // 👈 IMPORTANT : empêche NULL dans la base
+  })
+  produit: Produit;
 }

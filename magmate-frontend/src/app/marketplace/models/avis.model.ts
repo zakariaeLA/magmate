@@ -1,4 +1,4 @@
-import { Utilisateur } from './utilisateur.model';  // Importer le modèle Utilisateur
+import { User } from './user.model';  // Importer le modèle Utilisateur
 import { Produit } from './produit.model';  // Importer le modèle Produit
 
 export class Avis {
@@ -6,7 +6,7 @@ export class Avis {
   note: number;
   commentaire: string;
   date: Date;
-  auteur: Utilisateur;
+  auteur: User;
   produit: Produit;
 
   constructor(
@@ -14,7 +14,7 @@ export class Avis {
     note: number,
     commentaire: string,
     date: Date,
-    auteur: Utilisateur,
+    auteur: User,
     produit: Produit
   ) {
     this.idAvis = idAvis;

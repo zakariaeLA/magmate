@@ -1,5 +1,5 @@
 import { Produit } from './produit.model';  // Importer le modèle Produit
-import { Utilisateur } from './utilisateur.model';  // Importer le modèle Utilisateur
+import { User } from './user.model';  // Importer le modèle Utilisateur
 
 export class Reclamation {
   idReclamation: number;
@@ -8,7 +8,7 @@ export class Reclamation {
   pieceJointe: string;
   idCible: number;
   produit: Produit;
-  utilisateur: Utilisateur;
+  utilisateur: User;
 
   constructor(
     idReclamation: number,
@@ -17,7 +17,7 @@ export class Reclamation {
     pieceJointe: string,
     idCible: number,
     produit: Produit,
-    utilisateur: Utilisateur
+    utilisateur: User
   ) {
     this.idReclamation = idReclamation;
     this.description = description;

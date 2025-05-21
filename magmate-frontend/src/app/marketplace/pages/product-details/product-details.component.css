@@ -1,12 +1,13 @@
 /* src/app/marketplace/pages/product-details/product-details.component.css */
 
 
-  body{ background-color: #d67f3765;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
+ html, body {
+  min-height: 100vh;
+  background-color: #fff0e7;
+  margin: 0;
+  padding: 0;
+}
 
-  }
   
   /* Style général de la page */
   .product-details {
@@ -75,7 +76,7 @@
   .price {
     font-size: 1.5em;
     font-weight: bold;
-    color: #623103;
+    color: #721a1a;
     margin-top: 10px;
   }
   
@@ -84,7 +85,7 @@
     font-size: 1.5em; /* Même taille que le titre */
     font-weight: bold;
     margin-top: 10px;
-    color: #623103; /* Même couleur que le titre */
+    color: #721a1a; /* Même couleur que le titre */
   }
   
   /* Entête de la page */
@@ -95,38 +96,39 @@
     font-weight: bold;
     margin-bottom: 30px;
   }
-  
-  /* Style pour la section des commentaires */
-.comments-section {
-  background-color: #ca7575; /* Fond léger pour la section des commentaires */
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 900px; /* Limiter la largeur pour mieux gérer le texte */
-  margin-left: auto;
-  margin-right: auto;
+  .comments-section {
+  background-color: #fff0e7;
+  padding: 30px;
+  border-radius: 12px;
+  margin: 40px auto 0;
+  width: 95%;
+  max-width: 900px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .comments-section h3 {
-  font-size: 1.8em;
+  font-size: 2em;
   color: #721a1a;
-  margin-bottom: 15px;
   text-align: center;
+  margin-bottom: 25px;
+  
 }
 
 .comment {
-  background-color: white;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #721a1a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .comment p {
-  margin: 5px 0;
+  margin: 6px 0;
   font-size: 1em;
   color: #333;
+  line-height: 1.5;
 }
 
 .comment .username {
@@ -135,71 +137,87 @@
 }
 
 .comment .rating {
-  margin-top: 5px;
-  font-size: 1.2em;
+  margin-top: 8px;
+  font-size: 1.3em;
 }
 
 .comment .rating span {
-  color: #f39c12; /* Couleur des étoiles */
-}
-
-.comment textarea {
-  width: 100%;
-  height: 80px;
-  border-radius: 5px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-top: 10px;
-  resize: none;
+  color: #f39c12;
 }
 
 .add-comment {
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.add-comment textarea {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  resize: none; /* Empêche l'ajustement manuel de la hauteur */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+
+.add-comment .rating {
+  margin-top: 10px;
+}
+
+.rating span {
+  cursor: pointer;
+  color: #ddd;
+  font-size: 1.8em;
+  transition: color 0.2s ease;
+}
+
+.rating span:hover,
+.rating span:hover ~ span {
+  color: #f39c12;
+}
+
+.rating span.selected {
+  color: #f39c12;
 }
 
 .add-comment button {
   background-color: #721a1a;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 25px;
+  font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
 }
 
 .add-comment button:hover {
   background-color: #9c1a1a;
 }
 
-/* Espacer les commentaires pour ne pas trop encombrer la page */
-.comments-section .comment {
-  margin-bottom: 10px;
+/* Responsive */
+@media (max-width: 600px) {
+  .comments-section {
+    padding: 20px;
+  }
+
+  .comment {
+    padding: 12px;
+  }
+
+  .add-comment textarea {
+    height: 80px;
+  }
+
+  .rating span {
+    font-size: 1.5em;
+  }
 }
-
-.comment .rating {
-  display: inline-block;
-  margin-top: 5px;
-}
-
-/* Applique le curseur pointer sur les étoiles */
-.rating span {
-  cursor: pointer; /* Change le curseur à la main */
-  color: #ddd; /* Couleur de l'étoile par défaut */
-  font-size: 1.5em; /* Taille des étoiles */
-}
-
-/* Applique une couleur d'étoile différente lorsque l'utilisateur survole une étoile */
-.rating span:hover {
-  color: #f39c12; /* Couleur de l'étoile survolée (jaune) */
-}
-
-/* Lorsque l'étoile est sélectionnée (cliquée), on change la couleur de l'étoile */
-.rating span.selected {
-  color: #f39c12; /* Couleur de l'étoile sélectionnée */
-}
-
-
-
 
 .report-button{
   background-color: #721a1a; /* Couleur de fond rouge burgundy */
@@ -213,70 +231,93 @@
 }
 
 /* Centrer le texte dans le formulaire */
+/* Overlay modal */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Contenu du modal */
 .modal-content {
-  background-color: #721a1a;  /* Couleur burgundy */
-  color: white;
-  margin: 15% auto;
+  background-color: #fff0e7;
+  color: #721a1a;
   padding: 30px;
-  border: 1px solid #888;
-  width: 50%;
-  border-radius: 8px;
-  font-size: 1.2em;
-  text-align: center;  /* Centrer tout le texte dans le modal */
-  
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
-
-/* Centrer les labels et le bouton de soumission */
-.reclamation-form .form-label,
-.reclamation-form textarea,
-.reclamation-form input[type="file"],
-.reclamation-form button {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;  /* Ajuster la largeur */
-}
-
-/* Centrer le texte dans le champ de texte */
-.reclamation-form textarea,
-.reclamation-form input[type="file"] {
-  text-align: center;  /* Centrer le texte dans le textarea */
-}
-
-/* Centrer le bouton */
-.reclamation-form .form-button {
+.modal-content h3{
   text-align: center;
 }
 
-/* Effet hover sur le bouton d'envoi */
-.reclamation-form .form-button:hover {
-  background-color: #721a1a;
-}
-
-/* Pour l'overlay modal */
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);  /* Fond semi-transparent */
-}
-
+/* Bouton de fermeture */
 .close {
-  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #721a1a;
   font-size: 28px;
   font-weight: bold;
-  float: right;
-}
-
-.close:hover,
-.close:focus {
-  color: white;
   cursor: pointer;
 }
+
+.close:hover {
+  color: #ccc;
+}
+
+/* Formulaire */
+.reclamation-form .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.reclamation-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.reclamation-form textarea,
+.reclamation-form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1em;
+}
+
+.reclamation-form textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Bouton d'envoi */
+.reclamation-form button {
+  background-color: #721a1a;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.reclamation-form button:hover {
+  background-color: #4d0909;
+}
+
 
 
 /* Style pour le bouton contacter le vendeur */
@@ -296,7 +337,7 @@
 }
 
 .contact-button, .report-button {
-  margin-right: 50px;  /* Espace de 10px entre les deux boutons */
+  margin-right: 200px;  /* Espace de 10px entre les deux boutons */
 }
 
 /* Ajouter un espacement entre les paragraphes */
@@ -306,3 +347,8 @@
 .store-name, .price  {
   margin-bottom: 50px; /* Ajustez la valeur pour plus ou moins d'espace */
 }
+.button-container {
+ 
+  margin-top: 20px; /* optionnel */
+}
+

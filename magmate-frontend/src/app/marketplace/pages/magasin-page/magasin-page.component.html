@@ -12,6 +12,7 @@
 <div class="magasin-buttons">
  
   <button class="delete-magasin-btn" (click)="deleteMagasin(magasin.idMagasin)">Supprimer le magasin</button>
+   <button class="edit-magasin-btn" [routerLink]="['/magasin-update', magasin.idMagasin]" >modifier le magasin</button>
 </div>
 
 </div>
@@ -46,6 +47,6 @@
 </div>
 
 <!-- Bouton flottant pour ajouter un produit -->
-<button [routerLink]="['/product-form']" class="add-product-button" >
+<button (click)="navigateToProductForm()" class="add-product-button" >
   + Ajouter un produit
 </button>

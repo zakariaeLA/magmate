@@ -1,31 +1,31 @@
-// src/marketplace/controllers/reclamation.controller.ts
-import { Controller, Post,Get, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, UseGuards } from '@nestjs/common';
 import { ReclamationService } from '../services/reclamation.service';
 import { CreateReclamationDto } from '../dto/create-reclamation.dto';
+import { FirebaseAuthGuard } from 'src/auth/firebase-auth.guard'; // Guard pour authentification Firebase
+import { GetUser } from 'src/common/decorators/get-user.decorator'; // Décorateur pour récupérer l'utilisateur
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface'; // Interface pour l'utilisateur authentifié
 
-@Controller('reclamations')  // Route de base : /reclamations
+@Controller('reclamations')
 export class ReclamationController {
   constructor(private readonly reclamationService: ReclamationService) {}
 
-  // Route pour ajouter une réclamation
-  @Post(':productId')  // Recevoir l'ID du produit dans l'URL
-  async addReclamation(
-    @Param('productId') productId: number,  // L'ID du produit est pris de l'URL
-    @Body() createReclamationDto: CreateReclamationDto  // Le corps contient les infos de la réclamation
-  ) {
-    // Ajouter l'ID du produit dans le DTO (il est déjà passé dans l'URL)
-    createReclamationDto.idCible = productId;
-
-    // Appeler le service pour créer la réclamation
-    return this.reclamationService.createReclamation(createReclamationDto);
+  // Route pour récupérer toutes les réclamations d'un produit
+  @Get(':productId')
+  async getReclamations(@Param('productId') productId: number) {
+    return this.reclamationService.getReclamationsByProductId(productId);
   }
 
-  // Route pour récupérer les réclamations d'un produit
-  @Get(':productId')
-  async getReclamations(
-    @Param('productId') productId: number,  // L'ID du produit est pris de l'URL
+  // Route pour ajouter une réclamation à un produit
+  @Post(':productId')
+  @UseGuards(FirebaseAuthGuard)  // Applique le guard pour s'assurer que l'utilisateur est authentifié
+  async addReclamation(
+    @Param('productId') productId: number,
+    @Body() createReclamationDto: CreateReclamationDto,
+    @GetUser() user: RequestWithUser['user'] // Récupère l'utilisateur authentifié à partir du token Firebase
   ) {
-    // Appelle le service pour récupérer les réclamations du produit par son ID
-    return this.reclamationService.getReclamationsByProductId(productId);
+    createReclamationDto.idCible = productId;  // Lier l'ID du produit concerné à la réclamation
+
+    // Appeler le service pour créer la réclamation
+    return this.reclamationService.createReclamation(createReclamationDto, user);
   }
 }

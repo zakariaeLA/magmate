@@ -1,3 +1,4 @@
+/*
 import { Avis } from './avis.model';  // Importer le modèle Avis
 import { Reclamation } from './reclamation.model';  // Importer le modèle Reclamation
 import { Magasin } from './magasin.model';  // Importer le modèle Magasin
@@ -38,3 +39,4 @@ export class Utilisateur {
     this.magasins = magasins;
   }
 }
+*/

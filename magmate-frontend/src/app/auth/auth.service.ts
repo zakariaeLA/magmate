@@ -2,14 +2,19 @@
 
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
+
 import { getAuth } from '@angular/fire/auth';
-import { firstValueFrom } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+import { AngularFireAuth } from '@angular/fire/compat/auth';  // Utilisez AngularFireAuth
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators'; // <-- Importez l'opérateur map
 
 import { Observable } from 'rxjs';
+import { environment } from  '../../environments/environment'; // Votre configuration Firebase
+
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,6 +23,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
+
     private afAuth: AngularFireAuth,
     private router: Router
     
@@ -64,11 +70,19 @@ async getUserIdByToken(): Promise<string | null> {
         return user.uid;
       }
       console.warn('UID utilisateur n\'est pas un UUID valide:', user.uid);
+  
+  
+
     }
     return null;
   }
+  
+  
+  
+
 
 /* zineb */
+
 async getIdToken(): Promise<string | null> {
   try {
     const user = await this.afAuth.currentUser;
@@ -86,8 +100,17 @@ async getIdToken(): Promise<string | null> {
     return null;
   }
 }
-
-  
+/*
+  async getIdToken(): Promise<string | null> {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      const token = await user.getIdToken();
+      localStorage.setItem('token', token);
+      return token;
+    }
+    return null;
+  }
+  */
   
 
 
@@ -110,11 +133,14 @@ async getIdToken(): Promise<string | null> {
         password,
       })
     );
+
   }
 
   async logout(): Promise<void> {
     try {
+
       await this.afAuth.signOut();
+
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       sessionStorage.removeItem('user');
@@ -184,3 +210,4 @@ export class AuthService {
   }
 }
 */
+

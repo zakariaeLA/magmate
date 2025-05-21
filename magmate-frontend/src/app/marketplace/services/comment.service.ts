@@ -22,8 +22,7 @@ export class CommentService {
     return this.http.get<Avis[]>(`${this.apiUrl}/${productId}`);  // Appel GET pour récupérer les commentaires
   }
 
-  // Méthode pour ajouter un commentaire
-  addComment(productId: number, commentData: CreateAvisDto): Observable<Avis> {
-    return this.http.post<Avis>(`${this.apiUrl}/${productId}`, commentData);  // Appel POST pour ajouter un commentaire
+  addComment(productId: number, commentData: CreateAvisDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${productId}`, commentData);  // Envoie des données au backend
   }
 }

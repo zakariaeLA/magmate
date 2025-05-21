@@ -1,55 +1,79 @@
-// src/marketplace/services/comment.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Avis } from '../entities/avis.entity';
 import { CreateAvisDto } from '../dto/create-avis.dto';
 import { Produit } from '../entities/produit.entity';
-import { User } from '../../user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectRepository(User)
-    private readonly utilisateurRepository: Repository<User>,
-    @InjectRepository(Avis)
-    private readonly avisRepository: Repository<Avis>,
+    @InjectRepository(Produit) private productRepository: Repository<Produit>,
+    @InjectRepository(Avis) private readonly avisRepository: Repository<Avis>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+  // Récupérer les commentaires pour un produit spécifique
   async getCommentsByProductId(productId: number): Promise<Avis[]> {
-    return this.avisRepository.find({
+    const comments = await this.avisRepository.find({
       where: { produit: { idProduit: productId } },
-      relations: ['auteur'], // Charger l'entité 'auteur' (Utilisateur)
+      relations: ['auteur'], // Charger les informations de l'auteur (l'utilisateur)
       select: {
         auteur: {
-          lname: true, // Charger uniquement 'nom'
-          fname: true, // Charger uniquement 'prenom'
+          lname: true, // Charger uniquement le nom de l'auteur
+          fname: true, // Charger uniquement le prénom de l'auteur
         },
       },
       order: { date: 'DESC' }, // Trier les avis par date décroissante
     });
+
+    return comments;
   }
 
-  async createComment(productId: number, dto: CreateAvisDto): Promise<Avis> {
-    // Récupérer l'utilisateur par ID en utilisant un objet de recherche
-    const utilisateur = await this.utilisateurRepository.findOneBy({
-      id: dto.idUtilisateur, // Utiliser l'ID pour la recherche (assurez-vous que dto.idUtilisateur est un string)
-    });
+  async createComment(user: any, productId: number, createAvisDto: CreateAvisDto) {
+  console.log('Email de l\'utilisateur:', user.email);  // Vérifier si l'email est récupéré correctement
 
-    if (!utilisateur) {
-      throw new Error('Utilisateur non trouvé');
-    }
+  // Recherche de l'utilisateur par son email dans la base de données
+  const foundUser = await this.userRepository.findOne({ where: { email: user.email } });
 
-    // Créer un nouvel avis
-    const avis = this.avisRepository.create({
-      note: dto.note,
-      commentaire: dto.commentaire,
-      date: new Date(),
-      produit: { idProduit: dto.idProduit },
-      auteur: utilisateur, // Lier l'utilisateur au commentaire
-    });
-
-    // Sauvegarder et retourner l'avis
-    return this.avisRepository.save(avis);
+  if (!foundUser) {
+    throw new Error('Utilisateur non trouvé avec cet email');
   }
+
+  const product = await this.productRepository.findOne({ where: { idProduit: productId } });
+
+  if (!product) {
+    throw new Error('Produit non trouvé');
+  }
+
+  // Créer le nouveau commentaire avec l'utilisateur trouvé
+  const newComment = this.avisRepository.create({
+    note: createAvisDto.note,
+    commentaire: createAvisDto.commentaire,
+    date: new Date(),
+    auteur: foundUser,  // Utiliser l'utilisateur trouvé par email
+    produit: product, // Le produit concerné
+  });
+
+  console.log('Nouveau commentaire créé:', newComment);
+
+  await this.avisRepository.save(newComment);
+
+  // Retourner le commentaire ajouté avec les informations de l'auteur (prénom et nom)
+  return {
+    message: 'Commentaire ajouté avec succès',
+    comment: {
+      idAvis: newComment.idAvis,
+      note: newComment.note,
+      commentaire: newComment.commentaire,
+      date: newComment.date,
+      auteur: {
+        fname: foundUser.fname,  // Prénom de l'auteur
+        lname: foundUser.lname,  // Nom de l'auteur
+      },
+      produit: newComment.produit,  // Produit associé
+    },
+  };
+}
 }

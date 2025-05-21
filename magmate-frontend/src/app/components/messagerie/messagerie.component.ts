@@ -14,6 +14,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import twemoji from 'twemoji';
 import { InitialPipe } from '../../app.module'; // Make sure path is correct
 import { InitialsPipe } from '../../app.module'; // Make sure path is correct
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-messagerie',
@@ -42,35 +43,74 @@ export class MessagerieComponent implements OnInit, OnDestroy {
   onlineUsers = new Set<string>();
   private subscriptions = new Subscription();
   private _totalUnreadCount = 0;
+  private routeSubscription: Subscription | undefined;
 unreadCounts: { [conversationId: string]: number } = {};
   constructor(
     private messagerieService: MessagerieService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+        private route: ActivatedRoute, // Ajoutez cette ligne
+    private router: Router // Ajoutez cette ligne
   ) {}
 
   async ngOnInit() {
-  try {
-    this.currentUserId = await this.authService.getUserIdByToken();
-    if (!this.currentUserId) throw new Error("Utilisateur non trouvé");
+    try {
+      this.currentUserId = await this.authService.getUserIdByToken();
+      if (!this.currentUserId) throw new Error("Utilisateur non trouvé");
 
-    await this.messagerieService.connect();
-    this.isConnected = true;
+      await this.messagerieService.connect();
+      this.isConnected = true;
 
-    this.setupListeners();
-    this.setupPresenceListeners(); // <-- Ajoutez cette ligne
+      this.setupListeners();
+      this.setupPresenceListeners();
 
-    await this.loadFriends();
-    await this.loadConversations();
-  } catch (err: any) {
-    this.error = err.message;
-    console.error('Initialisation erreur:', err);
-  } finally {
-    this.isLoading = false;
+      await this.loadFriends();
+      await this.loadConversations();
+
+      // Gérer le paramètre recipientId
+      this.routeSubscription = this.route.queryParams.subscribe(async params => {
+        if (params['recipientId']) {
+          await this.handleRecipientParam(params['recipientId']);
+        }
+      });
+    } catch (err: any) {
+      this.error = err.message;
+      console.error('Initialisation erreur:', err);
+    } finally {
+      this.isLoading = false;
+    }
   }
-}
-  
+
+  private async handleRecipientParam(recipientId: string) {
+    try {
+      // Vérifier si une conversation existe déjà avec ce destinataire
+      const existingConv = this.conversations.find(conv => 
+        conv.users.some(user => user.id === recipientId)
+      );
+
+      if (existingConv) {
+        // Si une conversation existe, la sélectionner
+        await this.selectConversation(existingConv);
+      } else {
+        // Sinon, créer une nouvelle conversation
+        const recipient = this.friends.find(f => f.id === recipientId);
+        if (recipient) {
+          await this.startNewConversation(recipient);
+        } else {
+          console.warn('Destinataire non trouvé dans la liste d\'amis');
+        }
+      }
+
+      // Nettoyer les queryParams après traitement
+      this.router.navigate([], {
+        queryParams: { recipientId: null },
+        queryParamsHandling: 'merge'
+      });
+    } catch (err) {
+      console.error('Erreur lors du traitement du destinataire:', err);
+    }
+  }
 
 private setupPresenceListeners() {
   this.subscriptions.add(
@@ -326,6 +366,7 @@ sendMessage() {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    this.routeSubscription?.unsubscribe();
     this.messagerieService.leaveConversation();
   }
 

@@ -1,12 +1,7 @@
-import { IsString, IsNotEmpty,IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'; // Importer ApiProperty pour Swagger
 
 export class CreateMagasinDto {
-  @ApiProperty({ description: "ID du propriétaire (UUID)", type: String })
-  @IsNotEmpty()
-  @IsUUID()
-  proprietaireId: string;
-  
   @ApiProperty({
     description: 'Le nom du magasin',
     type: String,
@@ -33,9 +28,6 @@ export class CreateMagasinDto {
   @IsString()
   @IsNotEmpty()
   image: string;
-
-  @IsString() @IsNotEmpty()
-  imageData: string; // This should be the base64 data
 
   @ApiProperty({
     description: 'La localisation du magasin',
@@ -72,4 +64,21 @@ export class CreateMagasinDto {
   @IsString()
   @IsNotEmpty()
   ville: string;
+
+  @ApiProperty({
+    description: "L'ID de l'utilisateur (propriétaire du magasin)",
+    type: String,
+    example: 'd4d9c564-f3c1-40b8-bfcf-6f7b3583bb90', // Exemple d'UUID
+  })
+  @IsUUID()
+  @IsNotEmpty()
+  proprietaireId: string; // L'ID de l'utilisateur qui est le propriétaire du magasin
+
+  @ApiProperty({
+    description: 'Indique si le magasin est approuvé ou non',
+    type: Boolean,
+    example: false,
+  })
+  @IsOptional() // Si ce champ est optionnel, vous pouvez l'omettre lors de la création
+  estApprouve?: boolean;
 }

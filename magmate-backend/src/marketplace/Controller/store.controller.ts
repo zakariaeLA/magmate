@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { StoreService } from '../service/store.service';
 import { CreateMagasinDto } from '../dto/create-magasin.dto/create-magasin.dto';
@@ -22,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
+import { User } from 'src/user/entities/user.entity'; // Importer le modèle de l'utilisateur pour vérification
 
 @ApiTags('magasins') // Tags to group the endpoints in Swagger UI
 @Controller('magasins')
@@ -29,45 +31,41 @@ export class StoreController {
   constructor(private readonly magasinService: StoreService) {}
 
   @Post()
-  @UseInterceptors(AnyFilesInterceptor(multerOptions)) // Use Multer for handling multiple files
-  @ApiConsumes('multipart/form-data') // Specify that the request uses form-data for file uploads
-  @ApiOperation({ summary: 'Create a new store' })
-  @ApiBody({
-    description:
-      'Store data to be created, including name, description, and other details',
-    type: CreateMagasinDto, // Link to the DTO
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'The store has been successfully created.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request. Missing required fields.',
-  })
-  async create(
-    @Body() dto: CreateMagasinDto,
-    @UploadedFiles() files: Express.Multer.File[], // Handle file uploads
-  ) {
-    // Check if files are provided
-    if (files && files.length > 0) {
-      dto.image = files[0].filename; // The first file is the main image
-      console.log('Main Image:', dto.image);
-    } else {
-      // If no files are uploaded, throw an error
-      throw new BadRequestException('A valid image must be provided');
-    }
-/**
-     if (files && files.length > 0) {
-      dto.image = files[0].filename;
-    } else if (!dto.image.startsWith('https')) {
-      throw new BadRequestException('URL invalide ou fichier manquant');
-    }
+@UseInterceptors(AnyFilesInterceptor(multerOptions))
+async create(
+  @UploadedFiles() files: Express.Multer.File[],
+  @Body() formData: any, // Recevoir les données brutes
+) {
+  // Debug: afficher tout ce qui est reçu
+  console.log('FormData reçu:', formData);
+  console.log('Fichiers reçus:', files);
+/* zineb */
+  // Convertir les données textuelles en DTO
+  const dto: CreateMagasinDto = {
+    nom: formData.nom,
+    description: formData.description,
+    localisation: formData.localisation,
+    horaire: formData.horaire,
+    telephone: formData.telephone,
+    ville: formData.ville,
+    proprietaireId: formData.proprietaireId,
+    estApprouve: formData.estApprouve === 'true', // Conversion si nécessaire
+    image: files?.[0]?.filename || '' // Gérer le fichier
+  };
 
- */
-    // Pass the DTO to the service to create the store
-    return this.magasinService.create(dto);
+  // Validation manuelle si nécessaire
+  if (!files || files.length === 0) {
+    throw new BadRequestException('Image is required');
   }
+
+  // Reste du code inchangé...
+  const user = await this.magasinService.checkUserExistence(dto.proprietaireId);
+  if (!user) {
+    throw new NotFoundException('Utilisateur non trouvé');
+  }
+
+  return this.magasinService.create(dto);
+}
 
   @Get()
   @ApiOperation({ summary: 'Get all stores' })
@@ -76,35 +74,36 @@ export class StoreController {
     return this.magasinService.findAll();
   }
 
-  @Get(':id')
+  @Get(':idMagasin')
   @ApiOperation({ summary: 'Get a store by ID' })
   @ApiResponse({ status: 200, description: 'Retrieve a store by ID.' })
   @ApiResponse({ status: 404, description: 'Store not found.' })
-  findOne(@Param('id') id: number) {
-    return this.magasinService.findOne(+id);
+  findOne(@Param('idMagasin') idMagasin: number) {
+    return this.magasinService.findOne(+idMagasin);
   }
-  // Route pour mettre à jour un magasin
-  @Put(':id')
+
+  @Put(':idMagasin')
   @UseInterceptors(AnyFilesInterceptor(multerOptions))
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update a store by ID' })
   @ApiResponse({ status: 200, description: 'Store updated successfully.' })
   @ApiResponse({ status: 404, description: 'Store not found.' })
   async update(
-    @Param('id') id: number,
+    @Param('idMagasin') idMagasin: number,
     @Body() dto: UpdateMagasinDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
       dto.image = files[0].filename;
     }
-    return this.magasinService.update(id, dto);
+    return this.magasinService.update(idMagasin, dto);
   }
-  @Delete(':id')
+
+  @Delete(':idMagasin')
   @ApiOperation({ summary: 'Delete a store by ID' })
   @ApiResponse({ status: 200, description: 'Store deleted successfully.' })
   @ApiResponse({ status: 404, description: 'Store not found.' })
-  remove(@Param('id') id: number) {
-    return this.magasinService.remove(+id);
+  remove(@Param('idMagasin') idMagasin: number) {
+    return this.magasinService.remove(+idMagasin);
   }
 }

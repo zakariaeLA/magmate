@@ -11,7 +11,7 @@ import { UserProfile } from '../connection-profile/connection-profile.model';
   standalone: false
 })
 export class ConnectionSendComponent implements OnInit,OnDestroy {
-  specificUserId = 'f1abb309-55ea-4574-8c2e-314dd77a83d9';
+  specificUserId = '44d85939-a404-472d-94a0-92cf60f04813';
   currentUserProfile!: UserProfile;
   specificUserProfile!: UserProfile;
   requestStatus: string = 'not-sent';

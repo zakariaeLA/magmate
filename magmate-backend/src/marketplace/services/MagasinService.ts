@@ -20,12 +20,11 @@ export class MagasinService {
   async findByUserId(userId: string): Promise<Magasin | null> {
     return this.magasinRepository.findOne({
       where: {
-        proprietaire: { id: userId }, // Utiliser 'id' au lieu de 'idUtilisateur'
+        proprietaire: { id: userId },
       },
       relations: ['proprietaire'],
     });
   }
-  
   
 
   async deleteMagasin(id: number): Promise<void> {

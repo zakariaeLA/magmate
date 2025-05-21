@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     const user = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (user) {
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -47,15 +47,15 @@ export class LoginComponent implements OnInit {
       const persistence = remember
         ? firebase.auth.Auth.Persistence.LOCAL
         : firebase.auth.Auth.Persistence.SESSION;
-      await this.afAuth.setPersistence(persistence);
-      const result = await this.afAuth.signInWithEmailAndPassword(
+      await this.afAuth['setPersistence(persistence)']; //.setPersistence(persistence)
+      const result = await this.afAuth['signInWithEmailAndPassword'](
         email,
         password
       );
 
       // 2) Vérification d'email
       if (!result.user?.emailVerified) {
-        await this.afAuth.signOut();
+        await this.afAuth['signOut()'];
         this.errorMessage = 'Vérifiez d’abord votre email.';
         return;
       }
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
       }
 
       // 5) Maintenant on navigue
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/']);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
     }
@@ -110,7 +110,7 @@ export class LoginComponent implements OnInit {
 
   async signInWithGoogle() {
     try {
-      const result = await this.afAuth.signInWithPopup(
+      const result = await this.afAuth['signInWithPopup'](
         new firebase.auth.GoogleAuthProvider()
       );
 
@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit {
       }
 
       await this.authService.loginBackend(); // ou une méthode dédiée
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/']);
     } catch (err: any) {
       this.errorMessage = this.getErrorMessage(err.code);
     }
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
     }
 
     try {
-      await this.afAuth.sendPasswordResetEmail(email);
+      await this.afAuth['sendPasswordResetEmail(email)'];
       this.errorMessage = 'Un email de réinitialisation vous a été envoyé.';
     } catch (error: any) {
       this.errorMessage = this.getErrorMessage(error.code);

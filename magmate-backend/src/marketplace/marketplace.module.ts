@@ -8,7 +8,7 @@ import { Produit } from './entities/produit.entity';
 import { Magasin } from './entities/magasin.entity';
 import { Reclamation } from './entities/reclamation.entity';
 import { Avis } from './entities/avis.entity';
-import { User } from '../user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { ProductController1 } from './controllers/product.controller';
 import { CommentController } from './controllers/comment.controller';
 import { ReclamationController } from './controllers/reclamation.controller';
@@ -22,7 +22,7 @@ import { ProductController } from './Controller/product.controller';
 import { ImageService } from './service/image.service';
 import { ProduitService } from './service/product.service';
 import { ImageController } from './Controller/image.controller';
-import { UserModule } from '../user/user.module'; // ✅ importer UserModule
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -30,10 +30,9 @@ import { UserModule } from '../user/user.module'; // ✅ importer UserModule
       Reclamation,
       Avis,
       Magasin,
-      User,
-      Image,
+      User,Image,
+
     ]),
-    UserModule,
   ],
   controllers: [
     ProduitsController,

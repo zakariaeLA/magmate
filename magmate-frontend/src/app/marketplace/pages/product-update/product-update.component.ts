@@ -110,22 +110,13 @@ export class ProductUpdateComponent implements OnInit {
     productData.append('description', this.productForm.get('description')?.value);
     productData.append('prix', this.productForm.get('prix')?.value);
 
-    // Ajouter l'image principale
-    const imagePrincipale = this.productForm.get('imagePrincipale')?.value;
-
-  // Ensure that the selected image is a File object
-  if (this.imageFile) {
-    productData.append('imagePrincipale', this.imageFile, this.imageFile.name);
-  
-  } else {
-    console.error('Main image is invalid or missing');
-  }
-
-    // Ajouter les images supplémentaires
-    const imagesArray = this.productForm.get('images')?.value;
-    if (imagesArray && imagesArray instanceof Array) {
-      imagesArray.forEach((image: File) => {
-        productData.append('images', image, image.name);  // Ajouter chaque image supplémentaire
+    if (this.imageFile) {
+      productData.append('imagePrincipale', this.imageFile, this.imageFile.name);
+    }
+    
+    if (this.selectedImages.length > 0) {
+      this.selectedImages.forEach(imageObj => {
+        productData.append('images', imageObj.file, imageObj.file.name);
       });
     }
     

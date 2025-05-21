@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -35,6 +35,15 @@ export class UserService {
 
     return user;
   }
+  async getUuidByEmail(email: string): Promise<string> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('Utilisateur non trouvé');
+    }
+    return user.id;
+  }
+  
+  
 
   findUserById(id: string): Observable<User> {
     // Nettoyage de l'UUID pour enlever les caractères indésirables (espaces, retours à la ligne)
@@ -69,7 +78,6 @@ export class UserService {
           HttpStatus.BAD_REQUEST,
         );
       }
-  
       //Si l'email n'existe pas, on le crée
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
@@ -81,6 +89,9 @@ export class UserService {
   
       return this.userRepository.save(user);
     }
+
+
+    
     
   /*zineb */
   hasRequestBeenSentOrReceived(
@@ -143,7 +154,7 @@ export class UserService {
     const userRequest = this.userRequestRepository.create({
       creator: { id: creator.id }, // Référence seulement par ID
       receiver: { id: receiver.id },
-      status: UserRequestStatus.PENDING
+      status: UserRequestStatus.ACCEPTED
     });
   
     return this.userRequestRepository.save(userRequest);
@@ -319,6 +330,7 @@ export class UserService {
   //   return this.userRepository.save(user);
   // }
 */
+
 
 
   

@@ -1,11 +1,10 @@
-// src/marketplace/services/reclamation.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reclamation } from '../entities/reclamation.entity';
 import { CreateReclamationDto } from '../dto/create-reclamation.dto';
 import { Produit } from '../entities/produit.entity';
-import { User } from '../../user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ReclamationService {
@@ -18,15 +17,14 @@ export class ReclamationService {
     private readonly utilisateurRepository: Repository<User>
   ) {}
 
-  // Créer une réclamation
-  async createReclamation(dto: CreateReclamationDto): Promise<Reclamation> {
+  // Créer une nouvelle réclamation
+  async createReclamation(dto: CreateReclamationDto, user: { email: string }): Promise<Reclamation> {
     const produit = await this.produitRepository.findOne({ where: { idProduit: dto.idCible } });
     if (!produit) {
       throw new Error('Produit non trouvé');
     }
 
-    const utilisateur = await this.utilisateurRepository.findOneBy({ id: dto.idUtilisateur });
-
+    const utilisateur = await this.utilisateurRepository.findOne({ where: { email: user.email } });
     if (!utilisateur) {
       throw new Error('Utilisateur non trouvé');
     }
@@ -35,20 +33,28 @@ export class ReclamationService {
       description: dto.description,
       dateCreation: new Date(),
       pieceJointe: dto.pieceJointe,
-      idCible: dto.idCible,  // Assigner idCible à partir du DTO
+      idCible: dto.idCible,
       produit: produit,
-      utilisateur: utilisateur,
+      utilisateur: utilisateur, // Utilisateur récupéré par email
     });
 
+    // Sauvegarder la réclamation dans la base de données
     return this.reclamationRepository.save(reclamation);
   }
 
   // Récupérer les réclamations d'un produit
   async getReclamationsByProductId(productId: number): Promise<Reclamation[]> {
+    const product = await this.produitRepository.findOne({ where: { idProduit: productId } });
+
+    if (!product) {
+      throw new NotFoundException('Produit non trouvé');
+    }
+
+    // Récupérer les réclamations associées à ce produit
     return this.reclamationRepository.find({
-      where: { produit: { idProduit: productId } },
-      relations: ['utilisateur', 'produit'],  // Charger les relations utilisateur et produit
-      order: { dateCreation: 'DESC' },
+      where: { produit: product },
+      relations: ['utilisateur', 'produit'], // Charger les relations avec l'utilisateur et le produit
+      order: { dateCreation: 'DESC' }, // Trier par date de création décroissante
     });
   }
 }

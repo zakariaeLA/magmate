@@ -1,20 +1,22 @@
 <body>
+  <!-- Welcome Banner -->
   <div class="welcome-banner">
-    <img src="http://localhost:3000/public/images/artisanat.jpg" alt="Bienvenue sur le marketplace">
+    <img src="http://localhost:3000/public/images/art2.jpg" alt="Bienvenue sur le marketplace">
     <div class="welcome-text">
       <h1>Bienvenue sur notre Marketplace</h1>
       <p>Trouvez tout ce dont vous avez besoin en un seul endroit.</p>
       <button class="scroll-button" (click)="scrollToProduits()">Voir les produits</button>
     </div>
   </div>
-  
+
+  <!-- Search Bar Section -->
   <div class="search-bar">
     <div class="search-left">
       <input
         type="text"
         [(ngModel)]="search"
         (input)="loadProduits()"
-        placeholder="   Recherche un produit..."
+        placeholder="Recherche un produit..."
       />
       <select
         class="select-ville"
@@ -25,46 +27,53 @@
         <option *ngFor="let ville of villes" [value]="ville">{{ ville }}</option>
       </select>
     </div>
-  
+
     <div class="search-right">
-      <button class="market-button" (click)="openPopup()">Mon magasin</button>
+      <!-- Vérifie si l'utilisateur est connecté avant d'afficher "Mon magasin" -->
+      <button class="market-button" (click)="checkUserAuthentication('monMagasin')">Mon magasin</button>
     </div>
   </div>
-  <!-- POP-UP MODAL -->
-<div *ngIf="showPopup" class="modal">
-  <div class="modal-content">
-    <span class="close" (click)="closePopup()">&times;</span>
-    <h2>Information</h2>
-    <p>{{ message }}</p>
-  </div>
-</div>
 
-  <!--pop-up -->
+  <!-- POP-UP MODAL: Information or Error -->
+  <div *ngIf="showPopup" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <h2>Information</h2>
+      <p>{{ message }}</p>
+    </div>
+  </div>
+
+  <!-- POP-UP MODAL: No Magasin or Create New Magasin -->
   <div class="modal" *ngIf="showMagasinPopup">
     <div class="modal-content">
       <span class="close" (click)="showMagasinPopup = false">&times;</span>
-      <h2>Vous n'avez pas un magasin</h2>
-      <p>Veulliez créer votre propre magasin ici.</p>
+      <h2>Vous n'avez pas de magasin</h2>
+      <p>Veuillez créer votre propre magasin ici.</p>
       <button class="create-magasin" [routerLink]="['/creer-magasin']">Créer mon magasin</button>
-
     </div>
   </div>
-  
 
-  <div
-    class="produits-container"
-    *ngIf="produits.length > 0; else aucunResultat"
-  >
-    <app-product-card
-      *ngFor="let produit of produits"
-      [produit]="produit"
-    ></app-product-card>
+  <div class="produits-container" *ngIf="produits.length > 0; else aucunResultat">
+    <app-product-card *ngFor="let produit of produits" [produit]="produit">
+      <!-- Vérifie si l'utilisateur est connecté avant de voir les détails -->
+      <button 
+        class="details-button" 
+        (click)="checkUserAuthentication('voirDetails', produit.idProduit)"
+        *ngIf="userId; else loginButton">Voir Détails</button>
+      
+      <!-- Si l'utilisateur n'est pas connecté, affiche le bouton pour se connecter -->
+      <ng-template #loginButton>
+        <button class="details-button" (click)="router.navigate(['/login'])">Se connecter pour voir les détails</button>
+      </ng-template>
+    </app-product-card>
   </div>
-
+  
+  
+  
+  <!-- No products found -->
   <ng-template #aucunResultat>
     <div class="aucun-resultat">
       <p>Aucun produit trouvé.</p>
     </div>
   </ng-template>
 </body>
-

@@ -8,7 +8,7 @@ import {
 import { Magasin } from './magasin.entity';
 import { Avis } from './avis.entity';
 import { Reclamation } from './reclamation.entity';
-import { Image } from './image.entity'; // Table des images liées au produit
+import { Image } from './image.entity'; 
 
 
 @Entity()
@@ -32,13 +32,16 @@ export class Produit {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dateAjout: Date;
 
+  /*@ManyToOne(() => Magasin, (magasin) => magasin.produits, {
+    onDelete: 'CASCADE',
+  })*/
+
+  // Relation plusieurs à un entre Produit et Magasin
   @ManyToOne(() => Magasin, (magasin) => magasin.produits, {
     onDelete: 'CASCADE',
   })
-
-  // Relation plusieurs à un entre Produit et Magasin
-  @ManyToOne(() => Magasin, (magasin) => magasin.produits)
   magasin: Magasin;
+  
 
   
 
@@ -50,7 +53,10 @@ export class Produit {
   reclamations: Reclamation[]; // Lier un produit à plusieurs réclamations
 
 
-  @OneToMany(() => Image, (image) => image.produit)  // Relation OneToMany pour les autres images
+  @OneToMany(() => Image, (image) => image.produit, { 
+    cascade: true, // Permet de sauvegarder automatiquement les images
+    onDelete: 'CASCADE' // Supprime les images si le produit est supprimé
+  })
   images: Image[];
 
 }
