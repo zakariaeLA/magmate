@@ -103,7 +103,6 @@
             Voir détails
           </button>
           <button
-            *ngIf="isAuthenticated"
             class="favorite-btn"
             [class.active]="isFavorite(event.id)"
             (click)="toggleFavorite(event, $event)"

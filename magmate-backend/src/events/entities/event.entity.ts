@@ -47,8 +47,8 @@ export class Event {
   @Column()
   date: Date;
 
-  @Column()
-  imageUrl: string;
+  @Column({ nullable: true })
+  imageUrl?: string;
 
   @Column({
     type: 'enum',

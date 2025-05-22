@@ -37,6 +37,10 @@ export class EventsListComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     console.log('Événements  :');
+    this.authService.isAuthenticated().subscribe((isAuth) => {
+    this.isAuthenticated = isAuth;
+  });
+
 
     this.eventsService.getAllEvents().subscribe({
       next: (events) => {
@@ -144,6 +148,7 @@ export class EventsListComponent implements OnInit {
     if (!this.isAuthenticated) {
       console.log('Utilisateur non authentifié');
       this.router.navigate(['/login']);
+      return;
     }
     e.stopPropagation();
     if (this.favorites.has(event.id)) {

@@ -27,7 +27,6 @@ export class UpdateEventDto {
   @IsOptional()
   date?: Date;
 
-  @IsUrl()
   @IsOptional()
   imageUrl?: string;
 

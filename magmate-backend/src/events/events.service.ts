@@ -25,9 +25,14 @@ export class EventsService {
   ) {}
 
   // 🔧 1. Créer un événement
-  async create(createEventDto: CreateEventDto, userEmail: string): Promise<Event> {
-    const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-    if (!user) throw new NotFoundException("Utilisateur non trouvé");
+  async create(
+    createEventDto: CreateEventDto,
+    userEmail: string,
+  ): Promise<Event> {
+    const user = await this.usersRepository.findOne({
+      where: { email: userEmail },
+    });
+    if (!user) throw new NotFoundException('Utilisateur non trouvé');
 
     const event = this.eventsRepository.create({
       ...createEventDto,
@@ -65,34 +70,50 @@ export class EventsService {
   async findMyEvents(userEmail: string): Promise<Event[]> {
     // Trouver l'utilisateur par son email
     console.log("Email de l'utilisateur:", userEmail);
-    const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-    if (!user) throw new NotFoundException("Utilisateur non trouvé");
-  
+    const user = await this.usersRepository.findOne({
+      where: { email: userEmail },
+    });
+    if (!user) throw new NotFoundException('Utilisateur non trouvé');
+
     // Trouver les événements créés par cet utilisateur en utilisant son ID (UUID)
     return this.eventsRepository.find({
-      where: { createdBy: { id: user.id } },  // Utiliser l'ID de l'utilisateur
+      where: { createdBy: { id: user.id } }, // Utiliser l'ID de l'utilisateur
     });
   }
 
   // 🗑 5. Supprimer un événement
   async deleteEvent(id: string, userEmail: string): Promise<void> {
-    const event = await this.eventsRepository.findOne({ where: { id }, relations: ['createdBy'] });
+    const event = await this.eventsRepository.findOne({
+      where: { id },
+      relations: ['createdBy'],
+    });
     if (!event) throw new NotFoundException('Événement introuvable');
 
     if (event.createdBy.email !== userEmail) {
-      throw new ForbiddenException("Vous n'êtes pas autorisé à supprimer cet événement");
+      throw new ForbiddenException(
+        "Vous n'êtes pas autorisé à supprimer cet événement",
+      );
     }
 
     await this.eventsRepository.delete(id);
   }
 
   // 🛠 6. Mettre à jour un événement
-  async updateEvent(id: string, updateEventDto: UpdateEventDto, userEmail: string): Promise<Event> {
-    const event = await this.eventsRepository.findOne({ where: { id }, relations: ['createdBy'] });
+  async updateEvent(
+    id: string,
+    updateEventDto: UpdateEventDto,
+    userEmail: string,
+  ): Promise<Event> {
+    const event = await this.eventsRepository.findOne({
+      where: { id },
+      relations: ['createdBy'],
+    });
     if (!event) throw new NotFoundException('Événement introuvable');
 
     if (event.createdBy.email !== userEmail) {
-      throw new ForbiddenException("Vous n'êtes pas autorisé à modifier cet événement");
+      throw new ForbiddenException(
+        "Vous n'êtes pas autorisé à modifier cet événement",
+      );
     }
 
     Object.assign(event, updateEventDto);
@@ -101,46 +122,63 @@ export class EventsService {
 
   // ⭐ 7. Ajouter aux favoris
   async addToFavorites(eventId: string, userEmail: string): Promise<Favorite> {
-    const event = await this.eventsRepository.findOne({ where: { id: eventId } });
+    const event = await this.eventsRepository.findOne({
+      where: { id: eventId },
+    });
     if (!event) throw new NotFoundException('Événement introuvable');
 
-    const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-    if (!user) throw new NotFoundException("Utilisateur non trouvé");
-  // Vérifie si le favori existe déjà
-  const existing = await this.favoritesRepository.findOne({ where: { user: { id: user.id }, event: { id: event.id } } });
-  if (existing) {
-    return existing; // Ou lève une erreur si tu préfères
-  }
+    const user = await this.usersRepository.findOne({
+      where: { email: userEmail },
+    });
+    if (!user) throw new NotFoundException('Utilisateur non trouvé');
+    // Vérifie si le favori existe déjà
+    const existing = await this.favoritesRepository.findOne({
+      where: { user: { id: user.id }, event: { id: event.id } },
+    });
+    if (existing) {
+      return existing; // Ou lève une erreur si tu préfères
+    }
     const favorite = this.favoritesRepository.create({ user, event });
     return this.favoritesRepository.save(favorite);
   }
 
   // 📥 8. Lister les favoris
-async getFavorites(userEmail: string): Promise<Event[]> {
-  const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-  if (!user) throw new NotFoundException("Utilisateur non trouvé");
+  async getFavorites(userEmail: string): Promise<Event[]> {
+    const user = await this.usersRepository.findOne({
+      where: { email: userEmail },
+    });
+    if (!user) throw new NotFoundException('Utilisateur non trouvé');
 
-  const favorites = await this.favoritesRepository.find({
-    where: { user: { id: user.id } },
-    relations: ['event'],
-  });
+    const favorites = await this.favoritesRepository.find({
+      where: { user: { id: user.id } },
+      relations: ['event'],
+    });
 
-  console.log('user:', user);
-  console.log('favorites:', favorites);
+    console.log('user:', user);
+    console.log('favorites:', favorites);
 
-  return favorites.map(f => f.event);
-}
+    return favorites.map((f) => f.event);
+  }
 
   // ❌ 9. Supprimer un favori
   async removeFromFavorites(eventId: string, userEmail: string): Promise<void> {
-    const event = await this.eventsRepository.findOne({ where: { id: eventId } });
+    const event = await this.eventsRepository.findOne({
+      where: { id: eventId },
+    });
     if (!event) throw new NotFoundException('Événement introuvable');
 
-    const user = await this.usersRepository.findOne({ where: { email: userEmail } });
-    if (!user) throw new NotFoundException("Utilisateur non trouvé");
+    const user = await this.usersRepository.findOne({
+      where: { email: userEmail },
+    });
+    if (!user) throw new NotFoundException('Utilisateur non trouvé');
 
-    const favorite = await this.favoritesRepository.findOne({ where: { user, event } });
-    if (!favorite) throw new NotFoundException('Le favori n\'existe pas');
+    const favorite = await this.favoritesRepository.findOne({
+      where: {
+        user: { id: user.id },
+        event: { id: event.id },
+      },
+    });
+    if (!favorite) throw new NotFoundException("Le favori n'existe pas");
 
     await this.favoritesRepository.remove(favorite);
   }

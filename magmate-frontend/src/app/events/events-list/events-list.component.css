@@ -339,8 +339,7 @@ body, .events-container {
 
 @media (max-width: 700px) {
   .landing-page {
-    height: 180px;
-    border-radius: 12px;
+    height: 90vh;
     margin-bottom: 18px;
   }
   .landing-text h1 {

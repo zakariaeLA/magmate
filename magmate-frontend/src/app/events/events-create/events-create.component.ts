@@ -18,24 +18,34 @@ export class EventsCreateComponent implements OnInit {
   formError = '';
   isEditMode = false; // Détecte si on est en mode modification
   eventId: string | null = null;
-  
+  selectedFile: File | null = null;
+  imageError: string = '';
+
   // Liste prédéfinie de villes françaises (à adapter selon vos besoins)
   cities = [
-    'Paris', 'Lyon', 'Marseille', 'Lille', 'Bordeaux', 
-    'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier'
+    'Paris',
+    'Lyon',
+    'Marseille',
+    'Lille',
+    'Bordeaux',
+    'Toulouse',
+    'Nice',
+    'Nantes',
+    'Strasbourg',
+    'Montpellier',
   ];
 
   constructor(
     private fb: FormBuilder,
     private eventsService: EventsService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     this.eventForm = this.createForm();
   }
 
   ngOnInit(): void {
-        this.eventId = this.route.snapshot.paramMap.get('id');
+    this.eventId = this.route.snapshot.paramMap.get('id');
     if (this.eventId) {
       this.isEditMode = true;
       this.loadEventDetails(this.eventId);
@@ -48,9 +58,12 @@ export class EventsCreateComponent implements OnInit {
         this.eventForm.patchValue(event); // Pré-remplit le formulaire avec les données de l'événement
       },
       error: (error) => {
-        console.error('Erreur lors du chargement des détails de l\'événement :', error);
+        console.error(
+          "Erreur lors du chargement des détails de l'événement :",
+          error
+        );
         this.router.navigate(['/events']); // Redirige si l'événement n'existe pas
-      }
+      },
     });
   }
   createForm(): FormGroup {
@@ -61,80 +74,106 @@ export class EventsCreateComponent implements OnInit {
       lieu: ['', Validators.required],
       type: [EventType.EVENT, Validators.required],
       date: ['', Validators.required],
-      imageUrl: ['', [Validators.required, Validators.pattern('https?://.+')]]
     });
   }
 
- onSubmit(): void {
-  if (this.eventForm.invalid) {
-    this.markFormGroupTouched(this.eventForm);
-    return;
-  }
-
-  this.isSubmitting = true;
-  this.formError = '';
-
-  const formData = {
-    ...this.eventForm.value,
-    date: new Date(this.eventForm.value.date)
-  };
-
-  if (this.isEditMode && this.eventId) {
-    // Mode modification
-    this.eventsService.updateEvent(this.eventId, formData).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        alert('Événement modifié avec succès !');
-        this.router.navigate(['/events/my']);
-      },
-      error: (error) => {
-        this.isSubmitting = false;
-        this.formError = error.error?.message || 'Une erreur est survenue lors de la modification de l\'événement';
-        console.error('Erreur de modification d\'événement', error);
-      }
-    });
-  } else {
-    // Mode création
-    this.eventsService.createEvent(formData).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        alert('Événement créé avec succès !');
-        this.router.navigate(['/events']);
-      },
-      error: (error) => {
-        this.isSubmitting = false;
-        this.formError = error.error?.message || 'Une erreur est survenue lors de la création de l\'événement';
-        console.error('Erreur de création d\'événement', error);
-      }
-    });
-  }
-}
-private markFormGroupTouched(formGroup: FormGroup): void {
-  Object.keys(formGroup.controls).forEach((key) => {
-    const control = formGroup.get(key);
-    if (control) {
-      control.markAsTouched();
+  onSubmit(): void {
+    if (this.eventForm.invalid) {
+      this.markFormGroupTouched(this.eventForm);
+      if (!this.selectedFile) this.imageError = "L'image est obligatoire";
+      return;
     }
-  });
-}
-hasError(controlName: string, errorName?: string): boolean {
-  const control = this.eventForm.get(controlName);
-  if (!control) return false;
 
-  if (errorName) {
-    return control.hasError(errorName) && (control.dirty || control.touched);
+    this.isSubmitting = true;
+    this.formError = '';
+
+    const formData = new FormData();
+    formData.append('title', this.eventForm.value.title);
+    formData.append('description', this.eventForm.value.description);
+    formData.append('city', this.eventForm.value.city);
+    formData.append('lieu', this.eventForm.value.lieu);
+    formData.append('type', this.eventForm.value.type);
+    formData.append('date', this.eventForm.value.date);
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    if (this.isEditMode && this.eventId) {
+      // Mode modification
+      this.eventsService.updateEvent(this.eventId, formData).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          alert('Événement modifié avec succès !');
+          this.router.navigate(['/events/my']);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.formError =
+            error.error?.message ||
+            "Une erreur est survenue lors de la modification de l'événement";
+          console.error("Erreur de modification d'événement", error);
+        },
+      });
+    } else {
+      // Mode création
+      this.eventsService.createEvent(formData).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          alert('Événement créé avec succès !');
+          this.router.navigate(['/events']);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.formError =
+            error.error?.message ||
+            "Une erreur est survenue lors de la création de l'événement";
+          console.error("Erreur de création d'événement", error);
+        },
+      });
+    }
+  }
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.get(key);
+      if (control) {
+        control.markAsTouched();
+      }
+    });
+  }
+  hasError(controlName: string, errorName?: string): boolean {
+    const control = this.eventForm.get(controlName);
+    if (!control) return false;
+
+    if (errorName) {
+      return control.hasError(errorName) && (control.dirty || control.touched);
+    }
+
+    return control.invalid && (control.dirty || control.touched);
+  }
+  cancel(): void {
+    if (this.isEditMode) {
+      // Redirige vers la page "Mes événements" en mode modification
+      this.router.navigate(['/events/my']);
+    } else {
+      // Redirige vers la liste des événements en mode création
+      this.router.navigate(['/events']);
+    }
   }
 
-  return control.invalid && (control.dirty || control.touched);
-}
-cancel(): void {
-  if (this.isEditMode) {
-    // Redirige vers la page "Mes événements" en mode modification
-    this.router.navigate(['/events/my']);
-  } else {
-    // Redirige vers la liste des événements en mode création
-    this.router.navigate(['/events']);
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (!file.type.match(/^image\/(jpeg|png|jpg)$/)) {
+        this.imageError = 'Seuls les fichiers JPG, JPEG et PNG sont autorisés';
+        this.selectedFile = null;
+      } else if (file.size > 2 * 1024 * 1024) {
+        this.imageError = "La taille de l'image ne doit pas dépasser 2 Mo";
+        this.selectedFile = null;
+      } else {
+        this.selectedFile = file;
+        this.imageError = '';
+      }
+    }
   }
-}
-
 }

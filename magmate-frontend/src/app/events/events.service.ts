@@ -43,12 +43,12 @@ export class EventsService {
   }
 
   // Créer un nouvel événement
-  createEvent(eventData: CreateEventDto): Observable<Event> {
+  createEvent(eventData: FormData): Observable<Event> {
     return this.http.post<Event>(this.apiUrl, eventData);
   }
 
   // Mettre à jour un événement
-  updateEvent(id: string, eventData: UpdateEventDto): Observable<Event> {
+  updateEvent(id: string, eventData: FormData): Observable<Event> {
     return this.http.put<Event>(`${this.apiUrl}/${id}`, eventData);
   }
 

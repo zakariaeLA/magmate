@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsDate, IsUrl, IsOptional } from 'class-validator';
+import { IsString, IsEnum, IsDate, IsOptional } from 'class-validator';
 import { EventType, EventStatus } from '../entities/event.entity';
 
 export class CreateEventDto {
@@ -17,8 +17,8 @@ export class CreateEventDto {
   @IsDate()
   date: Date;
 
-  @IsUrl()
-  imageUrl: string;
+  @IsOptional()
+  imageUrl?: string;
 
   @IsOptional()
   @IsEnum(EventStatus)

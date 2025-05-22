@@ -110,21 +110,18 @@
 
     <!-- URL de l'image -->
     <div class="form-group">
-      <label for="imageUrl">URL de l'image *</label>
-      <input 
-        type="url" 
-        id="imageUrl" 
-        formControlName="imageUrl" 
-        placeholder="https://exemple.com/image.jpg"
-        [class.error]="hasError('imageUrl')"
-      >
-      <div *ngIf="hasError('imageUrl', 'required')" class="error-message">
-        L'URL de l'image est obligatoire
-      </div>
-      <div *ngIf="hasError('imageUrl', 'pattern')" class="error-message">
-        L'URL doit être valide (commencer par http:// ou https://)
-      </div>
-    </div>
+  <label for="image">Image de l'événement *</label>
+  <input 
+    type="file" 
+    id="image" 
+    (change)="onFileSelected($event)"
+    accept="image/*"
+    [class.error]="imageError"
+  >
+  <div *ngIf="imageError" class="error-message">
+    {{ imageError }}
+  </div>
+</div>
 
     <!-- Boutons d'action -->
     <div class="form-actions">

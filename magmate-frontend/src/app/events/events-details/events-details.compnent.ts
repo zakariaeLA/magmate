@@ -27,6 +27,7 @@ export class EventsDetailsComponent implements OnInit {
     this.loadEventDetails();
     this.checkIfCreator();
     this.checkIfFavorite();
+    
 
  }
   loadEventDetails(): void {
