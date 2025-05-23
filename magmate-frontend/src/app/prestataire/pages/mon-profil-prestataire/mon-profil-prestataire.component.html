@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div *ngIf="prestataire" class="profil-container">
+    <h2><strong>{{ prestataire.utilisateur?.fname }} {{ prestataire.utilisateur?.lname }}</strong></h2>
+    <div class="profil-content">
+      <img
+        class="profile-img"
+        [src]="prestataire.utilisateur?.photo"
+        alt="Photo de profil"
+      />
+      <div class="profil-info">
+        
+        <p><strong>Email :</strong>{{ prestataire.utilisateur?.email }}</p>
+        <p><strong>Ville :</strong>{{ prestataire.ville }}</p>
+        <p><strong>Spécialité :</strong>{{ prestataire.specialite }}</p>
+        <p><strong>Téléphone :</strong>{{ prestataire.telephone }}</p>
+        <p><strong>Expérience :</strong>{{ prestataire.experience }}</p>
+  
+        <button
+          class="availability-btn"
+          [ngClass]="{ 'available': prestataire.disponibilite, 'unavailable': !prestataire.disponibilite }"
+          (click)="toggleDisponibilite()"
+        >
+          {{ prestataire.disponibilite ? 'Disponible' : 'Indisponible' }}
+        </button>
+      </div>
+    </div>
+  
+    
+    <button class="modify-btn" [routerLink]="['/modifier-profil']">
+  <i class="fas fa-pen"></i> Modifier
+</button>
+
+    <button class="delete-btn"  (click)="deleteProfil()">
+  <i class="fas fa-trash-alt"></i> Supprimer le compte
+</button>
+
+  </div>
+  
+  <div *ngIf="!prestataire">
+    Chargement des informations du profil...
+  </div>
+  
